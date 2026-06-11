@@ -7,10 +7,11 @@ import { usePathname } from "next/navigation";
 import { Menu, X } from "lucide-react";
 
 const LINKS = [
-  { href: "/",          label: "Home"          },
-  { href: "/dashboard", label: "Feed"          },
-  { href: "/drop",      label: "Drop a Bottle" },
-  { href: "/digest",    label: "My Digest"     },
+  { href: "/", label: "Home" },
+  { href: "/dashboard", label: "Feed" },
+  { href: "/drop", label: "Drop a Bottle" },
+  { href: "/digest", label: "My Digest" },
+  { href: "/globe", label: "The Sphere" },
 ];
 
 export function Navbar() {
@@ -42,9 +43,8 @@ export function Navbar() {
               <li key={href}>
                 <Link
                   href={href}
-                  className={`text-sm font-medium transition-colors hover:text-primary ${
-                    pathname === href ? "text-primary" : "text-muted-foreground"
-                  }`}
+                  className={`text-sm font-medium transition-colors hover:text-primary ${pathname === href ? "text-primary" : "text-muted-foreground"
+                    }`}
                 >
                   {label}
                 </Link>
@@ -79,9 +79,8 @@ export function Navbar() {
                 <Link
                   href={href}
                   onClick={() => setOpen(false)}
-                  className={`block text-base font-medium py-3 border-b border-stone-100 last:border-0 transition-colors ${
-                    pathname === href ? "text-primary" : "text-muted-foreground hover:text-foreground"
-                  }`}
+                  className={`block text-base font-medium py-3 border-b border-stone-100 last:border-0 transition-colors ${pathname === href ? "text-primary" : "text-muted-foreground hover:text-foreground"
+                    }`}
                 >
                   {label}
                 </Link>
