@@ -23,7 +23,7 @@ export default function DigestPage() {
   const [consent1, setConsent1] = useState(false);
   const [consent2, setConsent2] = useState(true);
 
-  // Sync state to read authentic cloud user records key
+  // Read saved handle out of local storage
   useEffect(() => {
     const savedHandle = localStorage.getItem("kindsphere_handle");
     if (savedHandle) {
@@ -31,18 +31,10 @@ export default function DigestPage() {
     }
   }, []);
 
-  // Intercept actions for non-authenticated browsers
+  // CHANGE 1: If a logged out user clicks tabs, this opens the unified modal!
   function handleTabClick(tab: TabType) {
     if (!userHandle) {
-      // Direct global DOM query to invoke top layout menu modal registration
-      const navbarJoinBtn = document.querySelector('button:has-text("Join KindSphere")') as HTMLButtonElement;
-      if (navbarJoinBtn) {
-        navbarJoinBtn.click();
-      } else {
-        // Fallback approach if inner button selector signature differs
-        const topHeaderBtn = document.querySelector('header button') as HTMLButtonElement;
-        if (topHeaderBtn) topHeaderBtn.click();
-      }
+      window.dispatchEvent(new Event("open-login-modal"));
       return;
     }
     setActiveTab(tab);
@@ -70,8 +62,8 @@ export default function DigestPage() {
               <button
                 onClick={() => handleTabClick("sent")}
                 className={`flex items-center gap-2 py-3 px-1 border-b-2 font-medium text-sm transition-all whitespace-nowrap cursor-pointer ${activeTab === "sent" && userHandle
-                    ? "border-[#E07A5F] text-[#E07A5F]"
-                    : "border-transparent text-stone-500 hover:text-stone-700"
+                  ? "border-[#E07A5F] text-[#E07A5F]"
+                  : "border-transparent text-stone-500 hover:text-stone-700"
                   }`}
               >
                 <Send className="h-4 w-4" />
@@ -80,8 +72,8 @@ export default function DigestPage() {
               <button
                 onClick={() => handleTabClick("awaiting")}
                 className={`flex items-center gap-2 py-3 px-1 border-b-2 font-medium text-sm transition-all whitespace-nowrap cursor-pointer ${activeTab === "awaiting" && userHandle
-                    ? "border-[#E07A5F] text-[#E07A5F]"
-                    : "border-transparent text-stone-500 hover:text-stone-700"
+                  ? "border-[#E07A5F] text-[#E07A5F]"
+                  : "border-transparent text-stone-500 hover:text-stone-700"
                   }`}
               >
                 <MessageCircle className="h-4 w-4" />
@@ -90,8 +82,8 @@ export default function DigestPage() {
               <button
                 onClick={() => handleTabClick("mutual")}
                 className={`flex items-center gap-2 py-3 px-1 border-b-2 font-medium text-sm transition-all whitespace-nowrap cursor-pointer ${activeTab === "mutual" && userHandle
-                    ? "border-[#E07A5F] text-[#E07A5F]"
-                    : "border-transparent text-stone-500 hover:text-stone-700"
+                  ? "border-[#E07A5F] text-[#E07A5F]"
+                  : "border-transparent text-stone-500 hover:text-stone-700"
                   }`}
               >
                 <Users className="h-4 w-4" />
@@ -230,11 +222,9 @@ export default function DigestPage() {
               ))}
             </div>
 
+            {/* CHANGE 2: Clicking the big main lock button triggers the premium modal directly! */}
             <button
-              onClick={() => {
-                const navBtn = document.querySelector('button:has-text("Join KindSphere")') as HTMLButtonElement;
-                if (navBtn) navBtn.click();
-              }}
+              onClick={() => window.dispatchEvent(new Event("open-login-modal"))}
               className="w-full inline-flex items-center justify-center rounded-xl bg-[#E07A5F] text-white text-sm font-semibold h-12 hover:opacity-95 active:scale-[0.99] transition-all shadow-md cursor-pointer"
             >
               Claim Your Handle to Explore

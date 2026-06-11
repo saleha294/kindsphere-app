@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Menu, X, User } from "lucide-react";
-import HandleModal from "./HandleModal"; // Links our brand new Supabase handle modal
+import HandleModal from "./HandleModal"; // Keeps your premium functional handle database modal
 
 const LINKS = [
   { href: "/", label: "Home" },
@@ -14,24 +14,31 @@ const LINKS = [
   { href: "/globe", label: "The Sphere" },
 ];
 
-// Keeping it as a named export so app/layout.tsx renders perfectly!
 export function Navbar() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [userHandle, setUserHandle] = useState<string | null>(null);
 
-  // Read the saved anonymous handle out of the browser's storage instantly when loading
   useEffect(() => {
+    // 1. Instantly read the saved anonymous handle out of local cache storage
     const savedHandle = localStorage.getItem("kindsphere_handle");
     if (savedHandle) {
       setUserHandle(savedHandle);
     }
+
+    // 2. Global Listener Setup: Catch event requests broadcasted from Feed cards or locked views
+    const openModalTrigger = () => setIsModalOpen(true);
+    window.addEventListener("open-login-modal", openModalTrigger);
+
+    return () => window.removeEventListener("open-login-modal", openModalTrigger);
   }, []);
 
-  function handleAccountCreated(handle: string, id: string) {
+  // Fired when HandleModal successfully writes a brand new unique record to Supabase
+  function handleAccountCreated(handle: string) {
     setUserHandle(handle);
-    // Smooth reload to seamlessly unlock guest states across all running views
+    setIsModalOpen(false);
+    // Smooth reload to seamlessly unlock guest blocks across all running views instantly
     window.location.reload();
   }
 
@@ -53,7 +60,7 @@ export function Navbar() {
             <span className="font-serif text-xl tracking-tight text-foreground">KindSphere</span>
           </Link>
 
-          {/* Desktop nav */}
+          {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center gap-8" aria-label="Main navigation">
             <ul className="flex items-center gap-6 list-none m-0 p-0">
               {LINKS.map(({ href, label }) => (
@@ -78,7 +85,7 @@ export function Navbar() {
             ) : (
               <button
                 onClick={() => setIsModalOpen(true)}
-                className="inline-flex items-center justify-center rounded-lg bg-[hsl(14,66%,62%)] text-white text-sm font-semibold px-6 py-3 hover:opacity-90 active:scale-95 transition-all"
+                className="inline-flex items-center justify-center rounded-lg bg-[hsl(14,66%,62%)] text-white text-sm font-semibold px-6 py-3 hover:opacity-90 active:scale-95 transition-all cursor-pointer"
               >
                 Join KindSphere
               </button>
@@ -124,7 +131,7 @@ export function Navbar() {
                       setOpen(false);
                       setIsModalOpen(true);
                     }}
-                    className="block w-full text-center rounded-lg bg-[hsl(14,66%,62%)] text-white text-sm font-semibold px-6 py-3 hover:opacity-90 transition-opacity"
+                    className="block w-full text-center rounded-lg bg-[hsl(14,66%,62%)] text-white text-sm font-semibold px-6 py-3 hover:opacity-90 transition-opacity cursor-pointer"
                   >
                     Join KindSphere
                   </button>
@@ -135,7 +142,7 @@ export function Navbar() {
         )}
       </header>
 
-      {/* Renders our functional database insertion form layer */}
+      {/* Renders your operational data submission modal layer */}
       <HandleModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
