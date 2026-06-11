@@ -1,10 +1,8 @@
-// app/digest/page.tsx
 "use client";
 
-import { useState } from "react";
-import Link from "next/link";
+import { useState, useEffect } from "react";
 import * as Switch from "@radix-ui/react-switch";
-import { Lock } from "lucide-react";
+import { Lock, Send, MessageCircle, Users } from "lucide-react";
 
 const METRICS = [
   { value: "14", label: "People You Helped", color: "text-secondary" },
@@ -17,180 +15,237 @@ const SWITCH_CLS =
 const THUMB_CLS =
   "block w-4 h-4 rounded-full bg-white shadow transition-transform data-[state=checked]:translate-x-4 data-[state=unchecked]:translate-x-0";
 
+type TabType = "sent" | "awaiting" | "mutual";
+
 export default function DigestPage() {
+  const [userHandle, setUserHandle] = useState<string | null>(null);
+  const [activeTab, setActiveTab] = useState<TabType>("sent");
   const [consent1, setConsent1] = useState(false);
   const [consent2, setConsent2] = useState(true);
 
+  // Sync state to read authentic cloud user records key
+  useEffect(() => {
+    const savedHandle = localStorage.getItem("kindsphere_handle");
+    if (savedHandle) {
+      setUserHandle(savedHandle);
+    }
+  }, []);
+
+  // Intercept actions for non-authenticated browsers
+  function handleTabClick(tab: TabType) {
+    if (!userHandle) {
+      // Direct global DOM query to invoke top layout menu modal registration
+      const navbarJoinBtn = document.querySelector('button:has-text("Join KindSphere")') as HTMLButtonElement;
+      if (navbarJoinBtn) {
+        navbarJoinBtn.click();
+      } else {
+        // Fallback approach if inner button selector signature differs
+        const topHeaderBtn = document.querySelector('header button') as HTMLButtonElement;
+        if (topHeaderBtn) topHeaderBtn.click();
+      }
+      return;
+    }
+    setActiveTab(tab);
+  }
+
   return (
-    <div className="relative w-full min-h-[calc(100vh-4rem)] overflow-x-hidden">
+    <div className="relative w-full min-h-[calc(100vh-4rem)] overflow-x-hidden bg-stone-50">
 
-      {/* ── Underlying content (intentionally visible-but-locked) ── */}
-      <div className="w-full py-12 pb-24 px-6 select-none pointer-events-none" aria-hidden="true">
-        <div className="w-full max-w-6xl mx-auto md:px-12 space-y-12">
+      {/* ── Main Layout Wrapper ── */}
+      <div className={`w-full py-12 pb-24 px-6 transition-all duration-300 ${!userHandle ? "select-none pointer-events-none blur-[2px]" : ""}`}>
+        <div className="w-full max-w-6xl mx-auto md:px-12 space-y-10">
 
-          <header className="text-center space-y-4">
-            <h1 className="font-serif text-4xl md:text-5xl font-medium text-foreground tracking-tight">Your June Digest</h1>
-            <p className="text-lg text-muted-foreground">A quiet reflection on the kindness you gave and received.</p>
+          <header className="text-center space-y-3">
+            <h1 className="font-serif text-4xl md:text-5xl font-medium text-foreground tracking-tight">
+              {userHandle ? `@${userHandle}'s Personal Digest` : "Your Personalized Digest"}
+            </h1>
+            <p className="text-base md:text-lg text-muted-foreground max-w-xl mx-auto">
+              A quiet reflection on the empathy and clarity you have distributed into the anonymous sphere.
+            </p>
           </header>
 
-          <div className="w-full bg-primary/10 border border-primary/20 rounded-2xl p-4 text-center">
-            <p className="font-medium text-sm sm:text-base text-primary">
-              KindSphere helped 48,291 people across 127 countries this month.
-            </p>
+          {/* Interactive Profile Sandbox Record Nav Tabs */}
+          <div className="flex justify-center border-b border-stone-200/80 max-w-md mx-auto pointer-events-auto">
+            <nav className="flex gap-6 -mb-px" aria-label="Tabs">
+              <button
+                onClick={() => handleTabClick("sent")}
+                className={`flex items-center gap-2 py-3 px-1 border-b-2 font-medium text-sm transition-all whitespace-nowrap cursor-pointer ${activeTab === "sent" && userHandle
+                    ? "border-[#E07A5F] text-[#E07A5F]"
+                    : "border-transparent text-stone-500 hover:text-stone-700"
+                  }`}
+              >
+                <Send className="h-4 w-4" />
+                My Sent Bottles
+              </button>
+              <button
+                onClick={() => handleTabClick("awaiting")}
+                className={`flex items-center gap-2 py-3 px-1 border-b-2 font-medium text-sm transition-all whitespace-nowrap cursor-pointer ${activeTab === "awaiting" && userHandle
+                    ? "border-[#E07A5F] text-[#E07A5F]"
+                    : "border-transparent text-stone-500 hover:text-stone-700"
+                  }`}
+              >
+                <MessageCircle className="h-4 w-4" />
+                Awaiting My Voice
+              </button>
+              <button
+                onClick={() => handleTabClick("mutual")}
+                className={`flex items-center gap-2 py-3 px-1 border-b-2 font-medium text-sm transition-all whitespace-nowrap cursor-pointer ${activeTab === "mutual" && userHandle
+                    ? "border-[#E07A5F] text-[#E07A5F]"
+                    : "border-transparent text-stone-500 hover:text-stone-700"
+                  }`}
+              >
+                <Users className="h-4 w-4" />
+                Mutual Connections
+              </button>
+            </nav>
           </div>
 
-          {/* Impact metrics */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-            {METRICS.map(({ value, label, color }) => (
-              <div key={label} className="bg-white rounded-2xl p-8 text-center border border-stone-200/60 shadow-[0_4px_20px_rgb(0,0,0,0.03)] flex flex-col items-center">
-                <span className={`font-serif text-6xl leading-none mb-3 ${color}`}>{value}</span>
-                <span className="text-xs font-medium text-muted-foreground uppercase tracking-wider">{label}</span>
+          {/* Dynamic Content Switching Based on Selection */}
+          <div className="pt-4">
+            {activeTab === "sent" && (
+              <div className="space-y-8 animate-fade-in">
+                {/* Global Metrics Bar */}
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+                  {METRICS.map(({ value, label, color }) => (
+                    <div key={label} className="bg-white rounded-2xl p-6 text-center border border-stone-200/60 shadow-[0_4px_20px_rgb(0,0,0,0.02)] flex flex-col items-center">
+                      <span className={`font-serif text-5xl leading-none mb-2 ${color}`}>{value}</span>
+                      <span className="text-[11px] font-semibold text-muted-foreground uppercase tracking-wider">{label}</span>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Main Excerpt Highlight */}
+                <div className="bg-white rounded-3xl p-8 md:p-12 border border-stone-200/60 shadow-[0_8px_30px_rgb(0,0,0,0.04)] text-center relative overflow-hidden">
+                  <div className="absolute top-0 left-0 w-full h-1 opacity-60" style={{ background: "linear-gradient(to right, #81B29A, #E07A5F, #81B29A)" }} />
+                  <p className="font-serif text-xl md:text-2xl leading-relaxed text-foreground max-w-2xl mx-auto">
+                    &ldquo;This month, you reached 14 strangers across 9 countries. Your words were described as <em className="text-secondary not-italic">&lsquo;clarifying&rsquo;</em> and <em className="text-primary not-italic">&lsquo;grounding&rsquo;</em> by multiple members.&rdquo;
+                  </p>
+                </div>
               </div>
-            ))}
-          </div>
+            )}
 
-          {/* Monthly summary quote */}
-          <div className="bg-white rounded-3xl p-8 md:p-12 border border-stone-200/60 shadow-[0_8px_30px_rgb(0,0,0,0.05)] text-center relative overflow-hidden">
-            <div className="absolute top-0 left-0 w-full h-1 opacity-50"
-              style={{ background: "linear-gradient(to right, hsl(150,25%,61%), hsl(14,66%,62%), hsl(150,25%,61%))" }} />
-            <p className="font-serif text-xl md:text-2xl lg:text-3xl leading-relaxed text-foreground max-w-2xl mx-auto">
-              &ldquo;This month, you reached 14 strangers across 9 countries. Your words were described as{" "}
-              <em className="text-secondary not-italic">&lsquo;clarifying&rsquo;</em> and{" "}
-              <em className="text-primary not-italic">&lsquo;grounding&rsquo;</em> by 6 people.
-              You sent 12 responses and received 8 in return.&rdquo;
-            </p>
-          </div>
-
-          {/* Meaningful Exchanges */}
-          <section className="space-y-8">
-            <h2 className="font-serif text-3xl font-medium text-center">Meaningful Exchanges</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-
-              <article className="bg-white rounded-2xl p-6 md:p-8 border border-stone-200/60 shadow-[0_4px_20px_rgb(0,0,0,0.03)] flex flex-col">
-                <p className="text-sm text-muted-foreground mb-4 pb-4 border-b border-stone-100">
-                  You received feedback on: <strong className="text-foreground font-medium">Career Growth</strong>
+            {activeTab === "awaiting" && (
+              <div className="bg-white rounded-2xl p-12 border border-stone-200/60 shadow-sm text-center max-w-2xl mx-auto space-y-4 animate-fade-in">
+                <p className="font-serif text-xl font-medium text-stone-800">Your current echo chamber is peaceful</p>
+                <p className="text-sm text-stone-500 max-w-md mx-auto">
+                  You have addressed all pending incoming message bottles requests near your locale. Explore the discovery grid to pull down a new conversation.
                 </p>
-                <blockquote className="text-base md:text-lg leading-relaxed text-foreground italic flex-grow mb-6">
-                  &ldquo;It sounds like you&rsquo;re outgrowing the container they built for you. Don&rsquo;t shrink yourself to fit their expectations.&rdquo;
-                </blockquote>
-                <div className="flex items-center gap-2 mb-6">
-                  <div className="w-8 h-8 rounded-full bg-stone-100 flex items-center justify-center text-stone-400 text-xs font-serif select-none shrink-0">DW</div>
-                  <span className="text-sm font-medium text-muted-foreground">From @DesertWind_41</span>
-                </div>
-                <div className="mt-auto bg-stone-50 rounded-xl p-4 border border-stone-100">
-                  <div className="flex items-start justify-between gap-4">
-                    <div>
-                      <p className="font-medium text-sm text-foreground">Reveal Identity via Mutual Consent</p>
-                      <p className="text-xs text-muted-foreground mt-1">Both parties must consent.</p>
-                    </div>
-                    <Switch.Root checked={consent1} onCheckedChange={setConsent1} className={SWITCH_CLS}>
-                      <Switch.Thumb className={THUMB_CLS} />
-                    </Switch.Root>
-                  </div>
-                  <span className={`inline-flex mt-3 px-3 py-1.5 rounded-md text-xs font-medium ${consent1 ? "bg-orange-100 text-orange-700" : "bg-stone-200/50 text-muted-foreground"}`}>
-                    {consent1 ? "Consent Pending\u2026" : "Awaiting your consent"}
-                  </span>
-                </div>
-              </article>
+              </div>
+            )}
 
-              <article className="bg-white rounded-2xl p-6 md:p-8 border border-stone-200/60 shadow-[0_4px_20px_rgb(0,0,0,0.03)] flex flex-col">
-                <p className="text-sm text-muted-foreground mb-4 pb-4 border-b border-stone-100">
-                  You received feedback on: <strong className="text-foreground font-medium">Creative Block</strong>
-                </p>
-                <blockquote className="text-base md:text-lg leading-relaxed text-foreground italic flex-grow mb-6">
-                  &ldquo;Stop trying to make art. Just make a mess. The pressure to make something &lsquo;good&rsquo; is what&rsquo;s paralyzing you.&rdquo;
-                </blockquote>
-                <div className="flex items-center gap-2 mb-6">
-                  <div className="w-8 h-8 rounded-full bg-stone-100 flex items-center justify-center text-stone-400 text-xs font-serif select-none shrink-0">NR</div>
-                  <span className="text-sm font-medium text-muted-foreground">From @NightRain_8</span>
-                </div>
-                <div className="mt-auto bg-secondary/5 rounded-xl p-4 border border-secondary/20">
-                  <div className="flex items-start justify-between gap-4">
-                    <div>
-                      <p className="font-medium text-sm text-foreground">Reveal Identity via Mutual Consent</p>
-                      <p className="text-xs text-muted-foreground mt-1">Both parties must consent.</p>
+            {activeTab === "mutual" && (
+              <section className="space-y-6 animate-fade-in">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                  {/* Exchange Container Item 1 */}
+                  <article className="bg-white rounded-2xl p-6 md:p-8 border border-stone-200/60 shadow-[0_4px_20px_rgb(0,0,0,0.02)] flex flex-col">
+                    <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3 pb-3 border-b border-stone-100">
+                      Feedback Category: <strong className="text-stone-800 font-semibold">Career Growth</strong>
+                    </p>
+                    <blockquote className="text-base leading-relaxed text-stone-700 italic flex-grow mb-6">
+                      &ldquo;It sounds like you&rsquo;re outgrowing the container they built for you. Don&rsquo;t shrink yourself to fit their expectations.&rdquo;
+                    </blockquote>
+                    <div className="mt-auto bg-stone-50 rounded-xl p-4 border border-stone-100 pointer-events-auto">
+                      <div className="flex items-start justify-between gap-4">
+                        <div>
+                          <p className="font-medium text-sm text-stone-800">Reveal Identity via Mutual Consent</p>
+                          <p className="text-xs text-stone-500 mt-0.5">Both internal authors must check this switch to reveal credentials.</p>
+                        </div>
+                        <Switch.Root checked={consent1} onCheckedChange={setConsent1} className={SWITCH_CLS}>
+                          <Switch.Thumb className={THUMB_CLS} />
+                        </Switch.Root>
+                      </div>
+                      <span className={`inline-flex mt-3 px-2.5 py-1 rounded-md text-xs font-medium ${consent1 ? "bg-orange-50 text-orange-700 border border-orange-100" : "bg-stone-200/60 text-stone-600"}`}>
+                        {consent1 ? "Consent Pending..." : "Awaiting your verification choice"}
+                      </span>
                     </div>
-                    <Switch.Root checked={consent2} onCheckedChange={setConsent2} disabled className={`${SWITCH_CLS} disabled:opacity-50 disabled:cursor-not-allowed`}>
-                      <Switch.Thumb className={THUMB_CLS} />
-                    </Switch.Root>
-                  </div>
-                  <span className="inline-flex mt-3 px-3 py-1.5 rounded-md text-xs font-medium bg-green-100 text-green-700">
-                    Matched &mdash; Identity Revealed
-                  </span>
-                  <div className="mt-3 bg-white p-3 rounded-lg border border-secondary/20 text-sm text-foreground">
-                    <span className="font-medium">Elena Rostova</span>{" "}
-                    <span className="text-muted-foreground">(elena.art@example.com)</span>
-                  </div>
-                </div>
-              </article>
+                  </article>
 
-            </div>
-          </section>
+                  {/* Exchange Container Item 2 */}
+                  <article className="bg-white rounded-2xl p-6 md:p-8 border border-stone-200/60 shadow-[0_4px_20px_rgb(0,0,0,0.02)] flex flex-col">
+                    <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3 pb-3 border-b border-stone-100">
+                      Feedback Category: <strong className="text-stone-800 font-semibold">Creative Block</strong>
+                    </p>
+                    <blockquote className="text-base leading-relaxed text-stone-700 italic flex-grow mb-6">
+                      &ldquo;Stop trying to make art. Just make a mess. The pressure to make something &lsquo;good&rsquo; is what&rsquo;s paralyzing you.&rdquo;
+                    </blockquote>
+                    <div className="mt-auto bg-[#81B29A]/5 rounded-xl p-4 border border-[#81B29A]/20">
+                      <div className="flex items-start justify-between gap-4">
+                        <div>
+                          <p className="font-medium text-sm text-stone-800">Mutual Ecosystem Verification Status</p>
+                          <p className="text-xs text-stone-500 mt-0.5">Both safe channels successfully verified connection parameters.</p>
+                        </div>
+                        <Switch.Root checked={consent2} onCheckedChange={setConsent2} disabled className={`${SWITCH_CLS} opacity-60 cursor-not-allowed`}>
+                          <Switch.Thumb className={THUMB_CLS} />
+                        </Switch.Root>
+                      </div>
+                      <span className="inline-flex mt-3 px-2.5 py-1 rounded-md text-xs font-medium bg-green-50 text-green-700 border border-green-100">
+                        Matched — Connection Identity Clear
+                      </span>
+                      <div className="mt-3 bg-white p-3 rounded-lg border border-stone-200/60 text-xs font-medium text-stone-700">
+                        Elena Rostova <span className="text-stone-400 font-normal ml-1">(elena.art@example.com)</span>
+                      </div>
+                    </div>
+                  </article>
+                </div>
+              </section>
+            )}
+          </div>
 
         </div>
       </div>
 
-      {/* ── Glassmorphic locked overlay ── */}
-      <div
-        className="absolute inset-0 z-10 flex flex-col items-center justify-center px-6"
-        style={{
-          backdropFilter: "blur(18px) saturate(1.2)",
-          WebkitBackdropFilter: "blur(18px) saturate(1.2)",
-          background: "linear-gradient(160deg, rgba(250,249,246,0.82) 0%, rgba(129,178,154,0.10) 60%, rgba(224,122,95,0.08) 100%)",
-        }}
-      >
-        {/* Card */}
-        <div className="w-full max-w-md bg-white/70 border border-stone-200/80 rounded-3xl shadow-[0_20px_60px_rgb(0,0,0,0.10)] px-8 py-10 flex flex-col items-center text-center gap-6"
-          style={{ backdropFilter: "blur(8px)" }}
+      {/* ── Dynamic Absolute Overlay Lock ── */}
+      {!userHandle && (
+        <div
+          className="absolute inset-0 z-10 flex flex-col items-center justify-center px-6 pointer-events-auto"
+          style={{
+            backdropFilter: "blur(12px) saturate(1.1)",
+            WebkitBackdropFilter: "blur(12px) saturate(1.1)",
+            background: "linear-gradient(160deg, rgba(250,249,246,0.75) 0%, rgba(129,178,154,0.08) 60%, rgba(224,122,95,0.06) 100%)",
+          }}
         >
-          {/* Lock icon with ambient glow */}
-          <div className="relative w-16 h-16 flex items-center justify-center">
-            <div className="absolute inset-0 rounded-full bg-primary/10 animate-pulse" style={{ animationDuration: "3s" }} />
-            <div className="relative w-16 h-16 rounded-full bg-primary/10 border border-primary/20 flex items-center justify-center">
-              <Lock className="h-7 w-7 text-primary" strokeWidth={1.5} />
+          <div className="w-full max-w-md bg-white border border-stone-200/80 rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.06)] px-8 py-10 flex flex-col items-center text-center gap-6">
+            <div className="relative w-14 h-14 flex items-center justify-center">
+              <div className="absolute inset-0 rounded-full bg-[#81B29A]/10 animate-pulse" style={{ animationDuration: "3s" }} />
+              <div className="relative w-14 h-14 rounded-full bg-stone-50 border border-stone-200 flex items-center justify-center shadow-sm">
+                <Lock className="h-6 w-6 text-stone-700" strokeWidth={1.8} />
+              </div>
             </div>
-          </div>
 
-          <div className="space-y-2">
-            <h2 className="font-serif text-2xl md:text-3xl font-medium text-foreground leading-tight">
-              Join KindSphere to see your records
-            </h2>
-            <p className="text-sm text-muted-foreground leading-relaxed max-w-xs mx-auto">
-              Your digest tracks every connection you've made — the people you've helped, feedback you've received, and the strangers who became something more.
+            <div className="space-y-2">
+              <h2 className="font-serif text-2xl font-medium text-stone-800 leading-tight">
+                Join KindSphere to see your records
+              </h2>
+              <p className="text-sm text-stone-500 leading-relaxed max-w-xs mx-auto">
+                Your archive tracks every interaction made — the people you've helped, response items received, and connections established.
+              </p>
+            </div>
+
+            <div className="w-full grid grid-cols-3 gap-2 bg-stone-50/80 p-3 rounded-2xl border border-stone-100">
+              {METRICS.map(({ value, label, color }) => (
+                <div key={label} className="text-center">
+                  <span className={`font-serif text-xl block ${color}`}>{value}</span>
+                  <span className="text-[9px] font-bold text-stone-400 uppercase tracking-wide leading-tight block mt-0.5">{label}</span>
+                </div>
+              ))}
+            </div>
+
+            <button
+              onClick={() => {
+                const navBtn = document.querySelector('button:has-text("Join KindSphere")') as HTMLButtonElement;
+                if (navBtn) navBtn.click();
+              }}
+              className="w-full inline-flex items-center justify-center rounded-xl bg-[#E07A5F] text-white text-sm font-semibold h-12 hover:opacity-95 active:scale-[0.99] transition-all shadow-md cursor-pointer"
+            >
+              Claim Your Handle to Explore
+            </button>
+
+            <p className="text-[11px] text-stone-400 font-medium">
+              No verification overheads. Simply pure privacy.
             </p>
           </div>
-
-          {/* Metrics preview — deliberately teasing */}
-          <div className="w-full grid grid-cols-3 gap-3">
-            {METRICS.map(({ value, label, color }) => (
-              <div key={label} className="bg-stone-50/80 rounded-xl py-3 px-2 text-center border border-stone-100">
-                <span className={`font-serif text-2xl leading-none block mb-1 ${color}`}>{value}</span>
-                <span className="text-[10px] font-medium text-muted-foreground uppercase tracking-wide leading-tight block">{label}</span>
-              </div>
-            ))}
-          </div>
-
-          {/* CTAs */}
-          <div className="flex flex-col gap-3 w-full pt-1">
-            <Link
-              href="/signup"
-              className="inline-flex items-center justify-center rounded-xl bg-[#E07A5F] text-white text-sm font-semibold px-6 py-3.5 hover:opacity-90 active:scale-[0.98] transition-all shadow-[0_4px_20px_rgba(224,122,95,0.28)] min-h-[48px]"
-            >
-              Create Your Account — It&rsquo;s Free
-            </Link>
-            <Link
-              href="/login"
-              className="inline-flex items-center justify-center rounded-xl border border-stone-200 text-foreground text-sm font-semibold px-6 py-3.5 hover:bg-stone-50 active:scale-[0.98] transition-all min-h-[48px]"
-            >
-              Sign In
-            </Link>
-          </div>
-
-          <p className="text-xs text-muted-foreground">
-            No email verification. No tracking. Just kindness.
-          </p>
         </div>
-      </div>
+      )}
 
     </div>
   );
