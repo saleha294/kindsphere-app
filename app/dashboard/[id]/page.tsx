@@ -1,4 +1,3 @@
-// app/dashboard/[id]/page.tsx
 "use client";
 
 import { useState } from "react";
@@ -6,6 +5,8 @@ import Link from "next/link";
 import { useParams } from "next/navigation";
 import { ArrowLeft, Eye, MessageCircle, Clock } from "lucide-react";
 import { ALL_REQUESTS, TAG_STYLES } from "@/lib/requests";
+// ─── Import your database connection ───
+import { supabase } from "@/lib/utils/supabase";
 
 export default function FeedbackDetailPage() {
   const params = useParams();
@@ -15,12 +16,48 @@ export default function FeedbackDetailPage() {
   const [feedback, setFeedback] = useState("");
   const [submitted, setSubmitted] = useState(false);
   const [sending, setSending] = useState(false);
+  const [errorMessage, setErrorMessage] = useState(""); // Track database issues
 
-  function handleSend(e: React.FormEvent) {
+  // ─── Real Async Supabase Insertion ───
+  async function handleSend(e: React.FormEvent) {
     e.preventDefault();
-    if (!feedback.trim()) return;
+    if (!feedback.trim() || feedback.trim().length < 15) return;
+
     setSending(true);
-    setTimeout(() => { setSending(false); setSubmitted(true); }, 1400);
+    setErrorMessage("");
+
+    try {
+      // 1. Temporary System User ID for Prototyping
+      // (Once authentication is wired, this will be the active logged-in user's true ID)
+      const temporarySystemUserId = "00000000-0000-0000-0000-000000000000";
+
+      // 2. Perform the database insert operation
+      const { error } = await supabase
+        .from("bottles")
+        .insert([
+          {
+            sender_id: temporarySystemUserId, // Who cast it
+            content: feedback,                // The raw text area block
+            category: request?.category || "General",
+            status: "drifting"
+          }
+        ]);
+
+      if (error) {
+        console.error("Supabase Error:", error.message);
+        setErrorMessage("The digital currents are heavy right now. Please try casting again.");
+        setSending(false);
+        return;
+      }
+
+      // 3. Success! Clear input and show the success view state
+      setSending(false);
+      setSubmitted(true);
+    } catch (err) {
+      console.error("Network Exception:", err);
+      setErrorMessage("Could not reach the sphere network. Check your connection.");
+      setSending(false);
+    }
   }
 
   /* ── 404-like fallback ── */
@@ -138,6 +175,14 @@ export default function FeedbackDetailPage() {
           </div>
 
           <form onSubmit={handleSend} className="space-y-4">
+
+            {/* Error Alert Display */}
+            {errorMessage && (
+              <div className="p-3 rounded-xl bg-red-50 text-xs text-red-600 border border-red-100 font-medium animate-fade-in">
+                {errorMessage}
+              </div>
+            )}
+
             <textarea
               value={feedback}
               onChange={(e) => setFeedback(e.target.value)}
