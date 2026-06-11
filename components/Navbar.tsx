@@ -36,10 +36,15 @@ export function Navbar() {
 
   // Fired when HandleModal successfully writes a brand new unique record to Supabase
   function handleAccountCreated(handle: string) {
+    // 1. Save to localStorage so your digest page can read it!
+    localStorage.setItem("kindsphere_handle", handle);
+
+    // 2. Update local navbar layout state
     setUserHandle(handle);
     setIsModalOpen(false);
-    // Smooth reload to seamlessly unlock guest blocks across all running views instantly
-    window.location.reload();
+
+    // 3. Blast the signal out so the Digest page guest text vanishes instantly!
+    window.dispatchEvent(new Event("local-handle-updated"));
   }
 
   return (
