@@ -1,0 +1,93 @@
+/* app/globals.css */
+@import "tailwindcss";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background:           hsl(var(--background));
+  --color-foreground:           hsl(var(--foreground));
+  --color-border:               hsl(var(--border));
+  --color-input:                hsl(var(--input));
+  --color-ring:                 hsl(var(--ring));
+  --color-card:                 hsl(var(--card));
+  --color-card-foreground:      hsl(var(--card-foreground));
+  --color-primary:              hsl(var(--primary));
+  --color-primary-foreground:   hsl(var(--primary-foreground));
+  --color-secondary:            hsl(var(--secondary));
+  --color-secondary-foreground: hsl(var(--secondary-foreground));
+  --color-muted:                hsl(var(--muted));
+  --color-muted-foreground:     hsl(var(--muted-foreground));
+  --color-accent:               hsl(var(--accent));
+  --color-accent-foreground:    hsl(var(--accent-foreground));
+  --color-destructive:          hsl(var(--destructive));
+  --font-sans:  var(--font-dm-sans);
+  --font-serif: var(--font-dm-serif);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+}
+
+/* ─── LIGHT MODE ─── */
+:root {
+  --background:           40 33% 97%;   /* #FAF9F6 Warm Alabaster */
+  --foreground:           222 46% 18%;  /* #1C2541 Deep Midnight Blue */
+  --card:                 0 0% 100%;
+  --card-foreground:      222 46% 18%;
+  --primary:              14 66% 62%;   /* #E07A5F Soft Terracotta */
+  --primary-foreground:   0 0% 100%;
+  --secondary:            150 25% 61%;  /* #81B29A Gentle Sage Green */
+  --secondary-foreground: 222 46% 18%;
+  --muted:                30 15% 94%;
+  --muted-foreground:     220 15% 46%;
+  --accent:               150 25% 61%;
+  --accent-foreground:    222 46% 18%;
+  --border:               30 15% 88%;
+  --input:                30 15% 88%;
+  --ring:                 14 66% 62%;
+  --destructive:          0 72% 51%;
+  --radius:               0.75rem;
+}
+
+/* ─── DARK MODE ─── */
+.dark {
+  --background:           222 46% 8%;
+  --foreground:           40 33% 97%;
+  --card:                 222 46% 12%;
+  --card-foreground:      40 33% 97%;
+  --primary:              14 66% 62%;
+  --primary-foreground:   0 0% 100%;
+  --secondary:            150 25% 61%;
+  --secondary-foreground: 222 46% 18%;
+  --muted:                222 46% 18%;
+  --muted-foreground:     220 15% 70%;
+  --accent:               150 25% 61%;
+  --accent-foreground:    222 46% 18%;
+  --border:               222 46% 18%;
+  --input:                222 46% 18%;
+  --ring:                 14 66% 62%;
+  --destructive:          0 72% 51%;
+}
+
+@layer base {
+  * { @apply border-border; }
+  body { @apply antialiased bg-background text-foreground font-sans; }
+}
+
+/* ─── CUSTOM KEYFRAMES ─── */
+@keyframes sphereFloat {
+  0%, 100% { transform: translateY(0px)  scale(1);     }
+  33%       { transform: translateY(-18px) scale(1.015); }
+  66%       { transform: translateY(-8px)  scale(0.99);  }
+}
+@keyframes ambientDrift {
+  0%, 100% { transform: translate(0px, 0px)   scale(1);    opacity: 0.4;  }
+  25%       { transform: translate(30px, -20px) scale(1.05); opacity: 0.55; }
+  50%       { transform: translate(-20px, 30px) scale(0.95); opacity: 0.35; }
+  75%       { transform: translate(15px, 10px)  scale(1.02); opacity: 0.5;  }
+}
+
+@layer utilities {
+  .animate-sphereFloat  { animation: sphereFloat  6s  ease-in-out infinite; }
+  .animate-ambientDrift { animation: ambientDrift 12s ease-in-out infinite; }
+}
