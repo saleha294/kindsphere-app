@@ -72,6 +72,13 @@ export function Navbar() {
                 <li key={href}>
                   <Link
                     href={href}
+                    onClick={(e) => {
+                      // Block unauthorized navigation to protected pages and open the clean modal form instead
+                      if (!userHandle && (href === "/drop" || href === "/digest")) {
+                        e.preventDefault();
+                        setIsModalOpen(true);
+                      }
+                    }}
                     className={`text-sm font-medium transition-colors hover:text-primary ${pathname === href ? "text-primary" : "text-muted-foreground"
                       }`}
                   >
@@ -116,7 +123,14 @@ export function Navbar() {
                 <li key={href}>
                   <Link
                     href={href}
-                    onClick={() => setOpen(false)}
+                    onClick={(e) => {
+                      setOpen(false);
+                      // Block unauthorized mobile navigation
+                      if (!userHandle && (href === "/drop" || href === "/digest")) {
+                        e.preventDefault();
+                        setIsModalOpen(true);
+                      }
+                    }}
                     className={`block text-base font-medium py-3 border-b border-stone-100 last:border-0 transition-colors ${pathname === href ? "text-primary" : "text-muted-foreground hover:text-foreground"
                       }`}
                   >
