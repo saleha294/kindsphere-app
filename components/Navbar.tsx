@@ -1,10 +1,10 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { Menu, X, User } from "lucide-react";
-import RegisterUser from "./RegisterUser"; // Updated clean component reference
+import { usePathname, useRouter } from "next/navigation";
+import { Menu, X, User, LogOut, ChevronDown } from "lucide-react";
+import RegisterUser from "./RegisterUser";
 
 const LINKS = [
   { href: "/", label: "Home" },
@@ -16,35 +16,58 @@ const LINKS = [
 
 export function Navbar() {
   const pathname = usePathname();
+  const router = useRouter();
   const [open, setOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [userHandle, setUserHandle] = useState<string | null>(null);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    // 1. Instantly read the saved anonymous handle out of local cache storage
     const savedHandle = localStorage.getItem("kindsphere_handle");
     if (savedHandle) {
       setUserHandle(savedHandle);
     }
 
-    // 2. Global Listener Setup: Catch event requests broadcasted from Feed cards or locked views
     const openModalTrigger = () => setIsModalOpen(true);
     window.addEventListener("open-login-modal", openModalTrigger);
 
-    return () => window.removeEventListener("open-login-modal", openModalTrigger);
+    // Close desktop profile dropdown when clicking outside
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setDropdownOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      window.removeEventListener("open-login-modal", openModalTrigger);
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
   }, []);
 
-  // Fired when RegisterUser successfully writes a brand new unique record to Supabase
-  function handleAccountCreated(handle: string) {
-    // 1. Save to localStorage so your digest page can read it!
+  function handleAccountCreated(handle: string, id: string) {
+    // Both variables are safely linked to anchor local storage metrics
     localStorage.setItem("kindsphere_handle", handle);
+    localStorage.setItem("kindsphere_user_id", id);
 
-    // 2. Update local navbar layout state
     setUserHandle(handle);
     setIsModalOpen(false);
 
-    // 3. Blast the signal out so the pages update dynamically!
     window.dispatchEvent(new Event("local-handle-updated"));
+  }
+
+  // ── 11. Core Logout Functional Trigger ──
+  function handleLogout() {
+    localStorage.removeItem("kindsphere_handle");
+    localStorage.removeItem("kindsphere_user_id");
+    setUserHandle(null);
+    setDropdownOpen(false);
+    setOpen(false);
+
+    // Trigger update broadcast layer and push user safely to public dashboard
+    window.dispatchEvent(new Event("local-handle-updated"));
+    router.push("/");
   }
 
   return (
@@ -73,7 +96,6 @@ export function Navbar() {
                   <Link
                     href={href}
                     onClick={(e) => {
-                      // Block unauthorized navigation to protected pages and open the clean modal form instead
                       if (!userHandle && (href === "/drop" || href === "/digest")) {
                         e.preventDefault();
                         setIsModalOpen(true);
@@ -88,11 +110,30 @@ export function Navbar() {
               ))}
             </ul>
 
-            {/* Account Display Slot or Onboarding Action Toggle */}
+            {/* Account Display Slot with Dropdown Action Menu */}
             {userHandle ? (
-              <div className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-stone-50 border border-stone-200/60 text-xs font-semibold text-stone-700">
-                <User className="h-3.5 w-3.5 text-stone-400" />
-                <span>@{userHandle}</span>
+              <div className="relative" ref={dropdownRef}>
+                <button
+                  onClick={() => setDropdownOpen(!dropdownOpen)}
+                  className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-stone-50 hover:bg-stone-100 border border-stone-200/60 text-xs font-semibold text-stone-700 transition-all cursor-pointer"
+                >
+                  <User className="h-3.5 w-3.5 text-stone-400" />
+                  <span>@{userHandle}</span>
+                  <ChevronDown className={`h-3 w-3 text-stone-400 transition-transform duration-200 ${dropdownOpen ? "rotate-180" : ""}`} />
+                </button>
+
+                {/* Desktop Dropdown Panel */}
+                {dropdownOpen && (
+                  <div className="absolute right-0 mt-2 w-44 bg-white rounded-2xl border border-stone-200/80 shadow-[0_10px_25px_rgba(0,0,0,0.08)] py-1.5 animate-fade-in">
+                    <button
+                      onClick={handleLogout}
+                      className="w-full px-4 py-2.5 text-left text-xs font-medium text-red-600 hover:bg-red-50/60 flex items-center gap-2 transition-colors cursor-pointer"
+                    >
+                      <LogOut className="h-3.5 w-3.5" />
+                      Logout Workspace
+                    </button>
+                  </div>
+                )}
               </div>
             ) : (
               <button
@@ -124,11 +165,10 @@ export function Navbar() {
                   <Link
                     href={href}
                     onClick={(e) => {
-                      // Target and lock protected pages on mobile devices explicitly
                       if (!userHandle && (href === "/drop" || href === "/digest")) {
                         e.preventDefault();
                         setIsModalOpen(true);
-                        setOpen(false); // Close drawer smoothly
+                        setOpen(false);
                       } else {
                         setOpen(false);
                       }
@@ -140,17 +180,26 @@ export function Navbar() {
                   </Link>
                 </li>
               ))}
-              <li className="pt-3">
+              <li className="pt-4 space-y-2">
                 {userHandle ? (
-                  <div className="w-full text-center inline-flex items-center justify-center gap-1.5 px-4 py-3 rounded-xl bg-stone-50 border border-stone-200/60 text-sm font-semibold text-stone-700">
-                    <User className="h-4 w-4 text-stone-400" />
-                    <span>@{userHandle}</span>
+                  <div className="flex flex-col gap-2">
+                    <div className="w-full text-center inline-flex items-center justify-center gap-1.5 px-4 py-3 rounded-xl bg-stone-50 border border-stone-200/60 text-sm font-semibold text-stone-700">
+                      <User className="h-4 w-4 text-stone-400" />
+                      <span>@{userHandle}</span>
+                    </div>
+                    <button
+                      onClick={handleLogout}
+                      className="w-full inline-flex items-center justify-center gap-2 rounded-xl bg-red-50 border border-red-100 text-red-600 text-sm font-semibold py-3 hover:bg-red-100/50 transition-colors cursor-pointer"
+                    >
+                      <LogOut className="h-4 w-4" />
+                      Logout Workspace
+                    </button>
                   </div>
                 ) : (
                   <button
                     onClick={() => {
-                      setOpen(false); // Shut drawer view container
-                      setIsModalOpen(true); // Open the crisp registration modal layout directly
+                      setOpen(false);
+                      setIsModalOpen(true);
                     }}
                     className="block w-full text-center rounded-lg bg-[hsl(14,66%,62%)] text-white text-sm font-semibold px-6 py-3 hover:opacity-90 transition-opacity cursor-pointer"
                   >
@@ -163,7 +212,6 @@ export function Navbar() {
         )}
       </header>
 
-      {/* Modern, unified entry registration layer */}
       <RegisterUser
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
