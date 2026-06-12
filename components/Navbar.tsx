@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Menu, X, User } from "lucide-react";
-import HandleModal from "./HandleModal"; // Keeps your premium functional handle database modal
+import RegisterUser from "./RegisterUser";
 
 const LINKS = [
   { href: "/", label: "Home" },
@@ -162,7 +162,7 @@ export function Navbar() {
       </header>
 
       {/* Renders your operational data submission modal layer */}
-      <HandleModal
+      <RegisterUser
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         onAccountCreated={handleAccountCreated}

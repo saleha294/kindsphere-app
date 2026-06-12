@@ -4,7 +4,7 @@ import { useState } from "react";
 import { supabase } from "@/lib/utils/supabase";
 import { Sparkles, ShieldCheck, Loader2 } from "lucide-react";
 
-export default function HandleModal({ isOpen, onClose, onAccountCreated }: {
+export default function RegisterUser({ isOpen, onClose, onAccountCreated }: {
     isOpen: boolean;
     onClose: () => void;
     onAccountCreated: (handle: string, id: string) => void;
