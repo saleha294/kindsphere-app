@@ -1,6 +1,7 @@
 // app/page.tsx
 import { Shield, Globe, Sprout, HeartHandshake, User } from "lucide-react";
 import Link from "next/link";
+import ActiveGlobe from "@/components/ActiveGlobe";
 
 /* ── How It Works steps ── */
 const HOW_STEPS = [
@@ -29,6 +30,7 @@ export default function LandingPage() {
       <section className="w-full">
         <div className="w-full max-w-5xl mx-auto px-6 md:px-12 pt-16 pb-12 lg:pt-24 lg:pb-16 grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-16 items-center">
 
+          {/* LEFT SIDE: Heading & Intro (Perfectly Preserved) */}
           <div className="flex flex-col items-start text-left gap-6">
             <h1 className="font-serif text-5xl md:text-6xl lg:text-7xl leading-[1.08] tracking-tight text-[#1C2541]">
               Be Heard. <br />
@@ -51,20 +53,27 @@ export default function LandingPage() {
             </div>
           </div>
 
-          {/* Animated sphere graphics container */}
+          {/* RIGHT SIDE: Interactive D3 Globe Block */}
           <div className="flex flex-col items-center md:items-end justify-center gap-6 pt-8 md:pt-0">
-            <div className="relative w-[280px] h-[280px] md:w-[340px] md:h-[340px] flex items-center justify-center">
-              <div className="absolute inset-0 rounded-full border-2 border-stone-200/50 animate-sphereFloat" />
-              <div className="absolute w-full h-[90px] rounded-full border border-stone-300/40 rotate-12 animate-sphereFloat" style={{ animationDelay: "-1s" }} />
-              <div className="absolute w-full h-[90px] rounded-full border border-stone-300/40 -rotate-8 animate-sphereFloat" style={{ animationDelay: "-3s" }} />
-              <div className="absolute w-[220px] h-[220px] md:w-[270px] md:h-[270px] rounded-full animate-sphereFloat"
-                style={{ background: "radial-gradient(circle, rgba(129,178,154,0.25) 0%, transparent 70%)", animationDelay: "-2s", animationDuration: "6.5s" }} />
-              <div className="absolute w-[150px] h-[150px] md:w-[180px] md:h-[180px] rounded-full animate-sphereFloat"
-                style={{ background: "radial-gradient(circle, rgba(224,122,95,0.35) 0%, rgba(129,178,154,0.15) 100%)", animationDelay: "-4s", animationDuration: "7s", boxShadow: "0 0 50px rgba(224,122,95,0.1)" }} />
-              <div className="absolute top-8 left-8 w-4 h-4 rounded-full bg-[#81B29A]/40 animate-ambientDrift" style={{ animationDelay: "0s" }} />
-              <div className="absolute bottom-14 right-10 w-3 h-3 rounded-full bg-[#E07A5F]/50 animate-ambientDrift" style={{ animationDelay: "-3s" }} />
+            <div className="relative w-full max-w-[340px] md:max-w-[380px] aspect-square flex items-center justify-center">
+
+              {/* Soft, matching ambient radial glow behind the globe */}
+              <div
+                className="absolute w-[85%] h-[85%] rounded-full opacity-60 pointer-events-none blur-3xl animate-pulse"
+                style={{
+                  background: "radial-gradient(circle, rgba(129,178,154,0.4) 0%, rgba(224,122,95,0.1) 50%, transparent 70%)",
+                  animationDuration: "8s"
+                }}
+              />
+
+              {/* Your native D3 Globe Component */}
+              <ActiveGlobe
+                className="w-full h-full drop-shadow-[0_4px_20px_rgba(0,0,0,0.03)]"
+                users={[]} // 0 setup overhead on landing page
+              />
             </div>
 
+            {/* Connection Indicator Stats */}
             <p className="text-xs text-stone-400 font-medium flex items-center gap-2 pr-4">
               <span className="relative flex h-2 w-2 shrink-0">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#E07A5F] opacity-75" />
@@ -73,6 +82,7 @@ export default function LandingPage() {
               3,847 kind connections made today
             </p>
           </div>
+
         </div>
       </section>
 
