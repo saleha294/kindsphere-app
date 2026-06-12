@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { supabase } from "@/lib/utils/supabase";
 import { Sparkles, ShieldCheck, Loader2 } from "lucide-react";
+import confetti from "canvas-confetti";
 
 export default function RegisterUser({ isOpen, onClose, onAccountCreated }: {
     isOpen: boolean;
@@ -14,6 +15,37 @@ export default function RegisterUser({ isOpen, onClose, onAccountCreated }: {
     const [errorMsg, setErrorMsg] = useState("");
 
     if (!isOpen) return null;
+
+    // Premium, minimal, calm confetti setup to match the platform aesthetic
+    function triggerCalmConfetti() {
+        const duration = 2.5 * 1000;
+        const animationEnd = Date.now() + duration;
+        const defaults = {
+            startVelocity: 15,
+            spread: 180,
+            ticks: 150,
+            zIndex: 100,
+            // Custom soft palette matching KindSphere branding tones
+            colors: ["#E07A5F", "#81B29A", "#F4F1DE", "#F2CC8F"]
+        };
+
+        const interval = setInterval(() => {
+            const timeLeft = animationEnd - Date.now();
+
+            if (timeLeft <= 0) {
+                return clearInterval(interval);
+            }
+
+            const particleCount = 12 * (timeLeft / duration);
+
+            // Elegant drifting down from the top region of the view window
+            confetti({
+                ...defaults,
+                particleCount,
+                origin: { x: Math.random(), y: Math.random() * 0.2 }
+            });
+        }, 200);
+    }
 
     async function handleRegister(e: React.FormEvent) {
         e.preventDefault();
@@ -45,6 +77,9 @@ export default function RegisterUser({ isOpen, onClose, onAccountCreated }: {
                 setLoading(false);
                 return;
             }
+
+            // 🌟 BACKEND CONFIRMED VERIFICATION: Fire the minimal drop sequence instantly
+            triggerCalmConfetti();
 
             // 3. Save session locally so the user stays logged in
             localStorage.setItem("kindsphere_user_id", data.id);

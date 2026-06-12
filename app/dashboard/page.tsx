@@ -79,6 +79,13 @@ export default function DashboardPage() {
     if (savedHandle) {
       setUserHandle(savedHandle);
     }
+
+    // Listener to catch when a user logs in so the banner hides instantly
+    const syncHandleState = () => {
+      setUserHandle(localStorage.getItem("kindsphere_handle"));
+    };
+    window.addEventListener("local-handle-updated", syncHandleState);
+    return () => window.removeEventListener("local-handle-updated", syncHandleState);
   }, []);
 
   const visible =
@@ -86,19 +93,12 @@ export default function DashboardPage() {
       ? ALL_REQUESTS
       : ALL_REQUESTS.filter((r) => r.category === activeFilter);
 
-  // If a user clicks 'Give Feedback' while logged out, trigger the Navbar's modal button
+  // If a user clicks 'Give Feedback' while logged out, block routing and fire the registration system
   function handleFeedbackClick(e: React.MouseEvent) {
     if (!userHandle) {
       e.preventDefault();
-      // Find and click the 'Join KindSphere' button from the Navbar to open the login modal
-      const navbarJoinBtn = document.querySelector('button:has-text("Join KindSphere")') as HTMLButtonElement;
-      if (navbarJoinBtn) {
-        navbarJoinBtn.click();
-      } else {
-        // Fallback banner trigger if structural text varies
-        const backupBtn = document.getElementById("banner-join-trigger");
-        if (backupBtn) alert("Please use the 'Join KindSphere' button in the navbar above to claim your handle!");
-      }
+      // Directly broadcast to our premium RegisterUser listener setup inside Navbar
+      window.dispatchEvent(new Event("open-login-modal"));
     }
   }
 
@@ -145,10 +145,10 @@ export default function DashboardPage() {
           </div>
         )}
 
-        {/* Guest welcome strip — Visible ONLY when logged out */}
+        {/* Guest welcome strip — Unified minimalist container layout with button removed */}
         {!userHandle && (
           <div
-            className="w-full rounded-2xl px-6 py-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3"
+            className="w-full rounded-2xl px-5 py-4 flex items-center justify-start text-left"
             style={{
               background: "linear-gradient(135deg, rgba(224,122,95,0.07) 0%, rgba(129,178,154,0.07) 100%)",
               border: "1px solid rgba(224,122,95,0.15)",
@@ -159,18 +159,6 @@ export default function DashboardPage() {
               <span className="text-stone-900 font-medium">Pick an anonymous handle</span>{" "}
               to start giving feedback.
             </p>
-            <button
-              id="banner-join-trigger"
-              onClick={() => {
-                // Programmatically trigger the navbar's button
-                const mainBtn = document.querySelector('header button') as HTMLButtonElement;
-                if (mainBtn) mainBtn.click();
-              }}
-              className="inline-flex items-center justify-center rounded-lg text-white text-sm font-semibold px-5 py-2.5 hover:opacity-90 active:scale-95 transition-all shrink-0"
-              style={{ background: "#E07A5F" }}
-            >
-              Join the Sphere
-            </button>
           </div>
         )}
 
@@ -184,8 +172,8 @@ export default function DashboardPage() {
                   key={tag}
                   onClick={() => setActiveFilter(tag)}
                   className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap border transition-colors shrink-0 ${activeFilter === tag
-                      ? "bg-stone-800 text-white border-stone-800"
-                      : "bg-white text-stone-500 border-stone-200 hover:bg-stone-50"
+                    ? "bg-stone-800 text-white border-stone-800"
+                    : "bg-white text-stone-500 border-stone-200 hover:bg-stone-50"
                     }`}
                 >
                   {tag}

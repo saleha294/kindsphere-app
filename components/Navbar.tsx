@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Menu, X, User } from "lucide-react";
-import RegisterUser from "./RegisterUser";
+import RegisterUser from "./RegisterUser"; // Updated clean component reference
 
 const LINKS = [
   { href: "/", label: "Home" },
@@ -34,7 +34,7 @@ export function Navbar() {
     return () => window.removeEventListener("open-login-modal", openModalTrigger);
   }, []);
 
-  // Fired when HandleModal successfully writes a brand new unique record to Supabase
+  // Fired when RegisterUser successfully writes a brand new unique record to Supabase
   function handleAccountCreated(handle: string) {
     // 1. Save to localStorage so your digest page can read it!
     localStorage.setItem("kindsphere_handle", handle);
@@ -43,7 +43,7 @@ export function Navbar() {
     setUserHandle(handle);
     setIsModalOpen(false);
 
-    // 3. Blast the signal out so the Digest page guest text vanishes instantly!
+    // 3. Blast the signal out so the pages update dynamically!
     window.dispatchEvent(new Event("local-handle-updated"));
   }
 
@@ -124,11 +124,13 @@ export function Navbar() {
                   <Link
                     href={href}
                     onClick={(e) => {
-                      setOpen(false);
-                      // Block unauthorized mobile navigation
+                      // Target and lock protected pages on mobile devices explicitly
                       if (!userHandle && (href === "/drop" || href === "/digest")) {
                         e.preventDefault();
                         setIsModalOpen(true);
+                        setOpen(false); // Close drawer smoothly
+                      } else {
+                        setOpen(false);
                       }
                     }}
                     className={`block text-base font-medium py-3 border-b border-stone-100 last:border-0 transition-colors ${pathname === href ? "text-primary" : "text-muted-foreground hover:text-foreground"
@@ -147,8 +149,8 @@ export function Navbar() {
                 ) : (
                   <button
                     onClick={() => {
-                      setOpen(false);
-                      setIsModalOpen(true);
+                      setOpen(false); // Shut drawer view container
+                      setIsModalOpen(true); // Open the crisp registration modal layout directly
                     }}
                     className="block w-full text-center rounded-lg bg-[hsl(14,66%,62%)] text-white text-sm font-semibold px-6 py-3 hover:opacity-90 transition-opacity cursor-pointer"
                   >
@@ -161,7 +163,7 @@ export function Navbar() {
         )}
       </header>
 
-      {/* Renders your operational data submission modal layer */}
+      {/* Modern, unified entry registration layer */}
       <RegisterUser
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
