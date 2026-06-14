@@ -40,7 +40,7 @@ export default function LandingPage() {
 
             <p className="text-base md:text-lg text-stone-500 max-w-md leading-relaxed">
               A quiet, humane space where people send and receive anonymous
-              feedback from strangers around the world.
+              responses from strangers around the world.
             </p>
 
             <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full sm:w-auto pt-2">
@@ -171,6 +171,45 @@ export default function LandingPage() {
         </div>
       </section>
 
+      {/* ── How to use ─────────────────────────────── */}
+      <section className="w-full py-16 bg-[#FDFBF7]">
+        {/* Added md:px-12 to match other sections */}
+        <div className="max-w-5xl mx-auto px-6 md:px-12">
+          <h2 className="text-3xl md:text-4xl font-serif text-[#1C2541] mb-12 text-left pl-1">
+            How to <span className="text-[#E07A5F]">Use</span> KindSphere
+          </h2>
+
+          <div className="grid md:grid-cols-3 gap-8">
+            {/* Step 1 */}
+            <div className="flex flex-col items-start text-left gap-4 p-8 bg-white/50 backdrop-blur-sm border border-stone-200/50 rounded-2xl shadow-sm">
+              <div className="w-12 h-12 rounded-full bg-[#E07A5F]/10 flex items-center justify-center text-[#E07A5F] font-bold text-xl">1</div>
+              <h3 className="font-semibold text-[#1C2541]">Create your presence</h3>
+              <p className="text-sm text-stone-600 leading-relaxed">
+                Sign in or log in to generate your unique, anonymous handle and start your journey.
+              </p>
+            </div>
+
+            {/* Step 2 */}
+            <div className="flex flex-col items-start text-left gap-4 p-8 bg-white/50 backdrop-blur-sm border border-stone-200/50 rounded-2xl shadow-sm">
+              <div className="w-12 h-12 rounded-full bg-[#81B29A]/10 flex items-center justify-center text-[#81B29A] font-bold text-xl">2</div>
+              <h3 className="font-semibold text-[#1C2541]">Drop a Bottle</h3>
+              <p className="text-sm text-stone-600 leading-relaxed">
+                Use the "Drop a Bottle" option to share messages, queries, or advice for the world to hear.
+              </p>
+            </div>
+
+            {/* Step 3 */}
+            <div className="flex flex-col items-start text-left gap-4 p-8 bg-white/50 backdrop-blur-sm border border-stone-200/50 rounded-2xl shadow-sm">
+              <div className="w-12 h-12 rounded-full bg-[#F2CC8F]/20 flex items-center justify-center text-[#D6A44F] font-bold text-xl">3</div>
+              <h3 className="font-semibold text-[#1C2541]">Connect & Grow</h3>
+              <p className="text-sm text-stone-600 leading-relaxed">
+                Receive responses, track your records, maintain connections, and help others grow!
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* ── About This Project / Purpose ─────────────── */}
       <section className="w-full border-t border-stone-200/40 bg-stone-50/20">
         <div className="w-full max-w-5xl mx-auto px-6 md:px-12 py-16 md:py-20 flex flex-col md:flex-row gap-10 md:gap-16">
@@ -184,7 +223,7 @@ export default function LandingPage() {
               Built on the belief that <span className="text-[#E07A5F] italic">honest words</span> change people.
             </h2>
             <p className="text-[14px] md:text-[15px] text-stone-500 leading-relaxed max-w-xl">
-              I wanted to create a meaningful corner on the internet for those moments when we need advice or genuine perspectives, but either have no one around to ask or run into judgmental spaces online. KindSphere protects your complete identity, letting your message (called a <strong>"bottle"</strong>) travel randomly to another human somewhere around the world.
+              I wanted to create a meaningful corner on the internet for those moments when we need advice or genuine perspectives, but either have no one around to ask or run into judgmental spaces online. KindSphere protects your complete identity, letting your message (called a <strong>"bottle"</strong>) travel randomly to another human somewhere around the world. From here on out, people respond to your bottle with feedback, advice, guidance or their own experience!
             </p>
           </div>
 
@@ -193,7 +232,7 @@ export default function LandingPage() {
             <div className="w-8 h-8 rounded-lg bg-[#E07A5F]/10 flex items-center justify-center text-[#E07A5F]">
               <HeartHandshake className="w-4 h-4" />
             </div>
-            <h3 className="font-serif text-lg font-medium text-[#1C2541]">Our Core Purpose</h3>
+            <h3 className="font-serif text-lg font-medium text-[#1C2541]">Core Purpose</h3>
             <p className="text-[13px] text-stone-500 leading-relaxed">
               KindSphere was built to be a safe, deeply supportive sanctuary for those who struggle to speak up, identify as introverts, or are simply searching for real human growth and new friendships without the noise of typical social media.
             </p>
@@ -202,6 +241,38 @@ export default function LandingPage() {
             </p>
           </div>
 
+        </div>
+      </section>
+
+      {/* ── Community Guidelines ─────────────── */}
+      <section className="w-full py-20 border-t border-stone-200/40 bg-stone-50/20">
+        {/* Added md:px-12 to match the padding of the "How to Use" section */}
+        <div className="max-w-5xl mx-auto px-6 md:px-12">
+          <div className="max-w-4xl">
+            <h2 className="font-serif text-3xl md:text-4xl text-[#1C2541] mb-8 text-left">
+              Community <span className="text-[#E07A5F]">Guidelines</span>
+            </h2>
+
+            <p className="text-stone-500 text-left mb-12">
+              The Sphere is a space for empathy and clarity. To keep the atmosphere grounded, we do not tolerate the following:
+            </p>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {[
+                "Racism and Hate Speech",
+                "Bullying and Harassment",
+                "Personal Attacks or Nudity",
+                "Passive-Aggressive Tone",
+                "Spam and Self-Promotion",
+                "Explicit or Offensive Content"
+              ].map((item) => (
+                <div key={item} className="flex items-center gap-3 bg-white p-4 rounded-xl border border-stone-200/60 shadow-sm">
+                  <span className="w-2 h-2 rounded-full bg-[#E07A5F] shrink-0" />
+                  <span className="text-[#1C2541] font-medium text-sm">{item}</span>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
       </section>
 
@@ -233,7 +304,7 @@ export default function LandingPage() {
                   <svg className="w-3.5 h-3.5 fill-current text-stone-500 group-hover:text-[#E07A5F] transition-colors" viewBox="0 0 24 24">
                     <path d="M20.447 20.452H16.89v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a1.977 1.977 0 01-1.972-1.977 1.975 1.975 0 111.972 1.977zm1.709 13.019H3.624V9h3.422v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
                   </svg>
-                  Connect on LinkedIn
+                  LinkedIn
                 </span>
                 <span className="text-stone-400 group-hover:translate-x-0.5 transition-transform">↗</span>
               </Link>
@@ -248,7 +319,23 @@ export default function LandingPage() {
                   <svg className="w-3.5 h-3.5 text-stone-500 group-hover:text-[#E07A5F] transition-colors" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                     <path d="M12 2L2 7l10 5 10-5-10-5z" /><path d="M2 17l10 5 10-5" /><path d="M2 12l10 5 10-5" />
                   </svg>
-                  Explore my Design Portfolio
+                  Design Portfolio
+                </span>
+                <span className="text-stone-400 group-hover:translate-x-0.5 transition-transform">↗</span>
+              </Link>
+
+              {/* Your New GitHub Link */}
+              <Link
+                href="https://github.com/saleha294"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group inline-flex items-center justify-between gap-3 px-5 py-3 rounded-xl bg-stone-50 hover:bg-stone-100 border border-stone-200/60 text-xs font-semibold text-[#1C2541] transition-all"
+              >
+                <span className="flex items-center gap-2">
+                  <svg className="w-3.5 h-3.5 text-stone-500 group-hover:text-[#E07A5F] transition-colors" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12" />
+                  </svg>
+                  GitHub
                 </span>
                 <span className="text-stone-400 group-hover:translate-x-0.5 transition-transform">↗</span>
               </Link>

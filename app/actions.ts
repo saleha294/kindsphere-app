@@ -1,17 +1,17 @@
 'use server';
 
-// Define TypeScript interfaces for our anonymous feedback inputs and responses
-export interface FeedbackInput {
+// Define TypeScript interfaces for our anonymous response inputs and responses
+export interface Responseinput {
   content: string;
-  category: 'support' | 'gratitude' | 'confession' | 'feedback';
+  category: 'support' | 'gratitude' | 'confession' | 'Response';
   lat?: number;
   lng?: number;
 }
 
-export interface FeedbackRecord {
+export interface ResponseRecord {
   id: string;
   content: string;
-  category: 'support' | 'gratitude' | 'confession' | 'feedback';
+  category: 'support' | 'gratitude' | 'confession' | 'Response';
   lat: number;
   lng: number;
   timestamp: string;
@@ -23,8 +23,8 @@ export interface ActionResponse<T> {
   data?: T;
 }
 
-// Pool of mock feedback messages (virtual bottles) representing entries dropped onto the sphere
-const MOCK_BOTTLES: FeedbackRecord[] = [
+// Pool of mock response  messages (virtual bottles) representing entries dropped onto the sphere
+const MOCK_BOTTLES: ResponseRecord[] = [
   {
     id: 'b1',
     content: 'Sending warmth to whoever is studying late tonight. You are capable of amazing things!',
@@ -60,7 +60,7 @@ const MOCK_BOTTLES: FeedbackRecord[] = [
   {
     id: 'b5',
     content: 'I really love the clean design of this platform. It feels like a breath of fresh air on the internet.',
-    category: 'feedback',
+    category: 'Response',
     lat: -33.8688,
     lng: 151.2093,
     timestamp: new Date().toISOString(),
@@ -68,12 +68,12 @@ const MOCK_BOTTLES: FeedbackRecord[] = [
 ];
 
 /**
- * Server Action to submit new anonymous feedback (dropping a virtual bottle onto the sphere).
+ * Server Action to submit new anonymous response (dropping a virtual bottle onto the sphere).
  * Later, this will perform Supabase database writes.
  */
 export async function submitRequest(
-  input: FeedbackInput
-): Promise<ActionResponse<FeedbackRecord>> {
+  input: Responseinput
+): Promise<ActionResponse<ResponseRecord>> {
   // Simulate database insert latency (800ms)
   await new Promise((resolve) => setTimeout(resolve, 800));
 
@@ -81,12 +81,12 @@ export async function submitRequest(
   if (!input.content || input.content.trim().length < 5) {
     return {
       success: false,
-      message: 'Feedback message must be at least 5 characters long.',
+      message: 'Response message must be at least 5 characters long.',
     };
   }
 
   // Generate a mock successfully saved record
-  const mockRecord: FeedbackRecord = {
+  const mockRecord: ResponseRecord = {
     id: `b_${Math.random().toString(36).substr(2, 9)}`,
     content: input.content.trim(),
     category: input.category,
@@ -96,7 +96,7 @@ export async function submitRequest(
     timestamp: new Date().toISOString(),
   };
 
-  console.log(`[Server Action] Submitted new feedback bottle:`, mockRecord);
+  console.log(`[Server Action] Submitted new response bottle:`, mockRecord);
 
   return {
     success: true,
@@ -106,10 +106,10 @@ export async function submitRequest(
 }
 
 /**
- * Server Action to fetch a random feedback bottle from the global grid/sphere.
+ * Server Action to fetch a random response bottle from the global grid/sphere.
  * Later, this will run a Supabase randomized select query.
  */
-export async function getRandomRequest(): Promise<ActionResponse<FeedbackRecord>> {
+export async function getRandomRequest(): Promise<ActionResponse<ResponseRecord>> {
   // Simulate database fetch latency (500ms)
   await new Promise((resolve) => setTimeout(resolve, 500));
 
@@ -117,12 +117,12 @@ export async function getRandomRequest(): Promise<ActionResponse<FeedbackRecord>
   const selectedBottle = MOCK_BOTTLES[randomIndex];
 
   // Refresh timestamp to look current
-  const data: FeedbackRecord = {
+  const data: ResponseRecord = {
     ...selectedBottle,
     timestamp: new Date().toISOString(),
   };
 
-  console.log(`[Server Action] Selected random feedback bottle:`, data);
+  console.log(`[Server Action] Selected random Response bottle:`, data);
 
   return {
     success: true,

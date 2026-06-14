@@ -24,11 +24,11 @@ const dmSerif = DM_Serif_Display({
 export const metadata: Metadata = {
   title: "KindSphere — Be Heard. Be Kind. Anonymously.",
   description:
-    "A safe, warm, anonymous global feedback platform. Drop your thoughts into the digital ocean and receive honest perspectives from strangers around the world.",
-  keywords: ["anonymous feedback", "kindness", "global", "safe space"],
+    "A safe, warm, anonymous global response platform. Drop your thoughts into the digital ocean and receive honest perspectives from strangers around the world.",
+  keywords: ["anonymous response", "kindness", "global", "safe space"],
   openGraph: {
     title: "KindSphere",
-    description: "Anonymous, kind, global feedback.",
+    description: "Anonymous, kind, global response.",
     type: "website",
   },
 };

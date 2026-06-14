@@ -8,7 +8,7 @@ import { ALL_REQUESTS, TAG_STYLES } from "@/lib/requests";
 // ─── Import your database connection ───
 import { supabase } from "@/lib/utils/supabase";
 
-export default function FeedbackDetailPage() {
+export default function ResponseDetailPage() {
   const params = useParams();
   const id = Number(params.id);
   const request = ALL_REQUESTS.find((r) => r.id === id);
