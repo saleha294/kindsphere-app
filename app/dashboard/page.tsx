@@ -136,6 +136,16 @@ export default function DashboardPage() {
 function FeedGrid({ activeFilter, handleResponseClick }: { activeFilter: Category; handleResponseClick: (e: React.MouseEvent) => void }) {
   const visible = useMemo(() => activeFilter === "All" ? ALL_REQUESTS : ALL_REQUESTS.filter((r) => r.category === activeFilter), [activeFilter]);
 
+  // We use a local state to track connections for this session
+  const [connections, setConnections] = useState<Record<number, 'none' | 'pending' | 'accepted'>>({});
+
+  const handleConnect = (e: React.MouseEvent, id: number) => {
+    handleResponseClick(e); // Trigger login check
+    // If logged in, update status
+    setConnections(prev => ({ ...prev, [id]: 'pending' }));
+    console.log(`Connection request sent to bottle ${id}`);
+  };
+
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       {visible.map((req) => (
@@ -145,14 +155,28 @@ function FeedGrid({ activeFilter, handleResponseClick }: { activeFilter: Categor
             <span className={`text-xs px-2.5 py-1 rounded-full border shrink-0 ${TAG_STYLES[req.category]}`}>{req.category}</span>
           </div>
           <p className="text-stone-700 leading-relaxed flex-grow line-clamp-3 mb-6 text-[15px]">&ldquo;{req.excerpt}&rdquo;</p>
-          <div className="flex items-center justify-between mt-auto pt-4 border-t border-stone-100 gap-3">
-            <div className="text-xs text-stone-400 space-y-0.5 min-w-0">
-              <div><TimeAgo date={req.time} /></div>
-              <div>{req.views} views &bull; {req.responses} responses</div>
+
+          <div className="mt-auto pt-4 border-t border-stone-100 space-y-4">
+            <div className="text-xs text-stone-400 flex items-center gap-4">
+              <TimeAgo date={req.time} />
+              <span>{req.views} views &bull; {req.responses} responses</span>
             </div>
-            <Link href={`/dashboard/${req.id}`} onClick={handleResponseClick} className="inline-flex items-center justify-center rounded-lg border text-sm font-semibold px-4 py-2 transition-all shrink-0" style={{ borderColor: "#E07A5F", color: "#E07A5F" }}>
-              Drop a reply
-            </Link>
+
+            <div className="flex gap-2">
+              <Link href={`/dashboard/${req.id}`} onClick={handleResponseClick} className="flex-1 text-center rounded-lg border text-sm font-semibold px-4 py-2 hover:bg-stone-50 transition-all border-stone-200 text-stone-700">
+                Reply
+              </Link>
+
+              {connections[req.id] === 'pending' ? (
+                <button disabled className="flex-1 rounded-lg border text-sm font-semibold px-4 py-2 bg-stone-100 text-stone-400 cursor-not-allowed">
+                  Requested
+                </button>
+              ) : (
+                <button onClick={(e) => handleConnect(e, req.id)} className="flex-1 rounded-lg border text-sm font-semibold px-4 py-2 transition-all bg-[#E07A5F] text-white hover:opacity-90">
+                  Connect
+                </button>
+              )}
+            </div>
           </div>
         </div>
       ))}

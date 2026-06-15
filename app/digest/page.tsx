@@ -10,6 +10,35 @@ const METRICS = [
   { value: "3", label: "Connections Made", color: "text-foreground" },
 ] as const;
 
+// New component for the resonance bars
+function ResonanceList() {
+  const interactions = [
+    { name: "@QuietThunder_7", percentage: 85 },
+    { name: "@DreamWeaver", percentage: 65 },
+    { name: "@Stargazer", percentage: 40 },
+  ];
+
+  return (
+    <div className="bg-white rounded-3xl p-8 border border-stone-200 shadow-sm mt-6">
+      <h3 className="font-serif text-xl text-stone-800 mb-8">Interaction Resonance</h3>
+      <div className="space-y-6">
+        {interactions.map((user) => (
+          <div key={user.name} className="flex items-center gap-4">
+            <span className="w-32 text-sm font-medium text-stone-700 truncate">{user.name}</span>
+            <div className="flex-1 h-3 bg-stone-100 rounded-full overflow-hidden">
+              <div
+                className="h-full bg-[#E07A5F] rounded-full"
+                style={{ width: `${user.percentage}%` }}
+              />
+            </div>
+            <span className="w-12 text-right text-xs text-stone-400 font-mono">{user.percentage}%</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 export default function DigestPage() {
   const [userHandle, setUserHandle] = useState<string | null>(null);
   const pathname = usePathname();
@@ -39,7 +68,7 @@ export default function DigestPage() {
           </p>
         </header>
 
-        {/* Real Navigation (Points to your existing sub-folders) */}
+        {/* Real Navigation */}
         <div className="flex justify-center border-b border-stone-200">
           <nav className="flex gap-6">
             {navLinks.map((link) => (
@@ -47,8 +76,8 @@ export default function DigestPage() {
                 key={link.href}
                 href={link.href}
                 className={`py-3 capitalize font-medium text-sm transition-all border-b-2 ${pathname === link.href
-                    ? "border-[#E07A5F] text-[#E07A5F]"
-                    : "border-transparent text-stone-500 hover:text-stone-700"
+                  ? "border-[#E07A5F] text-[#E07A5F]"
+                  : "border-transparent text-stone-500 hover:text-stone-700"
                   }`}
               >
                 {link.label}
@@ -67,6 +96,9 @@ export default function DigestPage() {
               </div>
             ))}
           </div>
+
+          {/* Resonance Bars added below metrics as requested */}
+          <ResonanceList />
         </div>
 
       </div>
