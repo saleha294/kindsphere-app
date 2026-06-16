@@ -79,78 +79,74 @@ export default function LandingPage() {
         </div>
       </section>
       {/* ── Feature Cards ────────────────────────────── */}
-      <section className="w-full border-t border-stone-200/40">
+      <section className="w-full border-t border-stone-200/40 bg-[#FDFBF7]">
         <div className="w-full max-w-5xl mx-auto px-6 md:px-12 py-16 md:py-20">
 
-          {/* Left aligned section header */}
+          {/* Section Header */}
           <div className="max-w-xl text-left mb-12 space-y-2">
             <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-stone-400">
               Feature Cards
             </p>
+            <h2 className="font-serif text-3xl md:text-4xl leading-tight tracking-tight text-[#1C2541]">
+              Three <span className="text-[#E07A5F] italic">principles behind this project.</span>
+            </h2>
           </div>
-          <h2 className="font-serif text-3xl md:text-4xl leading-tight tracking-tight text-[#1C2541]">
-            Three{" "}
-            <span className="text-[#E07A5F] italic">principles behind this project.</span>
-          </h2>
-          <section className="w-full bg-stone-50/40 border-t border-stone-200/40">
-            <div className="w-full max-w-5xl mx-auto px-6 md:px-12 py-16">
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
 
-                {/* CARD 1: Anonymous Icon (The one you uploaded) */}
-                <div className="bg-white rounded-2xl p-6 md:p-8 border border-stone-200/50">
-                  <div className="mb-5">
-                    <img
-                      src="/assets/imagery/anonymous_by_design_icon.png"
-                      alt="Anonymous"
-                      className="h-16 w-16 object-contain"
-                    />
-                  </div>
-                  <h3 className="font-serif text-xl font-medium mb-2.5 text-[#1C2541]">
-                    Anonymous by Design
-                  </h3>
-                  <p className="text-stone-500 leading-relaxed text-[14px]">
-                    No profiles, no histories, no judgments. Your real identity is stripped away.
-                  </p>
-                </div>
+          {/* Cards Grid - Now sitting directly inside the main section container */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
 
-                {/* CARD 2: Global Reach */}
-                <div className="bg-white rounded-2xl p-6 md:p-8 border border-stone-200/50">
-                  <div className="mb-5">
-                    <img
-                      src="/assets/imagery/global_reach_icon.png"
-                      alt="Anonymous"
-                      className="h-16 w-16 object-contain"
-                    />
-                  </div>
-                  <h3 className="font-serif text-xl font-medium mb-2.5 text-[#1C2541]">
-                    Global Reach
-                  </h3>
-                  <p className="text-stone-500 leading-relaxed text-[14px]">
-                    Drop a bottle into the digital ocean and receive perspectives from others.
-                  </p>
-                </div>
-
-                {/* CARD 3: Real Growth */}
-                <div className="bg-white rounded-2xl p-6 md:p-8 border border-stone-200/50">
-                  <div className="mb-5">
-                    <img
-                      src="/assets/imagery/real_growth_icon.png"
-                      alt="Anonymous"
-                      className="h-16 w-16 object-contain"
-                    />
-                  </div>
-                  <h3 className="font-serif text-xl font-medium mb-2.5 text-[#1C2541]">
-                    Real Growth
-                  </h3>
-                  <p className="text-stone-500 leading-relaxed text-[14px]">
-                    Experience the clarity that comes when strangers offer kindness.
-                  </p>
-                </div>
-
+            {/* CARD 1: Anonymous Icon */}
+            <div className="bg-white rounded-2xl p-6 md:p-8 border border-stone-200/50 shadow-sm">
+              <div className="mb-5">
+                <img
+                  src="/assets/imagery/anonymous_by_design_icon.png"
+                  alt="Anonymous"
+                  className="h-16 w-16 object-contain"
+                />
               </div>
+              <h3 className="font-serif text-xl font-medium mb-2.5 text-[#1C2541]">
+                Anonymous by Design
+              </h3>
+              <p className="text-stone-500 leading-relaxed text-[14px]">
+                No profiles, no histories, no judgments. Your real identity is stripped away.
+              </p>
             </div>
-          </section>
 
+            {/* CARD 2: Global Reach */}
+            <div className="bg-white rounded-2xl p-6 md:p-8 border border-stone-200/50 shadow-sm">
+              <div className="mb-5">
+                <img
+                  src="/assets/imagery/global_reach_icon.png"
+                  alt="Global Reach"
+                  className="h-16 w-16 object-contain"
+                />
+              </div>
+              <h3 className="font-serif text-xl font-medium mb-2.5 text-[#1C2541]">
+                Global Reach
+              </h3>
+              <p className="text-stone-500 leading-relaxed text-[14px]">
+                Drop a bottle into the digital ocean and receive perspectives from others.
+              </p>
+            </div>
+
+            {/* CARD 3: Real Growth */}
+            <div className="bg-white rounded-2xl p-6 md:p-8 border border-stone-200/50 shadow-sm">
+              <div className="mb-5">
+                <img
+                  src="/assets/imagery/real_growth_icon.png"
+                  alt="Real Growth"
+                  className="h-16 w-16 object-contain"
+                />
+              </div>
+              <h3 className="font-serif text-xl font-medium mb-2.5 text-[#1C2541]">
+                Real Growth
+              </h3>
+              <p className="text-stone-500 leading-relaxed text-[14px]">
+                Experience the clarity that comes when strangers offer kindness.
+              </p>
+            </div>
+
+          </div>
         </div>
       </section>
 
@@ -207,23 +203,35 @@ export default function LandingPage() {
 
       {/* ── How to use ─────────────────────────────── */}
       <section className="w-full py-16 bg-[#FDFBF7]">
-        {/* Added md:px-12 to match other sections */}
         <div className="max-w-5xl mx-auto px-6 md:px-12">
-          <h2 className="text-3xl md:text-4xl font-serif text-[#1C2541] mb-12 text-left pl-1">
-            How to <span className="text-[#E07A5F]">Use</span> KindSphere
-          </h2>
+
+          {/* Updated Header with the tag and title */}
+          <div className="mb-12 text-left pl-1">
+            <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-stone-400 mb-2">
+              How to use
+            </p>
+            <h2 className="text-3xl md:text-4xl font-serif text-[#1C2541]">
+              Become a part of <span className="text-[#E07A5F]">KindSphere</span>
+            </h2>
+          </div>
 
           <div className="grid md:grid-cols-3 gap-8">
             {/* Step 1 */}
             <div className="flex flex-col items-start text-left gap-4 p-8 bg-white/50 backdrop-blur-sm border border-stone-200/50 rounded-2xl shadow-sm">
-              <div className="w-12 h-12 rounded-full bg-[#E07A5F]/10 flex items-center justify-center text-[#E07A5F] font-bold text-xl">1</div>
-              <h3 className="font-semibold text-[#1C2541]">Create your presence</h3>
+              <div className="w-12 h-12 flex items-center justify-center overflow-hidden rounded-full">
+                <img
+                  src="/assets/imagery/presence.png"
+                  alt="Create Presence"
+                  className="w-full h-full object-cover"
+                />
+              </div>
+              <h3 className="font-serif text-xl font-medium text-[#1C2541]">Create your presence</h3>
               <p className="text-sm text-stone-600 leading-relaxed">
                 Sign in or log in to generate your unique, anonymous handle and start your journey.
               </p>
             </div>
 
-            {/* Step 2 */}
+            {/* Step 2 (Kept as requested) */}
             <div className="flex flex-col items-start text-left gap-4 p-8 bg-white/50 backdrop-blur-sm border border-stone-200/50 rounded-2xl shadow-sm">
               <div className="w-12 h-12 rounded-full bg-[#81B29A]/10 flex items-center justify-center text-[#81B29A] font-bold text-xl">2</div>
               <h3 className="font-semibold text-[#1C2541]">Drop a Bottle</h3>
@@ -232,10 +240,16 @@ export default function LandingPage() {
               </p>
             </div>
 
-            {/* Step 3 */}
+            {/* Step 3 (Updated with image "connect" and serif font) */}
             <div className="flex flex-col items-start text-left gap-4 p-8 bg-white/50 backdrop-blur-sm border border-stone-200/50 rounded-2xl shadow-sm">
-              <div className="w-12 h-12 rounded-full bg-[#F2CC8F]/20 flex items-center justify-center text-[#D6A44F] font-bold text-xl">3</div>
-              <h3 className="font-semibold text-[#1C2541]">Connect & Grow</h3>
+              <div className="w-12 h-12 flex items-center justify-center overflow-hidden rounded-full">
+                <img
+                  src="/assets/imagery/connect.png"
+                  alt="Connect"
+                  className="w-full h-full object-cover"
+                />
+              </div>
+              <h3 className="font-serif text-xl font-medium text-[#1C2541]">Connect & Grow</h3>
               <p className="text-sm text-stone-600 leading-relaxed">
                 Receive responses, track your records, maintain connections, and help others grow!
               </p>
@@ -287,7 +301,7 @@ export default function LandingPage() {
             {/* Image Left - Adjusted to flex-[1.2] to take more space and added scale-110 */}
             <div className="flex-[1.2] w-full flex justify-center">
               <img
-                src="/assets/imagery/about_this_project.png"
+                src="/assets/imagery/connection.png"
                 alt="About project"
                 className="w-full max-w-[400px] h-auto rounded-2xl object-cover scale-110 transform transition-transform duration-500"
               />
@@ -383,7 +397,7 @@ export default function LandingPage() {
                   <svg className="w-3.5 h-3.5 text-stone-500 group-hover:text-[#E07A5F] transition-colors" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                     <path d="M12 2L2 7l10 5 10-5-10-5z" /><path d="M2 17l10 5 10-5" /><path d="M2 12l10 5 10-5" />
                   </svg>
-                  Design Portfolio
+                  Portfolio
                 </span>
                 <span className="text-stone-400 group-hover:translate-x-0.5 transition-transform">↗</span>
               </Link>
