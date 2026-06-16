@@ -73,101 +73,135 @@ export default function LandingPage() {
               />
             </div>
 
-            {/* Connection Indicator Stats */}
-            <p className="text-xs text-stone-400 font-medium flex items-center gap-2 pr-4">
-              <span className="relative flex h-2 w-2 shrink-0">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#E07A5F] opacity-75" />
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-[#E07A5F]" />
-              </span>
-              3,847 kind connections made today
-            </p>
+
           </div>
 
         </div>
       </section>
-
       {/* ── Feature Cards ────────────────────────────── */}
-      <section className="w-full bg-stone-50/40 border-t border-stone-200/40">
-        <div className="w-full max-w-5xl mx-auto px-6 md:px-12 py-16">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {[
-              {
-                Icon: Shield,
-                title: "Anonymous by Design",
-                body: "No profiles, no histories, no judgments. Your real identity is stripped away, leaving only your honest words.",
-              },
-              {
-                Icon: Globe,
-                title: "Global Reach",
-                body: "Drop a bottle into the digital ocean and receive perspectives from people living completely different lives.",
-              },
-              {
-                Icon: Sprout,
-                title: "Real Growth",
-                body: "Experience the clarity that comes when strangers offer kindness and truth without expecting anything in return.",
-              },
-            ].map(({ Icon, title, body }) => (
-              <div
-                key={title}
-                className="bg-white rounded-2xl p-6 md:p-8 border border-stone-200/50 shadow-[0_4px_20px_rgba(0,0,0,0.02)] flex flex-col items-start text-left hover:-translate-y-1 transition-transform duration-300"
-              >
-                <div className="w-10 h-10 rounded-xl bg-[#E07A5F]/10 flex items-center justify-center mb-5 text-[#E07A5F] shrink-0">
-                  <Icon className="h-5 w-5" />
-                </div>
-                <h3 className="font-serif text-xl font-medium mb-2.5 text-[#1C2541]">{title}</h3>
-                <p className="text-stone-500 leading-relaxed text-[14px]">{body}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ── How It Works ─────────────────────────────── */}
       <section className="w-full border-t border-stone-200/40">
         <div className="w-full max-w-5xl mx-auto px-6 md:px-12 py-16 md:py-20">
 
           {/* Left aligned section header */}
           <div className="max-w-xl text-left mb-12 space-y-2">
             <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-stone-400">
-              How it works
+              Feature Cards
             </p>
+          </div>
+          <h2 className="font-serif text-3xl md:text-4xl leading-tight tracking-tight text-[#1C2541]">
+            Three{" "}
+            <span className="text-[#E07A5F] italic">principles behind this project.</span>
+          </h2>
+          <section className="w-full bg-stone-50/40 border-t border-stone-200/40">
+            <div className="w-full max-w-5xl mx-auto px-6 md:px-12 py-16">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+
+                {/* CARD 1: Anonymous Icon (The one you uploaded) */}
+                <div className="bg-white rounded-2xl p-6 md:p-8 border border-stone-200/50">
+                  <div className="mb-5">
+                    <img
+                      src="/assets/imagery/anonymous_by_design_icon.png"
+                      alt="Anonymous"
+                      className="h-16 w-16 object-contain"
+                    />
+                  </div>
+                  <h3 className="font-serif text-xl font-medium mb-2.5 text-[#1C2541]">
+                    Anonymous by Design
+                  </h3>
+                  <p className="text-stone-500 leading-relaxed text-[14px]">
+                    No profiles, no histories, no judgments. Your real identity is stripped away.
+                  </p>
+                </div>
+
+                {/* CARD 2: Global Reach */}
+                <div className="bg-white rounded-2xl p-6 md:p-8 border border-stone-200/50">
+                  <div className="mb-5">
+                    <img
+                      src="/assets/imagery/global_reach_icon.png"
+                      alt="Anonymous"
+                      className="h-16 w-16 object-contain"
+                    />
+                  </div>
+                  <h3 className="font-serif text-xl font-medium mb-2.5 text-[#1C2541]">
+                    Global Reach
+                  </h3>
+                  <p className="text-stone-500 leading-relaxed text-[14px]">
+                    Drop a bottle into the digital ocean and receive perspectives from others.
+                  </p>
+                </div>
+
+                {/* CARD 3: Real Growth */}
+                <div className="bg-white rounded-2xl p-6 md:p-8 border border-stone-200/50">
+                  <div className="mb-5">
+                    <img
+                      src="/assets/imagery/real_growth_icon.png"
+                      alt="Anonymous"
+                      className="h-16 w-16 object-contain"
+                    />
+                  </div>
+                  <h3 className="font-serif text-xl font-medium mb-2.5 text-[#1C2541]">
+                    Real Growth
+                  </h3>
+                  <p className="text-stone-500 leading-relaxed text-[14px]">
+                    Experience the clarity that comes when strangers offer kindness.
+                  </p>
+                </div>
+
+              </div>
+            </div>
+          </section>
+
+        </div>
+      </section>
+
+      {/* ── How It Works ─────────────────────────────── */}
+      <section className="w-full border-t border-stone-200/40">
+        <div className="w-full max-w-5xl mx-auto px-6 md:px-12 py-16 md:py-24">
+
+          {/* Section Header */}
+          <div className="text-left mb-20 space-y-2">
+            <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-stone-400">How it works</p>
             <h2 className="font-serif text-3xl md:text-4xl leading-tight tracking-tight text-[#1C2541]">
-              Three quiet steps to{" "}
-              <span className="text-[#E07A5F] italic">genuine connection.</span>
+              Three <span className="text-[#E07A5F] italic">quiet gestures.</span>
             </h2>
           </div>
 
-          {/* Steps list */}
-          <div className="relative max-w-3xl space-y-0">
-            <div
-              className="absolute left-[27px] top-8 bottom-8 w-px hidden sm:block bg-gradient-to-b from-[#E07A5F]/30 to-transparent"
-              aria-hidden
-            />
-
-            {HOW_STEPS.map(({ n, title, body }, i) => (
-              <div key={n} className="relative flex gap-6 sm:gap-8 items-start py-6 first:pt-0 last:pb-0">
-                <div
-                  className="relative z-10 shrink-0 w-14 h-14 rounded-2xl flex items-center justify-center bg-white border border-stone-200"
-                  style={{
-                    borderColor: i === 1 ? "rgba(224,122,95,0.4)" : "rgba(224,122,95,0.2)",
-                  }}
-                >
-                  <span className="font-serif text-base font-semibold text-[#E07A5F]">
-                    {n}
-                  </span>
-                </div>
-
-                <div className="pt-2 space-y-1 flex-1 text-left">
-                  <h3 className="font-serif text-xl font-medium leading-snug text-[#1C2541]">
-                    {title}
-                  </h3>
-                  <p className="text-[14px] leading-relaxed text-stone-500 max-w-2xl">
-                    {body}
-                  </p>
-                </div>
-              </div>
-            ))}
+          {/* Section 1: Image Left, Text Right */}
+          <div className="flex flex-col md:flex-row items-center gap-12 md:gap-24 mb-24">
+            <div className="w-full md:w-1/2">
+              <img src="/assets/imagery/step1.png" alt="Drop bottle" className="w-full h-auto object-contain" />
+            </div>
+            <div className="w-full md:w-1/2 space-y-4">
+              <span className="text-stone-300 font-serif text-2xl">01</span>
+              <h3 className="font-serif text-2xl md:text-3xl text-[#1C2541]">Drop your bottle anonymously.</h3>
+              <p className="text-[15px] leading-relaxed text-stone-500">Write whatever is weighing on you, a decision, a feeling, a question you can't ask anyone in your life. No name required. No audience. Just your words, set free.</p>
+            </div>
           </div>
+
+          {/* Section 2: Image Right, Text Left */}
+          <div className="flex flex-col md:flex-row-reverse items-center gap-12 md:gap-24 mb-24">
+            <div className="w-full md:w-1/2">
+              <img src="/assets/imagery/step2.png" alt="Drift feed" className="w-full h-auto object-contain" />
+            </div>
+            <div className="w-full md:w-1/2 space-y-4">
+              <span className="text-stone-300 font-serif text-2xl">02</span>
+              <h3 className="font-serif text-2xl md:text-3xl text-[#1C2541]">It drifts into the global feed.</h3>
+              <p className="text-[15px] leading-relaxed text-stone-500">Your message enters the sphere and becomes visible to strangers from every corner of the world, people with no stake in your outcome and no reason to be anything but honest.</p>
+            </div>
+          </div>
+
+          {/* Section 3: Image Left, Text Right */}
+          <div className="flex flex-col md:flex-row items-center gap-12 md:gap-24">
+            <div className="w-full md:w-1/2">
+              <img src="/assets/imagery/step3.png" alt="Receive perspectives" className="w-full h-auto object-contain" />
+            </div>
+            <div className="w-full md:w-1/2 space-y-4">
+              <span className="text-stone-300 font-serif text-2xl">03</span>
+              <h3 className="font-serif text-2xl md:text-3xl text-[#1C2541]">Receive judgment-free perspectives.</h3>
+              <p className="text-[15px] leading-relaxed text-stone-500">Real people respond with care. You can do the same for others, no metrics, no likes, just one human moment at a time.</p>
+            </div>
+          </div>
+
         </div>
       </section>
 
@@ -210,67 +244,97 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* ── About This Project / Purpose ─────────────── */}
-      <section className="w-full border-t border-stone-200/40 bg-stone-50/20">
-        <div className="w-full max-w-5xl mx-auto px-6 md:px-12 py-16 md:py-20 flex flex-col md:flex-row gap-10 md:gap-16">
+      {/* ── Core Purpose Section ─────────────────────────────── */}
+      <section className="w-full border-t border-stone-200/40 bg-stone-50/20 py-16 md:py-24">
+        <div className="w-full max-w-5xl mx-auto px-6 md:px-12">
+          <div className="flex flex-col md:flex-row items-center gap-12 md:gap-24">
 
-          {/* Left Column: Mission text */}
-          <div className="flex-1 space-y-4 text-left">
-            <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-stone-400">
-              About this project
-            </p>
-            <h2 className="font-serif text-3xl md:text-4xl leading-[1.2] tracking-tight text-[#1C2541]">
-              Built on the belief that <span className="text-[#E07A5F] italic">honest words</span> change people.
-            </h2>
-            <p className="text-[14px] md:text-[15px] text-stone-500 leading-relaxed max-w-xl">
-              I wanted to create a meaningful corner on the internet for those moments when we need advice or genuine perspectives, but either have no one around to ask or run into judgmental spaces online. KindSphere protects your complete identity, letting your message (called a <strong>"bottle"</strong>) travel randomly to another human somewhere around the world. From here on out, people respond to your bottle with feedback, advice, guidance or their own experience!
-            </p>
-          </div>
-
-          {/* Right Column: Platform Framework & Original Purpose */}
-          <div className="flex-1 bg-white border border-stone-200/60 rounded-2xl p-6 md:p-8 space-y-4 text-left shadow-[0_4px_24px_rgba(0,0,0,0.01)]">
-            <div className="w-8 h-8 rounded-lg bg-[#E07A5F]/10 flex items-center justify-center text-[#E07A5F]">
-              <HeartHandshake className="w-4 h-4" />
+            {/* Text Left */}
+            <div className="flex-1 space-y-4 text-left">
+              <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-stone-400">Our Core Purpose</p>
+              <h2 className="font-serif text-3xl md:text-4xl text-[#1C2541]">
+                A sanctuary for <span className="text-[#E07A5F] italic">honest growth.</span>
+              </h2>
+              <p className="text-[15px] leading-relaxed text-stone-500">
+                KindSphere was built to be a safe, supportive sanctuary for those who struggle to speak up or are simply searching for real human growth. We strip away the noise of social media so you can focus on genuine connection.
+              </p>
             </div>
-            <h3 className="font-serif text-lg font-medium text-[#1C2541]">Core Purpose</h3>
-            <p className="text-[13px] text-stone-500 leading-relaxed">
-              KindSphere was built to be a safe, deeply supportive sanctuary for those who struggle to speak up, identify as introverts, or are simply searching for real human growth and new friendships without the noise of typical social media.
-            </p>
-            <p className="text-[13px] text-stone-500 leading-relaxed border-t border-stone-100 pt-3">
-              The entire platform is architected to ensure constructive, honest interactions that protect your digital dignity. If a genuine connection sparks through your words, you can safely choose to reveal your identities and transition into a personal, mutually consented chat.
-            </p>
-          </div>
 
+            {/* Image Right */}
+            <div className="flex-1 w-full">
+              <img src="/assets/imagery/our_core_purpose.png" alt="Core Purpose" className="w-full h-auto rounded-2xl object-cover" />
+            </div>
+          </div>
         </div>
       </section>
 
-      {/* ── Community Guidelines ─────────────── */}
+      {/* ── About This Project Section ────────────────────────── */}
+      <section className="w-full py-16 md:py-24">
+        <div className="w-full max-w-5xl mx-auto px-6 md:px-12">
+          <div className="flex flex-col md:flex-row-reverse items-center gap-12 md:gap-24">
+
+            {/* Text Right - Adjusted to flex-1 */}
+            <div className="flex-1 space-y-4 text-left">
+              <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-stone-400">About this project</p>
+              <h2 className="font-serif text-3xl md:text-4xl text-[#1C2541]">
+                Built on the belief that <span className="text-[#E07A5F] italic">honest words</span> change people.
+              </h2>
+              <p className="text-[15px] leading-relaxed text-stone-500">
+                I wanted to create a meaningful corner on the internet for those moments when we need advice, but run into judgmental spaces online. KindSphere protects your identity, letting your message travel randomly to another human somewhere around the world.
+              </p>
+            </div>
+
+            {/* Image Left - Adjusted to flex-[1.2] to take more space and added scale-110 */}
+            <div className="flex-[1.2] w-full flex justify-center">
+              <img
+                src="/assets/imagery/about_this_project.png"
+                alt="About project"
+                className="w-full max-w-[400px] h-auto rounded-2xl object-cover scale-110 transform transition-transform duration-500"
+              />
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+
+      {/* ── Community Guidelines Section ────────────────────────── */}
       <section className="w-full py-20 border-t border-stone-200/40 bg-stone-50/20">
-        {/* Added md:px-12 to match the padding of the "How to Use" section */}
-        <div className="max-w-5xl mx-auto px-6 md:px-12">
-          <div className="max-w-4xl">
-            <h2 className="font-serif text-3xl md:text-4xl text-[#1C2541] mb-8 text-left">
-              Community <span className="text-[#E07A5F]">Guidelines</span>
-            </h2>
+        <div className="w-full max-w-5xl mx-auto px-6 md:px-12">
+          <div className="flex flex-col md:flex-row-reverse items-center gap-12 md:gap-24">
 
-            <p className="text-stone-500 text-left mb-12">
-              The Sphere is a space for empathy and clarity. To keep the atmosphere grounded, we do not tolerate the following:
-            </p>
+            {/* Text Right */}
+            <div className="flex-1 space-y-4 text-left">
+              <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-stone-400">Community Guidelines</p>
+              <h2 className="font-serif text-3xl md:text-4xl text-[#1C2541]">
+                A safe space, <span className="text-[#E07A5F] italic">held gently by all of us.</span>
+              </h2>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {[
-                "Racism and Hate Speech",
-                "Bullying and Harassment",
-                "Personal Attacks or Nudity",
-                "Passive-Aggressive Tone",
-                "Spam and Self-Promotion",
-                "Explicit or Offensive Content"
-              ].map((item) => (
-                <div key={item} className="flex items-center gap-3 bg-white p-4 rounded-xl border border-stone-200/60 shadow-sm">
-                  <span className="w-2 h-2 rounded-full bg-[#E07A5F] shrink-0" />
-                  <span className="text-[#1C2541] font-medium text-sm">{item}</span>
-                </div>
-              ))}
+              {/* Guidelines Grid */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4">
+                {[
+                  "Racism and Hate Speech",
+                  "Bullying and Harassment",
+                  "Personal Attacks or Nudity",
+                  "Passive-Aggressive Tone",
+                  "Spam and Self-Promotion",
+                  "Explicit or Offensive Content"
+                ].map((item) => (
+                  <div key={item} className="flex items-center gap-3 bg-white p-4 rounded-xl border border-stone-200/60 shadow-sm">
+                    <span className="w-2 h-2 rounded-full bg-[#E07A5F] shrink-0" />
+                    <span className="text-[#1C2541] font-medium text-sm">{item}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Image Left */}
+            <div className="flex-1 w-full">
+              <img
+                src="/assets/imagery/community_guidelines.png"
+                alt="Community Guidelines"
+                className="w-full h-auto rounded-2xl shadow-lg object-cover"
+              />
             </div>
           </div>
         </div>
