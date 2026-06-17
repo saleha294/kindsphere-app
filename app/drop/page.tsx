@@ -52,7 +52,7 @@ export default function DropPage() {
               animate={{ y: [0, -25, 0], rotate: [0, -5, 5, 0] }}
               transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }}
             >
-              <img src="/assets/bottle.png" className="w-40 h-40 object-contain drop-shadow-2xl" alt="Floating bottle" />
+              <img src="/assets/imagery/bottle.png" className="w-40 h-40 object-contain drop-shadow-2xl" alt="Floating bottle" />
             </motion.div>
             <motion.p className="mt-8 font-serif text-xl text-stone-700 animate-pulse">
               Please wait.. Choosing the anonymous lucky person and dropping your bottle to sail..
@@ -61,9 +61,19 @@ export default function DropPage() {
         )}
       </AnimatePresence>
 
-      {/* --- FORM CONTENT (RESTORED) --- */}
+      {/* --- FORM CONTENT --- */}
       <div className="w-full max-w-xl mx-auto bg-white rounded-3xl p-8 md:p-10 border border-stone-200/60 shadow-xl">
+
+        {/* Left-aligned bottle image */}
+        <img
+          src="/assets/bottle.png"
+          alt="Bottle"
+          className="w-18 h-18 object-contain mb-1"
+        />
+
+        {/* Left-aligned heading */}
         <h1 className="font-serif text-4xl font-medium text-foreground mb-6">Drop Your Bottle</h1>
+
         <form onSubmit={handleSubmit} className="space-y-7">
           <fieldset className="space-y-3">
             <legend className="text-sm font-semibold text-foreground">Select a Topic</legend>
@@ -79,7 +89,7 @@ export default function DropPage() {
 
           <textarea required minLength={20} className="w-full min-h-[160px] rounded-xl border border-stone-200 p-4" placeholder="Describe your situation..." />
 
-          {/* --- RESTORED UPLOAD FUNCTIONALITY --- */}
+          {/* --- UPLOAD FUNCTIONALITY --- */}
           <div className="space-y-2">
             <span className="text-sm font-semibold text-foreground block">Attachments</span>
             <label htmlFor="file-upload" className="w-full border-2 border-dashed border-stone-200 bg-stone-50 rounded-xl p-6 flex flex-col items-center cursor-pointer hover:border-primary/40">

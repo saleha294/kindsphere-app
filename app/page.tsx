@@ -231,10 +231,14 @@ export default function LandingPage() {
               </p>
             </div>
 
-            {/* Step 2 (Kept as requested) */}
-            <div className="flex flex-col items-start text-left gap-4 p-8 bg-white/50 backdrop-blur-sm border border-stone-200/50 rounded-2xl shadow-sm">
-              <div className="w-12 h-12 rounded-full bg-[#81B29A]/10 flex items-center justify-center text-[#81B29A] font-bold text-xl">2</div>
-              <h3 className="font-semibold text-[#1C2541]">Drop a Bottle</h3>
+            {/* Step 2 (Updated with image and sans-serif font) */}
+            <div className="flex flex-col items-start text-left gap-4 p-8 bg-white/50 backdrop-blur-sm border border-stone-200/50 rounded-2xl shadow-sm font-sans">
+              <img
+                src="/assets/bottle.png"
+                alt="Bottle icon"
+                className="w-12 h-12 object-contain"
+              />
+              <h3 className="font-semibold text-[#1C2541] text-lg">Drop a Bottle</h3>
               <p className="text-sm text-stone-600 leading-relaxed">
                 Use the "Drop a Bottle" option to share messages, queries, or advice for the world to hear.
               </p>

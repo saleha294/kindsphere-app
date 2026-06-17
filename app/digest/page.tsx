@@ -4,13 +4,20 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
+// --- CONFIGURATION ---
 const METRICS = [
   { value: "14", label: "People You Helped", color: "text-secondary" },
   { value: "8", label: "Feedback Received", color: "text-primary" },
   { value: "3", label: "Connections Made", color: "text-foreground" },
 ] as const;
 
-// New component for the resonance bars
+const NAV_ITEMS = [
+  { href: "/digest/sent", label: "My Sent Bottles", color: "#E07A5F" },
+  { href: "/digest/pending", label: "Awaiting My Voice", color: "#81B29A" },
+  { href: "/digest/connections", label: "Mutual Connections", color: "#E07A5F" },
+];
+
+// --- SUB-COMPONENTS ---
 function ResonanceList() {
   const interactions = [
     { name: "@QuietThunder_7", percentage: 85 },
@@ -39,6 +46,7 @@ function ResonanceList() {
   );
 }
 
+// --- MAIN PAGE ---
 export default function DigestPage() {
   const [userHandle, setUserHandle] = useState<string | null>(null);
   const pathname = usePathname();
@@ -47,12 +55,6 @@ export default function DigestPage() {
     const savedHandle = localStorage.getItem("kindsphere_handle");
     setUserHandle(savedHandle);
   }, []);
-
-  const navLinks = [
-    { href: "/digest/sent", label: "My Sent Bottles" },
-    { href: "/digest/pending", label: "Awaiting My Voice" },
-    { href: "/digest/connections", label: "Mutual Connections" },
-  ];
 
   return (
     <div className="relative w-full min-h-[calc(100vh-4rem)] bg-stone-50 py-12 px-6">
@@ -68,25 +70,32 @@ export default function DigestPage() {
           </p>
         </header>
 
-        {/* Real Navigation */}
+        {/* Navigation */}
         <div className="flex justify-center border-b border-stone-200">
-          <nav className="flex gap-6">
-            {navLinks.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                className={`py-3 capitalize font-medium text-sm transition-all border-b-2 ${pathname === link.href
-                  ? "border-[#E07A5F] text-[#E07A5F]"
-                  : "border-transparent text-stone-500 hover:text-stone-700"
-                  }`}
-              >
-                {link.label}
-              </Link>
-            ))}
+          <nav className="flex gap-8">
+            {NAV_ITEMS.map((link) => {
+              // Check if the current route matches the href
+              const isActive = pathname === link.href;
+
+              return (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className={`py-3 capitalize font-medium text-sm transition-all border-b-2 hover:text-stone-900 hover:border-stone-300 ${isActive ? "border-current" : "border-transparent text-stone-500"
+                    }`}
+                  style={{
+                    // This forces the text and border to the specific color when active
+                    color: isActive ? link.color : undefined
+                  }}
+                >
+                  {link.label}
+                </Link>
+              );
+            })}
           </nav>
         </div>
 
-        {/* Dashboard Overview (Metrics) */}
+        {/* Dashboard Overview */}
         <div className="pt-4 animate-fade-in">
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
             {METRICS.map(({ value, label, color }) => (
@@ -97,7 +106,6 @@ export default function DigestPage() {
             ))}
           </div>
 
-          {/* Resonance Bars added below metrics as requested */}
           <ResonanceList />
         </div>
 
