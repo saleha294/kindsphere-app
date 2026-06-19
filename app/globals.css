@@ -86,8 +86,13 @@
   50%       { transform: translate(-20px, 30px) scale(0.95); opacity: 0.35; }
   75%       { transform: translate(15px, 10px)  scale(1.02); opacity: 0.5;  }
 }
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0);   }
+}
 
 @layer utilities {
   .animate-sphereFloat  { animation: sphereFloat  6s  ease-in-out infinite; }
   .animate-ambientDrift { animation: ambientDrift 12s ease-in-out infinite; }
+  .animate-fade-in      { animation: fadeIn 0.35s ease-out both; }
 }

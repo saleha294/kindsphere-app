@@ -1,30 +1,7 @@
 // app/page.tsx
 import { User } from "lucide-react";
 import Link from "next/link";
-// import KindBlob from "@/components/KindHemisphere";
-import FeatureFlipCard from "@/components/FeatureFlipCard";
 import HowToUseSection from "@/components/HowToUseSection";
-
-/* ── How It Works steps ── */
-const Feature_Cards = [
-  {
-    n: "01",
-    title: "Drop your bottle anonymously.",
-    body: "Write whatever is weighing on you, a decision, a feeling, a question you can't ask anyone in your life.",
-  },
-  {
-    n: "02",
-    title: "It drifts into the global feed.",
-    body: "Your message enters the sphere and becomes visible to strangers from every corner of the world, people with no stake in your outcome and no reason to be anything but honest.",
-  },
-  {
-    n: "03",
-    title: "Receive judgment-free perspectives.",
-    body: "Real people respond with care. You can do the same for others, no metrics, no likes, just one human moment at a time.",
-  },
-] as const;
-
-
 
 /* ── How It Works steps ── */
 const HOW_STEPS = [
@@ -100,7 +77,7 @@ export default function LandingPage() {
               Feature Cards
             </p>
             <h2 className="font-serif text-3xl md:text-4xl leading-tight tracking-tight text-[#1C2541]">
-              Three <span className="text-[#E07A5F] italic">principles behind this project.</span>
+              Three <span className="text-[#E07A5F] ">principles behind this project.</span>
             </h2>
           </div>
 
@@ -110,11 +87,14 @@ export default function LandingPage() {
             {/* CARD 1: Anonymous Icon */}
             <div className="bg-white rounded-2xl p-6 md:p-8 border border-stone-200/50 shadow-sm">
               <div className="mb-5">
-                <img
-                  src="/assets/imagery/anonymous_by_design_icon.png"
-                  alt="Anonymous"
-                  className="h-16 w-16 object-contain"
-                />
+                <div className="w-16 h-16 rounded-full overflow-hidden border border-stone-200/60 shadow-sm bg-stone-50 shrink-0">
+                  <img
+                    src="/assets/imagery/anonymous.png"
+                    alt="Anonymous"
+                    className="w-full h-full object-cover"
+                    loading="lazy"
+                  />
+                </div>
               </div>
               <h3 className="font-serif text-xl font-medium mb-2.5 text-[#1C2541]">
                 Anonymous by Design
@@ -127,11 +107,14 @@ export default function LandingPage() {
             {/* CARD 2: Global Reach */}
             <div className="bg-white rounded-2xl p-6 md:p-8 border border-stone-200/50 shadow-sm">
               <div className="mb-5">
-                <img
-                  src="/assets/imagery/global_reach_icon.png"
-                  alt="Global Reach"
-                  className="h-16 w-16 object-contain"
-                />
+                <div className="w-16 h-16 rounded-full overflow-hidden border border-stone-200/60 shadow-sm bg-stone-50 shrink-0">
+                  <img
+                    src="/assets/imagery/GlobalReach.png"
+                    alt="Global Reach"
+                    className="w-full h-full object-cover"
+                    loading="lazy"
+                  />
+                </div>
               </div>
               <h3 className="font-serif text-xl font-medium mb-2.5 text-[#1C2541]">
                 Global Reach
@@ -144,11 +127,14 @@ export default function LandingPage() {
             {/* CARD 3: Real Growth */}
             <div className="bg-white rounded-2xl p-6 md:p-8 border border-stone-200/50 shadow-sm">
               <div className="mb-5">
-                <img
-                  src="/assets/imagery/real_growth_icon.png"
-                  alt="Real Growth"
-                  className="h-16 w-16 object-contain"
-                />
+                <div className="w-16 h-16 rounded-full overflow-hidden border border-stone-200/60 shadow-sm bg-stone-50 shrink-0">
+                  <img
+                    src="/assets/imagery/RealGrowth.png"
+                    alt="Real Growth"
+                    className="w-full h-full object-cover"
+                    loading="lazy"
+                  />
+                </div>
               </div>
               <h3 className="font-serif text-xl font-medium mb-2.5 text-[#1C2541]">
                 Real Growth
@@ -187,6 +173,7 @@ export default function LandingPage() {
                     src={step.image}
                     alt={step.alt}
                     className="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-500"
+                    loading="lazy"
                   />
                 </div>
 
@@ -225,7 +212,7 @@ export default function LandingPage() {
             {/* Image Right -> Circular container with soft drop shadow */}
             <div className="flex-1 w-full flex justify-center">
               <div className="w-64 h-64 md:w-80 md:h-80 rounded-full overflow-hidden border border-stone-200/50 shadow-xl bg-white shrink-0">
-                <img src="/assets/imagery/our_core_purpose.png" alt="Core Purpose" className="w-full h-full object-cover" />
+                <img src="/assets/imagery/our_core_purpose.png" alt="Core Purpose" className="w-full h-full object-cover" loading="lazy" />
               </div>
             </div>
           </div>
@@ -243,9 +230,26 @@ export default function LandingPage() {
               <h2 className="font-serif text-3xl md:text-4xl text-[#1C2541]">
                 Built on the belief that <span className="text-[#E07A5F] italic">honest words</span> change people.
               </h2>
-              <p className="text-[15px] leading-relaxed text-stone-500">
-                I wanted to create a meaningful corner on the internet for those moments when we need advice, but run into judgmental spaces online. KindSphere protects your identity, letting your message travel randomly to another human somewhere around the world.
-              </p>
+              {/* Glassmorphism quote container */}
+              <div
+                className="relative rounded-2xl px-6 py-5 mt-2"
+                style={{
+                  background: "rgba(255, 255, 255, 0.55)",
+                  backdropFilter: "blur(12px)",
+                  WebkitBackdropFilter: "blur(12px)",
+                  border: "1px solid rgba(224, 122, 95, 0.18)",
+                  boxShadow: "0 4px 24px rgba(129, 178, 154, 0.10), inset 0 1px 0 rgba(255,255,255,0.7)",
+                }}
+              >
+                {/* Decorative top accent line */}
+                <div
+                  className="absolute top-0 left-6 right-6 h-px rounded-full"
+                  style={{ background: "linear-gradient(90deg, transparent, rgba(224,122,95,0.35), transparent)" }}
+                />
+                <p className="text-[15px] leading-relaxed text-stone-600 font-serif">
+                  I wanted to create a meaningful corner on the internet for those moments when we need advice, but run into judgmental spaces online. KindSphere protects your identity, letting your message travel randomly to another human somewhere around the world.
+                </p>
+              </div>
             </div>
 
             {/* Image Left -> Circular container with soft drop shadow */}
@@ -255,6 +259,7 @@ export default function LandingPage() {
                   src="/assets/imagery/connection.png"
                   alt="About project"
                   className="w-full h-full object-cover"
+                  loading="lazy"
                 />
               </div>
             </div>
@@ -277,7 +282,7 @@ export default function LandingPage() {
               </h2>
 
               {/* Guidelines Grid */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4">
+              <div className="grid grid-cols-2 gap-3 pt-4">
                 {[
                   "Racism and Hate Speech",
                   "Bullying and Harassment",
@@ -286,9 +291,9 @@ export default function LandingPage() {
                   "Spam and Self-Promotion",
                   "Explicit or Offensive Content"
                 ].map((item) => (
-                  <div key={item} className="flex items-center gap-3 bg-white p-4 rounded-xl border border-stone-200/60 shadow-sm">
+                  <div key={item} className="flex items-center gap-2.5 bg-white p-3 md:p-4 rounded-xl border border-stone-200/60 shadow-sm">
                     <span className="w-2 h-2 rounded-full bg-[#E07A5F] shrink-0" />
-                    <span className="text-[#1C2541] font-medium text-sm">{item}</span>
+                    <span className="text-[#1C2541] font-medium text-xs md:text-sm leading-tight">{item}</span>
                   </div>
                 ))}
               </div>
@@ -300,6 +305,7 @@ export default function LandingPage() {
                 src="/assets/imagery/community_guidelines.png"
                 alt="Community Guidelines"
                 className="w-full h-auto rounded-2xl shadow-lg object-cover"
+                loading="lazy"
               />
             </div>
           </div>
@@ -317,6 +323,7 @@ export default function LandingPage() {
                 src="/assets/imagery/owner.png"
                 alt="Saleha Zeeshan"
                 className="w-full h-full object-cover"
+                loading="lazy"
               />
             </div>
 
