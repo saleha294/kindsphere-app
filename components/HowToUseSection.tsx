@@ -14,14 +14,14 @@ const STEPS = [
     button: { label: "Sign up", variant: "terracotta" as const, href: null },
   },
   {
-    image: "/assets/bottle.png",
+    image: "/assets/imagery/dropyourbottle.png",
     alt: "Drop a bottle into the ocean",
     title: "Drop a Bottle",
     body: 'Use the "Drop a Bottle" option to share messages, queries, or advice for the world to hear.',
     button: { label: "Drop a bottle", variant: "sage" as const, href: "/drop" },
   },
   {
-    image: "/assets/imagery/connect.png",
+    image: "/assets/imagery/connectandgrow.png",
     alt: "Connect and grow together",
     title: "Connect & Grow",
     body: "Receive responses, track your records, maintain connections, and help others grow!",

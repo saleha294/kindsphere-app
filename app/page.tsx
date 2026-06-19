@@ -6,17 +6,17 @@ import HowToUseSection from "@/components/HowToUseSection";
 /* ── How It Works steps ── */
 const HOW_STEPS = [
   {
-    image: "/assets/imagery/step1.png",
+    image: "/assets/imagery/dropyourbottle.png",
     alt: "Step 1 — Drop your bottle",
     text: "Drop your bottle anonymously. Write whatever is weighing on you, a decision, a feeling, a question you can\u2019t ask anyone in your life. No name required. No audience. Just your words, set free.",
   },
   {
-    image: "/assets/imagery/step2.png",
+    image: "/assets/imagery/receiveperspectives.jpg",
     alt: "Step 2 — Receive perspectives",
     text: "Receive gentle perspectives. From across the ocean or from your own neighborhood, thoughtful people offer quiet words. No debates, just human connection and shared insight.",
   },
   {
-    image: "/assets/imagery/step3.png",
+    image: "/assets/imagery/savorconnection.png",
     alt: "Step 3 — Savor connection",
     text: "Savor the quiet connection. Every shared word is a reminder that we are all walking slightly lighter by simply listening and being heard. Discover growth in shared, quiet spaces.",
   },
@@ -212,7 +212,7 @@ export default function LandingPage() {
             {/* Image Right -> Circular container with soft drop shadow */}
             <div className="flex-1 w-full flex justify-center">
               <div className="w-64 h-64 md:w-80 md:h-80 rounded-full overflow-hidden border border-stone-200/50 shadow-xl bg-white shrink-0">
-                <img src="/assets/imagery/our_core_purpose.png" alt="Core Purpose" className="w-full h-full object-cover" loading="lazy" />
+                <img src="/assets/imagery/ourcorepurpose.png" alt="Core Purpose" className="w-full h-full object-cover" loading="lazy" />
               </div>
             </div>
           </div>
@@ -256,7 +256,7 @@ export default function LandingPage() {
             <div className="flex-[1.2] w-full flex justify-center">
               <div className="w-64 h-64 md:w-80 md:h-80 rounded-full overflow-hidden border border-stone-200/50 shadow-xl bg-white shrink-0 scale-105 transform transition-transform duration-500">
                 <img
-                  src="/assets/imagery/connection.png"
+                  src="/assets/imagery/aboutthisproject.png"
                   alt="About project"
                   className="w-full h-full object-cover"
                   loading="lazy"
@@ -302,7 +302,7 @@ export default function LandingPage() {
             {/* Image Left */}
             <div className="flex-1 w-full">
               <img
-                src="/assets/imagery/community_guidelines.png"
+                src="/assets/imagery/communityguidelines.png"
                 alt="Community Guidelines"
                 className="w-full h-auto rounded-2xl shadow-lg object-cover"
                 loading="lazy"
