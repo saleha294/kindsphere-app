@@ -70,10 +70,13 @@ function TimeAgo({ date }: { date: Date }) {
 export default function DashboardPage() {
   const [activeFilter, setActiveFilter] = useState<Category>("All");
   const [userHandle, setUserHandle] = useState<string | null>(null);
+  const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
     const savedHandle = localStorage.getItem("kindsphere_handle");
     if (savedHandle) setUserHandle(savedHandle);
+    setIsLoaded(true);
+    
     const syncHandleState = () => setUserHandle(localStorage.getItem("kindsphere_handle"));
     window.addEventListener("local-handle-updated", syncHandleState);
     return () => window.removeEventListener("local-handle-updated", syncHandleState);
@@ -92,7 +95,7 @@ export default function DashboardPage() {
       <LiveStats />
 
       <div className="w-full max-w-6xl mx-auto px-6 md:px-12 py-10 space-y-10">
-        {userHandle && (
+        {isLoaded && userHandle && (
           <div className="bg-white rounded-3xl p-6 md:p-8 border border-stone-200/60 shadow-[0_8px_30px_rgb(0,0,0,0.04)] flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
             <div className="flex items-center gap-4">
               <div className="h-14 w-14 rounded-full bg-primary flex items-center justify-center text-white overflow-hidden relative shrink-0">
@@ -107,7 +110,7 @@ export default function DashboardPage() {
           </div>
         )}
 
-        {!userHandle && (
+        {isLoaded && !userHandle && (
           <div className="w-full rounded-2xl px-5 py-4 flex items-center justify-start text-left gap-4" style={{ background: "linear-gradient(135deg, rgba(224,122,95,0.07) 0%, rgba(129,178,154,0.07) 100%)", border: "1px solid rgba(224,122,95,0.15)" }}>
             {/* Integrated Small Character Image */}
             <Image
@@ -122,10 +125,15 @@ export default function DashboardPage() {
           </div>
         )}
 
+        {/* Skeleton spacer for stable height during client hydration */}
+        {!isLoaded && (
+          <div className="w-full h-[76px] rounded-2xl bg-stone-200/30 animate-pulse" />
+        )}
+
         <div className="space-y-6">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3.5 sm:gap-4">
             <h3 className="font-serif text-2xl font-medium text-stone-800">Active Requests Near You</h3>
-            <div className="flex items-center gap-2 overflow-x-auto pb-1 sm:pb-0 -mx-1 px-1">
+            <div className="flex items-center gap-2 overflow-x-auto pb-4 sm:pb-0 -mx-1 px-1 mb-4 sm:mb-0">
               {(["All", "Career", "Relationships", "Creative", "Health"] as Category[]).map((tag) => (
                 <button key={tag} onClick={() => setActiveFilter(tag)} className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap border transition-colors shrink-0 ${activeFilter === tag ? "bg-stone-800 text-white border-stone-800" : "bg-white text-stone-500 border-stone-200 hover:bg-stone-50"}`}>
                   {tag}
