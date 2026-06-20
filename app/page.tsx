@@ -8,17 +8,20 @@ const HOW_STEPS = [
   {
     image: "/assets/imagery/dropyourbottle.png",
     alt: "Step 1 — Drop your bottle",
-    text: "Drop your bottle anonymously. Write whatever is weighing on you, a decision, a feeling, a question you can\u2019t ask anyone in your life. No name required. No audience. Just your words, set free.",
+    heading: "Drop your bottle anonymously.",
+    body: "Write whatever is weighing on you, a decision, a feeling, a question you can\u2019t ask anyone in your life. No name required. No audience. Just your words, set free.",
   },
   {
     image: "/assets/imagery/receiveperspectives.jpg",
     alt: "Step 2 — Receive perspectives",
-    text: "Receive gentle perspectives. From across the ocean or from your own neighborhood, thoughtful people offer quiet words. No debates, just human connection and shared insight.",
+    heading: "Receive gentle perspectives.",
+    body: "From across the ocean or from your own neighborhood, thoughtful people offer quiet words. No debates, just human connection and shared insight.",
   },
   {
     image: "/assets/imagery/savorconnection.png",
     alt: "Step 3 — Savor connection",
-    text: "Savor the quiet connection. Every shared word is a reminder that we are all walking slightly lighter by simply listening and being heard. Discover growth in shared, quiet spaces.",
+    heading: "Savor the quiet connection.",
+    body: "Every shared word is a reminder that we are all walking slightly lighter by simply listening and being heard. Discover growth in shared, quiet spaces.",
   },
 ] as const;
 
@@ -179,8 +182,11 @@ export default function LandingPage() {
 
                 {/* Body text — directly below image, inside the same card */}
                 <div className="px-6 py-6 md:px-7 md:py-7">
-                  <p className="font-serif text-[14px] md:text-[15px] leading-[1.7] text-stone-600">
-                    {step.text}
+                  <p className="font-sans text-sm md:text-[15px] font-semibold text-[#1C2541] mb-1.5">
+                    {step.heading}
+                  </p>
+                  <p className="font-sans text-[13px] md:text-[14px] leading-[1.7] text-stone-500 font-normal">
+                    {step.body}
                   </p>
                 </div>
               </div>

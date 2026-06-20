@@ -111,15 +111,14 @@ export default function DashboardPage() {
         )}
 
         {isLoaded && !userHandle && (
-          <div className="w-full rounded-2xl px-5 py-4 flex items-center justify-start text-left gap-4" style={{ background: "linear-gradient(135deg, rgba(224,122,95,0.07) 0%, rgba(129,178,154,0.07) 100%)", border: "1px solid rgba(224,122,95,0.15)" }}>
+          <div className="w-full rounded-2xl px-5 py-5 flex items-center justify-start text-left gap-5" style={{ background: "linear-gradient(135deg, rgba(224,122,95,0.07) 0%, rgba(129,178,154,0.07) 100%)", border: "1px solid rgba(224,122,95,0.15)" }}>
             {/* Integrated Small Character Image */}
             <Image
-              src="/assets/imagery/anonymous_handle.png"
+              src="/assets/imagery/handle.png"
               alt="Anonymous Handle Character"
-              width={28}
-              height={28}
-              className="shrink-0 rounded-full"
-              style={{ width: "28px", height: "28px" }} // Explicitly setting both via style
+              width={52}
+              height={52}
+              className="shrink-0 rounded-full object-cover"
             />
             <p className="text-sm text-stone-600 leading-relaxed">You&rsquo;re browsing as a guest. <span className="text-stone-900 font-medium">Pick an anonymous handle</span> to start dropping messages in bottles and reply back.</p>
           </div>
