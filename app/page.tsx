@@ -1,4 +1,6 @@
 // app/page.tsx
+"use client";
+
 import { User } from "lucide-react";
 import Link from "next/link";
 import HowToUseSection from "@/components/HowToUseSection";
@@ -25,30 +27,105 @@ const HOW_STEPS = [
   },
 ] as const;
 
+/* ── Feature pill cards ── */
+const PILLS = [
+  {
+    image: "/assets/imagery/anonymous.png",
+    alt: "Anonymous by Design",
+    title: "Anonymous by Design",
+    body: "No profiles, no histories, no judgments. Your real identity is stripped away the moment you enter.",
+    bg: "#E07A5F",   // terracotta
+    row: "left",
+  },
+  {
+    image: "/assets/imagery/globalreach.png",
+    alt: "Global Reach",
+    title: "Global Reach",
+    body: "Drop a digital bottle and receive perspectives from every corner..",
+    bg: "#81B29A",   // sage
+    row: "right",
+  },
+  {
+    image: "/assets/imagery/realgrowth.png",
+    alt: "Real Growth",
+    title: "Real Growth",
+    body: "Experience the quiet clarity that comes when strangers offer honest kindness without expectation.",
+    bg: "#E07A5F",   // terracotta
+    row: "left",
+  },
+] as const;
+
+/* ── Feature Pills component ── */
+function FeatureTimeline() {
+  return (
+    <div className="flex flex-col gap-5 w-full">
+
+      {/* Pill 1 */}
+      <div className="w-full md:w-[55%]">
+        <PillCard pill={PILLS[0]} />
+      </div>
+
+      {/* Pill 2 — left-aligned like the others */}
+      <div className="w-full md:w-[55%]">
+        <PillCard pill={PILLS[1]} />
+      </div>
+
+      {/* Pill 3 */}
+      <div className="w-full md:w-[55%]">
+        <PillCard pill={PILLS[2]} />
+      </div>
+
+    </div>
+  );
+}
+
+function PillCard({ pill }: { pill: typeof PILLS[number] }) {
+  return (
+    <div
+      className="flex items-center gap-4 pl-3 pr-6 py-3 rounded-full w-full shadow-sm"
+      style={{ background: pill.bg }}
+    >
+      {/* Circular image — larger but contained within pill height */}
+      <div className="shrink-0 w-20 h-20 rounded-full overflow-hidden border-2 border-white/50 shadow-sm">
+        <img
+          src={pill.image}
+          alt={pill.alt}
+          className="w-full h-full object-cover"
+          loading="lazy"
+        />
+      </div>
+      {/* Text */}
+      <div className="min-w-0">
+        <h3 className="font-serif text-base md:text-lg font-semibold text-white leading-tight mb-1">
+          {pill.title}
+        </h3>
+        <p className="text-white/80 text-xs md:text-sm leading-relaxed">
+          {pill.body}
+        </p>
+      </div>
+    </div>
+  );
+}
+
+/* ── Main page ── */
 export default function LandingPage() {
   return (
     <div className="w-full flex flex-col overflow-x-hidden bg-[#FAF9F6]">
 
       {/* ── Hero ─────────────────────────────────────── */}
       <section className="relative w-full bg-[url('/assets/imagery/background.png')] bg-cover bg-center bg-no-repeat min-h-[500px] md:min-h-[600px] flex items-center justify-center">
-        {/* Light semi-transparent overlay to ensure text remains readable */}
         <div className="absolute inset-0 bg-[#FAF9F6]/75 backdrop-blur-[1px]" />
-
         <div className="relative z-10 w-full max-w-3xl mx-auto px-6 py-20 text-center flex flex-col items-center justify-center gap-6">
-
-          {/* LEFT SIDE: Heading & Intro (Perfectly Preserved, centered) */}
           <div className="flex flex-col items-center text-center gap-6">
             <h1 className="font-serif text-5xl md:text-6xl lg:text-7xl leading-[1.08] tracking-tight text-[#1C2541]">
               Be Heard. <br />
               Be Kind. <br />
               <span className="text-[#E07A5F] italic">Anonymously.</span>
             </h1>
-
             <p className="text-base md:text-lg text-stone-600 max-w-md leading-relaxed mx-auto">
               A quiet, humane space where people send and receive anonymous
               responses from strangers around the world.
             </p>
-
             <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full sm:w-auto pt-2 justify-center">
               <Link
                 href="/dashboard"
@@ -58,119 +135,39 @@ export default function LandingPage() {
               </Link>
             </div>
           </div>
-
-          {/* RIGHT SIDE: Interactive Character Block (Temporary Disabled, Commented Out) */}
-          {/*
-          <div className="flex flex-col items-center md:items-end justify-center gap-6 pt-8 md:pt-0">
-            <div className="relative w-full max-w-[340px] md:max-w-[380px] aspect-square flex items-center justify-center">
-              <KindBlob className="w-full h-full" />
-            </div>
-          </div>
-          */}
-
         </div>
       </section>
-      {/* ── Feature Cards ────────────────────────────── */}
+
+      {/* ── Feature Timeline ────────────────────────────── */}
       <section className="w-full border-t border-stone-200/40 bg-[#FDFBF7]">
         <div className="w-full max-w-5xl mx-auto px-6 md:px-12 py-16 md:py-20">
-
-          {/* Section Header */}
-          <div className="max-w-xl text-left mb-12 space-y-2">
+          <div className="max-w-xl text-left mb-14 space-y-2">
             <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-stone-400">
               Feature Cards
             </p>
             <h2 className="font-serif text-3xl md:text-4xl leading-tight tracking-tight text-[#1C2541]">
-              Three <span className="text-[#E07A5F] ">principles behind this project.</span>
+              Three <span className="text-[#E07A5F]">principles behind this project.</span>
             </h2>
           </div>
-
-          {/* Cards Grid - Now sitting directly inside the main section container */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-
-            {/* CARD 1: Anonymous Icon */}
-            <div className="bg-white rounded-2xl p-6 md:p-8 border border-stone-200/50 shadow-sm">
-              <div className="mb-5">
-                <div className="w-16 h-16 rounded-full overflow-hidden border border-stone-200/60 shadow-sm bg-stone-50 shrink-0">
-                  <img
-                    src="/assets/imagery/anonymous.png"
-                    alt="Anonymous"
-                    className="w-full h-full object-cover"
-                    loading="lazy"
-                  />
-                </div>
-              </div>
-              <h3 className="font-serif text-xl font-medium mb-2.5 text-[#1C2541]">
-                Anonymous by Design
-              </h3>
-              <p className="text-stone-500 leading-relaxed text-[14px]">
-                No profiles, no histories, no judgments. Your real identity is stripped away.
-              </p>
-            </div>
-
-            {/* CARD 2: Global Reach */}
-            <div className="bg-white rounded-2xl p-6 md:p-8 border border-stone-200/50 shadow-sm">
-              <div className="mb-5">
-                <div className="w-16 h-16 rounded-full overflow-hidden border border-stone-200/60 shadow-sm bg-stone-50 shrink-0">
-                  <img
-                    src="/assets/imagery/GlobalReach.png"
-                    alt="Global Reach"
-                    className="w-full h-full object-cover"
-                    loading="lazy"
-                  />
-                </div>
-              </div>
-              <h3 className="font-serif text-xl font-medium mb-2.5 text-[#1C2541]">
-                Global Reach
-              </h3>
-              <p className="text-stone-500 leading-relaxed text-[14px]">
-                Drop a bottle into the digital ocean and receive perspectives from others.
-              </p>
-            </div>
-
-            {/* CARD 3: Real Growth */}
-            <div className="bg-white rounded-2xl p-6 md:p-8 border border-stone-200/50 shadow-sm">
-              <div className="mb-5">
-                <div className="w-16 h-16 rounded-full overflow-hidden border border-stone-200/60 shadow-sm bg-stone-50 shrink-0">
-                  <img
-                    src="/assets/imagery/RealGrowth.png"
-                    alt="Real Growth"
-                    className="w-full h-full object-cover"
-                    loading="lazy"
-                  />
-                </div>
-              </div>
-              <h3 className="font-serif text-xl font-medium mb-2.5 text-[#1C2541]">
-                Real Growth
-              </h3>
-              <p className="text-stone-500 leading-relaxed text-[14px]">
-                Experience the clarity that comes when strangers offer kindness.
-              </p>
-            </div>
-
-          </div>
+          <FeatureTimeline />
         </div>
       </section>
 
-      {/* ── How It Works (Rectangle Step Guides) ──────── */}
+      {/* ── How It Works ──────────────────────────────── */}
       <section className="w-full border-t border-stone-200/40">
         <div className="w-full max-w-5xl mx-auto px-6 md:px-12 py-16 md:py-24">
-
-          {/* Section Header */}
           <div className="text-left mb-14 space-y-2">
             <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-stone-400">How it works</p>
             <h2 className="font-serif text-3xl md:text-4xl leading-tight tracking-tight text-[#1C2541]">
               Three <span className="text-[#E07A5F] italic">quiet gestures.</span>
             </h2>
           </div>
-
-          {/* Step Guide Modules — 3 col on desktop, stacked on mobile */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-6">
             {HOW_STEPS.map((step, i) => (
               <div
                 key={i}
                 className="group bg-white rounded-2xl overflow-hidden border border-stone-200/50 shadow-sm hover:shadow-md transition-shadow duration-300"
               >
-                {/* Image — fills the top of the rectangle */}
                 <div className="w-full aspect-[4/3] overflow-hidden">
                   <img
                     src={step.image}
@@ -179,8 +176,6 @@ export default function LandingPage() {
                     loading="lazy"
                   />
                 </div>
-
-                {/* Body text — directly below image, inside the same card */}
                 <div className="px-6 py-6 md:px-7 md:py-7">
                   <p className="font-sans text-sm md:text-[15px] font-semibold text-[#1C2541] mb-1.5">
                     {step.heading}
@@ -192,19 +187,16 @@ export default function LandingPage() {
               </div>
             ))}
           </div>
-
         </div>
       </section>
 
       {/* ── How to Use ─────────────────────────────── */}
       <HowToUseSection />
 
-      {/* ── Core Purpose Section ─────────────────────────────── */}
+      {/* ── Core Purpose ─────────────────────────────── */}
       <section className="w-full border-t border-stone-200/40 bg-stone-50/20 py-16 md:py-24">
         <div className="w-full max-w-5xl mx-auto px-6 md:px-12">
           <div className="flex flex-col md:flex-row items-center gap-12 md:gap-24">
-
-            {/* Text Left */}
             <div className="flex-1 space-y-4 text-left">
               <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-stone-400">Our Core Purpose</p>
               <h2 className="font-serif text-3xl md:text-4xl text-[#1C2541]">
@@ -214,8 +206,6 @@ export default function LandingPage() {
                 KindSphere was built to be a safe, supportive sanctuary for those who struggle to speak up or are simply searching for real human growth. We strip away the noise of social media so you can focus on genuine connection.
               </p>
             </div>
-
-            {/* Image Right -> Circular container with soft drop shadow */}
             <div className="flex-1 w-full flex justify-center">
               <div className="w-64 h-64 md:w-80 md:h-80 rounded-full overflow-hidden border border-stone-200/50 shadow-xl bg-white shrink-0">
                 <img src="/assets/imagery/ourcorepurpose.png" alt="Core Purpose" className="w-full h-full object-cover" loading="lazy" />
@@ -225,18 +215,15 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* ── About This Project Section ────────────────────────── */}
+      {/* ── About This Project ────────────────────────── */}
       <section className="w-full py-16 md:py-24">
         <div className="w-full max-w-5xl mx-auto px-6 md:px-12">
           <div className="flex flex-col md:flex-row-reverse items-center gap-12 md:gap-24">
-
-            {/* Text Right - Adjusted to flex-1 */}
             <div className="flex-1 space-y-4 text-left">
               <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-stone-400">About this project</p>
               <h2 className="font-serif text-3xl md:text-4xl text-[#1C2541]">
-                Built on the belief that <span className="text-[#E07A5F] italic">honest words</span> change people.
+                Built on the belief that <span className="text-[#E07A5F]">honest words</span> change people.
               </h2>
-              {/* Glassmorphism quote container */}
               <div
                 className="relative rounded-2xl px-6 py-5 mt-2"
                 style={{
@@ -247,18 +234,15 @@ export default function LandingPage() {
                   boxShadow: "0 4px 24px rgba(129, 178, 154, 0.10), inset 0 1px 0 rgba(255,255,255,0.7)",
                 }}
               >
-                {/* Decorative top accent line */}
                 <div
                   className="absolute top-0 left-6 right-6 h-px rounded-full"
                   style={{ background: "linear-gradient(90deg, transparent, rgba(224,122,95,0.35), transparent)" }}
                 />
-                <p className="text-[15px] leading-relaxed text-stone-600 font-serif">
+                <p className="text-[15px] leading-relaxed text-stone-600">
                   I wanted to create a meaningful corner on the internet for those moments when we need advice, but run into judgmental spaces online. KindSphere protects your identity, letting your message travel randomly to another human somewhere around the world.
                 </p>
               </div>
             </div>
-
-            {/* Image Left -> Circular container with soft drop shadow */}
             <div className="flex-[1.2] w-full flex justify-center">
               <div className="w-64 h-64 md:w-80 md:h-80 rounded-full overflow-hidden border border-stone-200/50 shadow-xl bg-white shrink-0 scale-105 transform transition-transform duration-500">
                 <img
@@ -269,43 +253,43 @@ export default function LandingPage() {
                 />
               </div>
             </div>
-
           </div>
         </div>
       </section>
 
-
-      {/* ── Community Guidelines Section ────────────────────────── */}
+      {/* ── Community Guidelines ─────────────────────── */}
       <section className="w-full py-20 border-t border-stone-200/40 bg-stone-50/20">
         <div className="w-full max-w-5xl mx-auto px-6 md:px-12">
           <div className="flex flex-col md:flex-row-reverse items-center gap-12 md:gap-24">
 
-            {/* Text Right */}
-            <div className="flex-1 space-y-4 text-left">
-              <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-stone-400">Community Guidelines</p>
-              <h2 className="font-serif text-3xl md:text-4xl text-[#1C2541]">
-                A safe space, <span className="text-[#E07A5F] italic">held gently by all of us.</span>
-              </h2>
-
-              {/* Guidelines Grid */}
-              <div className="grid grid-cols-2 gap-3 pt-4">
-                {[
-                  "Racism and Hate Speech",
-                  "Bullying and Harassment",
-                  "Personal Attacks or Nudity",
-                  "Passive-Aggressive Tone",
-                  "Spam and Self-Promotion",
-                  "Explicit or Offensive Content"
-                ].map((item) => (
-                  <div key={item} className="flex items-center gap-2.5 bg-white p-3 md:p-4 rounded-xl border border-stone-200/60 shadow-sm">
-                    <span className="w-2 h-2 rounded-full bg-[#E07A5F] shrink-0" />
-                    <span className="text-[#1C2541] font-medium text-xs md:text-sm leading-tight">{item}</span>
-                  </div>
-                ))}
+            {/* Text + single terracotta container */}
+            <div className="flex-1 space-y-6 text-left w-full">
+              <div className="space-y-2">
+                <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-stone-400">Community Guidelines</p>
+                <h2 className="font-serif text-3xl md:text-4xl text-[#1C2541]">
+                  A safe space, <span className="text-[#E07A5F] italic">held gently by all of us.</span>
+                </h2>
+              </div>
+              <div className="rounded-2xl px-6 py-5 md:px-8 md:py-6 bg-white border border-stone-200/60">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-3.5">
+                  {[
+                    "Racism and Hate Speech",
+                    "Bullying and Harassment",
+                    "Personal Attacks or Nudity",
+                    "Passive-Aggressive Tone",
+                    "Spam and Self-Promotion",
+                    "Explicit or Offensive Content",
+                  ].map((item) => (
+                    <div key={item} className="flex items-center gap-3">
+                      <span className="w-1.5 h-1.5 rounded-full bg-[#E07A5F] shrink-0" />
+                      <span className="text-[#1C2541] text-sm font-medium leading-snug">{item}</span>
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
 
-            {/* Image Left */}
+            {/* Image */}
             <div className="flex-1 w-full">
               <img
                 src="/assets/imagery/communityguidelines.png"
@@ -318,13 +302,13 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* ── Developer Profile & Footer Section ───────── */}
+      {/* ── Developer Profile & Footer ───────────────── */}
       <section className="w-full bg-[#FFFFFF] text-[#1C2541] border-t border-stone-200/40">
         <div className="w-full max-w-5xl mx-auto px-6 md:px-12 py-16 text-left">
-          <div className="flex flex-col md:flex-row items-center md:items-start gap-8 md:gap-12 pb-10 border-b border-stone-100">
-            
-            {/* Owner Image / circular avatar */}
-            <div className="w-24 h-24 md:w-28 md:h-28 rounded-full overflow-hidden border-2 border-stone-200/60 shadow-sm shrink-0 mx-auto md:mx-0">
+          <div className="flex flex-col md:flex-row items-start gap-8 md:gap-12 pb-10 border-b border-stone-100">
+
+            {/* Avatar */}
+            <div className="w-24 h-24 md:w-28 md:h-28 rounded-full overflow-hidden border-2 border-stone-200/60 shadow-sm shrink-0">
               <img
                 src="/assets/imagery/owner.png"
                 alt="Saleha Zeeshan"
@@ -333,10 +317,10 @@ export default function LandingPage() {
               />
             </div>
 
-            {/* Content right on desktop / stacked & centered on mobile */}
-            <div className="flex-1 flex flex-col items-center md:items-start text-center md:text-left gap-5">
+            {/* Content — left-aligned on both mobile and desktop */}
+            <div className="flex-1 flex flex-col items-start text-left gap-5">
               <div className="space-y-2.5 max-w-xl">
-                <div className="flex items-center justify-center md:justify-start gap-2.5 text-stone-400">
+                <div className="flex items-center gap-2.5 text-stone-400">
                   <User className="w-4 h-4 text-[#E07A5F]" />
                   <span className="text-[10px] font-semibold uppercase tracking-[0.18em]">The Designer & Developer</span>
                 </div>
@@ -346,7 +330,6 @@ export default function LandingPage() {
                 </p>
               </div>
 
-              {/* Link Grid - High Contrast Balanced Elements */}
               <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 w-full sm:w-auto">
                 <Link
                   href="https://www.linkedin.com/in/saleha-zeeshan-b846562a7"
@@ -378,7 +361,6 @@ export default function LandingPage() {
                   <span className="text-stone-400 group-hover:translate-x-0.5 transition-transform">↗</span>
                 </Link>
 
-                {/* Your New GitHub Link */}
                 <Link
                   href="https://github.com/saleha294"
                   target="_blank"
@@ -395,10 +377,9 @@ export default function LandingPage() {
                 </Link>
               </div>
             </div>
-
           </div>
 
-          {/* Footer Metadata */}
+          {/* Footer */}
           <div className="pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-stone-400 text-[11px] font-medium">
             <div className="flex items-center gap-2 font-serif text-xs text-[#1C2541]">
               <span className="font-semibold tracking-wide">KindSphere</span>

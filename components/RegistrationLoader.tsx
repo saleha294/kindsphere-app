@@ -6,7 +6,7 @@ const LOADING_STEPS = [
     "Securing your unique handle...",
     "Carving out your space in the sphere...",
     "We are letting you in...",
-    "Preparing your quiet digest..."
+    "Preparing your quiet drift..."
 ];
 
 export default function RegistrationLoader() {

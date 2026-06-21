@@ -62,7 +62,7 @@ export default function DigestPage() {
       {/* Header */}
       <header className="text-center space-y-2 pt-2">
         <h1 className="font-serif text-3xl md:text-4xl font-medium text-foreground leading-tight">
-          {userHandle ? `@${userHandle}'s Personal Digest` : "Your Personalized Digest"}
+          {userHandle ? `@${userHandle}'s Personal Drift` : "Your Personalized Drift"}
         </h1>
         <p className="text-base md:text-lg text-muted-foreground max-w-md mx-auto">
           A quiet reflection on the empathy and clarity you have distributed.

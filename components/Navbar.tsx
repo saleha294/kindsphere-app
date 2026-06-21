@@ -10,7 +10,7 @@ const LINKS = [
   { href: "/", label: "Home" },
   { href: "/dashboard", label: "Feed" },
   { href: "/drop", label: "Drop a Bottle" },
-  { href: "/digest", label: "My Digest" },
+  { href: "/digest", label: "My Drift" },
   { href: "/globe", label: "The Sphere" },
 ];
 

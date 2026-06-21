@@ -43,8 +43,8 @@ export default function HowToUseSection() {
               How to use
             </p>
             <h2 className="text-3xl md:text-4xl font-serif text-[#1C2541]">
-              Become a part of{" "}
-              <span className="text-[#E07A5F]">KindSphere</span>
+              Become a {" "}
+              <span className="text-[#E07A5F]"> part of KindSphere</span>
             </h2>
           </div>
 
