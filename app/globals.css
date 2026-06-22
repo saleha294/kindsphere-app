@@ -74,6 +74,16 @@
   body { @apply antialiased bg-background text-foreground font-sans; }
 }
 
+/* ─── Splash: hide page content until user dismisses ─── */
+/*
+  The inline script in <head> adds .ks-splash to <html> before first paint
+  when it's a first-visit session. This rule hides everything except the
+  splash overlay itself, guaranteeing zero flash of page content.
+*/
+html.ks-splash body > *:not(#ks-splash-overlay) {
+  visibility: hidden;
+}
+
 /* ─── CUSTOM KEYFRAMES ─── */
 @keyframes sphereFloat {
   0%, 100% { transform: translateY(0px)  scale(1);     }

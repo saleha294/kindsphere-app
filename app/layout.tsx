@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { DM_Sans, DM_Serif_Display } from "next/font/google";
 import "./globals.css";
 import { Navbar } from "@/components/Navbar";
+import WelcomeSplash from "@/components/WelcomeSplash";
 
 /* ─── Fonts ─── */
 const dmSans = DM_Sans({
@@ -40,7 +41,25 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={`${dmSans.variable} ${dmSerif.variable}`}>
+      <head>
+        {/*
+          Blocking inline script — runs synchronously before any paint.
+          On a first visit (no sessionStorage flag) it adds `ks-splash` to
+          <html>, which CSS uses to hide body content until the splash dismisses.
+          Returning visitors: flag already set → class never added → no overhead.
+        */}
+        <script dangerouslySetInnerHTML={{ __html: `
+          (function(){
+            try {
+              if (!sessionStorage.getItem('ks_welcomed')) {
+                document.documentElement.classList.add('ks-splash');
+              }
+            } catch(e) {}
+          })();
+        `}} />
+      </head>
       <body className="min-h-dvh flex flex-col bg-background text-foreground antialiased">
+        <WelcomeSplash />
         <Navbar />
         <main className="flex-1">{children}</main>
       </body>
