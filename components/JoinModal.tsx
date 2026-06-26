@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { X, Sparkles } from "lucide-react";
-import { supabase } from "@/lib/utils/supabase"; // adjust based on your supabase client path
+import { supabase } from "@/lib/supabase"; // adjust based on your supabase client path
 
 interface JoinModalProps {
     onClose: () => void;
@@ -43,8 +43,8 @@ export default function JoinModal({ onClose, onSuccess }: JoinModalProps) {
             onSuccess(trimmed);
             onClose();
 
-            // Refresh the page so all dynamic components catch the new session instantly
-            window.location.reload();
+            // Broadcast auth change so all listening pages update instantly (no full reload needed)
+            window.dispatchEvent(new Event("auth-changed"));
         } catch (err: any) {
             setError(err.message || "An expected roadblock occurred.");
             setJoining(false);

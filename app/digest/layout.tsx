@@ -15,12 +15,15 @@ export default function DigestLayout({ children }: { children: React.ReactNode }
 
         checkHandle();
 
+        // Listen on all auth event channels (old and new) for full coverage
         window.addEventListener("storage", checkHandle);
         window.addEventListener("local-handle-updated", checkHandle);
+        window.addEventListener("auth-changed", checkHandle);
 
         return () => {
             window.removeEventListener("storage", checkHandle);
             window.removeEventListener("local-handle-updated", checkHandle);
+            window.removeEventListener("auth-changed", checkHandle);
         };
     }, []);
 

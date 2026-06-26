@@ -1,7 +1,5 @@
 
-import { supabase } from "@/lib/utils/supabase";
-const { data: { user } } = await supabase.auth.getUser();
-const current_user_id = user?.id;
+import { supabase } from "@/lib/supabase";
 
 /**
  * Marks a connection request as accepted.

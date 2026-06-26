@@ -32,6 +32,13 @@ export function Navbar() {
     const openModalTrigger = () => setIsModalOpen(true);
     window.addEventListener("open-login-modal", openModalTrigger);
 
+    // Sync auth state instantly when login/registration succeeds (any component)
+    const syncAuth = () => {
+      const handle = localStorage.getItem("kindsphere_handle");
+      setUserHandle(handle);
+    };
+    window.addEventListener("auth-changed", syncAuth);
+
     // Close desktop profile dropdown when clicking outside
     const handleClickOutside = (event: MouseEvent) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
@@ -42,6 +49,7 @@ export function Navbar() {
 
     return () => {
       window.removeEventListener("open-login-modal", openModalTrigger);
+      window.removeEventListener("auth-changed", syncAuth);
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
@@ -49,24 +57,25 @@ export function Navbar() {
   function handleAccountCreated(handle: string, id: string) {
     // Both variables are safely linked to anchor local storage metrics
     localStorage.setItem("kindsphere_handle", handle);
-    localStorage.setItem("kindsphere_user_id", id);
+    // Use canonical key "kindsphere_uid" to match all dashboard/digest reads
+    localStorage.setItem("kindsphere_uid", id);
 
     setUserHandle(handle);
     setIsModalOpen(false);
 
-    window.dispatchEvent(new Event("local-handle-updated"));
+    window.dispatchEvent(new Event("auth-changed"));
   }
 
   // ── 11. Core Logout Functional Trigger ──
   function handleLogout() {
     localStorage.removeItem("kindsphere_handle");
-    localStorage.removeItem("kindsphere_user_id");
+    localStorage.removeItem("kindsphere_uid");
     setUserHandle(null);
     setDropdownOpen(false);
     setOpen(false);
 
-    // Trigger update broadcast layer and push user safely to public dashboard
-    window.dispatchEvent(new Event("local-handle-updated"));
+    // Broadcast auth change so all listening pages update instantly
+    window.dispatchEvent(new Event("auth-changed"));
     router.push("/");
   }
 

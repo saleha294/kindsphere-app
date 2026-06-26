@@ -27,82 +27,64 @@ const HOW_STEPS = [
   },
 ] as const;
 
-/* ── Feature pill cards ── */
-const PILLS = [
+/* ── Feature Spheres ── */
+const SPHERES = [
   {
     image: "/assets/imagery/anonymous.png",
     alt: "Anonymous by Design",
     title: "Anonymous by Design",
     body: "No profiles, no histories, no judgments. Your real identity is stripped away the moment you enter.",
     bg: "#E07A5F",   // terracotta
-    row: "left",
+    bgSubtle: "rgba(224, 122, 95, 0.08)",
   },
   {
     image: "/assets/imagery/globalreach.png",
     alt: "Global Reach",
     title: "Global Reach",
-    body: "Drop a digital bottle and receive perspectives from every corner..",
-    bg: "#81B29A",   // sage
-    row: "right",
+    body: "Drop a digital bottle and receive perspectives from every corner.",
+    bg: "#84A98C",   // sage green
+    bgSubtle: "rgba(132, 169, 140, 0.1)",
   },
   {
     image: "/assets/imagery/realgrowth.png",
     alt: "Real Growth",
     title: "Real Growth",
     body: "Experience the quiet clarity that comes when strangers offer honest kindness without expectation.",
-    bg: "#E07A5F",   // terracotta
-    row: "left",
+    bg: "#A8DADC",   // sage blue
+    bgSubtle: "rgba(168, 218, 220, 0.15)",
   },
 ] as const;
 
-/* ── Feature Pills component ── */
 function FeatureTimeline() {
   return (
-    <div className="flex flex-col gap-5 w-full">
-
-      {/* Pill 1 */}
-      <div className="w-full md:w-[55%]">
-        <PillCard pill={PILLS[0]} />
-      </div>
-
-      {/* Pill 2 — left-aligned like the others */}
-      <div className="w-full md:w-[55%]">
-        <PillCard pill={PILLS[1]} />
-      </div>
-
-      {/* Pill 3 */}
-      <div className="w-full md:w-[55%]">
-        <PillCard pill={PILLS[2]} />
-      </div>
-
-    </div>
-  );
-}
-
-function PillCard({ pill }: { pill: typeof PILLS[number] }) {
-  return (
-    <div
-      className="flex items-center gap-4 pl-3 pr-6 py-3 rounded-full w-full shadow-sm"
-      style={{ background: pill.bg }}
-    >
-      {/* Circular image — larger but contained within pill height */}
-      <div className="shrink-0 w-20 h-20 rounded-full overflow-hidden border-2 border-white/50 shadow-sm">
-        <img
-          src={pill.image}
-          alt={pill.alt}
-          className="w-full h-full object-cover"
-          loading="lazy"
-        />
-      </div>
-      {/* Text */}
-      <div className="min-w-0">
-        <h3 className="font-serif text-base md:text-lg font-semibold text-white leading-tight mb-1">
-          {pill.title}
-        </h3>
-        <p className="text-white/80 text-xs md:text-sm leading-relaxed">
-          {pill.body}
-        </p>
-      </div>
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-16 md:gap-10 w-full mt-10">
+      {SPHERES.map((sphere, i) => (
+        <div key={i} className="flex flex-col items-center text-center gap-6">
+          {/* Spherical Image Container */}
+          <div 
+            className="relative w-40 h-40 md:w-48 md:h-48 rounded-full flex items-center justify-center p-3 transition-transform duration-500 hover:scale-[1.03]"
+            style={{ backgroundColor: sphere.bgSubtle, border: `1px solid ${sphere.bg}30` }}
+          >
+            <div className="w-full h-full rounded-full overflow-hidden shadow-sm border-2 border-white bg-white">
+              <img
+                src={sphere.image}
+                alt={sphere.alt}
+                className="w-full h-full object-cover"
+                loading="lazy"
+              />
+            </div>
+          </div>
+          {/* Text */}
+          <div className="space-y-3">
+            <h3 className="font-serif text-xl md:text-2xl font-semibold text-[#1C2541]">
+              {sphere.title}
+            </h3>
+            <p className="text-stone-500 text-[15px] leading-relaxed max-w-[280px] mx-auto">
+              {sphere.body}
+            </p>
+          </div>
+        </div>
+      ))}
     </div>
   );
 }

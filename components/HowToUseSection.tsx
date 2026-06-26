@@ -112,7 +112,8 @@ export default function HowToUseSection() {
           localStorage.setItem("kindsphere_handle", handle);
           localStorage.setItem("kindsphere_uid", id);
           setShowRegister(false);
-          window.location.reload();
+          // Broadcast auth change so all listening pages update instantly (no full reload needed)
+          window.dispatchEvent(new Event("auth-changed"));
         }}
       />
     </>

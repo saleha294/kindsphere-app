@@ -15,6 +15,7 @@ const NAV_ITEMS = [
   { href: "/digest/sent", label: "My Sent Bottles", color: "#E07A5F", hoverBg: "hover:bg-[#E07A5F]/10 hover:text-[#E07A5F]" },
   { href: "/digest/pending", label: "Awaiting My Voice", color: "#81B29A", hoverBg: "hover:bg-[#81B29A]/10 hover:text-[#81B29A]" },
   { href: "/digest/connections", label: "Mutual Connections", color: "#E07A5F", hoverBg: "hover:bg-[#E07A5F]/10 hover:text-[#E07A5F]" },
+  { href: "/digest/replies", label: "Replies", color: "#3D5A80", hoverBg: "hover:bg-[#3D5A80]/10 hover:text-[#3D5A80]" }, // New tab
 ];
 
 // --- SUB-COMPONENTS ---
@@ -52,8 +53,18 @@ export default function DigestPage() {
   const pathname = usePathname();
 
   useEffect(() => {
-    const savedHandle = localStorage.getItem("kindsphere_handle");
-    setUserHandle(savedHandle);
+    // Sync auth state and re-read on auth-changed events
+    const syncAuth = () => {
+      const savedHandle = localStorage.getItem("kindsphere_handle");
+      setUserHandle(savedHandle);
+    };
+
+    syncAuth(); // Read on mount
+    window.addEventListener("auth-changed", syncAuth);
+
+    return () => {
+      window.removeEventListener("auth-changed", syncAuth);
+    };
   }, []);
 
   return (
@@ -79,11 +90,10 @@ export default function DigestPage() {
               <Link
                 key={link.href}
                 href={link.href}
-                className={`py-3 px-3 sm:px-5 capitalize font-medium text-xs sm:text-sm transition-all border-b-2 rounded-t-lg whitespace-nowrap ${link.hoverBg} ${
-                  isActive
+                className={`py-3 px-3 sm:px-5 capitalize font-medium text-xs sm:text-sm transition-all border-b-2 rounded-t-lg whitespace-nowrap ${link.hoverBg} ${isActive
                     ? "border-current"
                     : "border-transparent text-stone-500"
-                }`}
+                  }`}
                 style={{
                   color: isActive ? link.color : undefined,
                 }}

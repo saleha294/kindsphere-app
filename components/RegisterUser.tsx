@@ -1,9 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import { supabase } from "@/lib/utils/supabase"; // Ensure this import is correct
+import { supabase } from "@/lib/supabase"; // Ensure this import is correct
 import bcrypt from "bcryptjs";
 import { Sparkles, ShieldCheck, X, Eye, EyeOff } from "lucide-react";
+import { authUser } from "@/lib/db-queries";
 
 export default function RegisterUser({ isOpen, onClose, onAccountCreated }: any) {
     const [mode, setMode] = useState<"register" | "login">("register");
@@ -20,44 +21,60 @@ export default function RegisterUser({ isOpen, onClose, onAccountCreated }: any)
         setErrorMsg("");
     };
 
-    async function handleSubmit(e: React.FormEvent) {
+    async function handleSubmit(
+        e: React.FormEvent<HTMLFormElement>
+    ) {
         e.preventDefault();
-        setLoading(true);
+
         setErrorMsg("");
+        setLoading(true);
 
-        const cleanHandle = handle.trim().replace("@", "");
+        try {
+            const cleanHandle = handle
+                .trim()
+                .toLowerCase();
 
-        // 1. Hash the phrase locally before sending to Supabase
-        const salt = bcrypt.genSaltSync(10);
-        const hash = bcrypt.hashSync(phrase, salt);
-
-        if (mode === "register") {
-            const { data, error } = await supabase
-                .from("users")
-                .insert([{ anonymous_handle: cleanHandle, secret_hash: hash }])
-                .select()
-                .single();
-
-            if (error) {
-                setErrorMsg(error.code === "23505" ? "Handle is taken." : "Registration failed.");
-            } else {
-                onAccountCreated(data.anonymous_handle, data.id);
+            if (!cleanHandle) {
+                throw new Error("Enter a handle");
             }
-        } else {
-            // Login: Fetch and compare
-            const { data, error } = await supabase
-                .from("users")
-                .select("*")
-                .eq("anonymous_handle", cleanHandle)
-                .single();
 
-            if (data && bcrypt.compareSync(phrase, data.secret_hash)) {
-                onAccountCreated(data.anonymous_handle, data.id);
-            } else {
-                setErrorMsg("Invalid handle or secret phrase.");
+            if (!phrase.trim()) {
+                throw new Error("Enter a secret phrase");
             }
+
+            const user = await authUser(
+                cleanHandle,
+                phrase,
+                mode
+            );
+
+            localStorage.setItem(
+                "kindsphere_handle",
+                user.anonymous_handle
+            );
+
+            // Use canonical key "kindsphere_uid" — matches all dashboard/digest reads
+            localStorage.setItem(
+                "kindsphere_uid",
+                user.id
+            );
+
+            // Broadcast auth change so all listening pages update instantly
+            window.dispatchEvent(new Event("auth-changed"));
+
+            onAccountCreated(
+                cleanHandle,
+                user.id
+            );
+
+            onClose();
+        } catch (err: any) {
+            setErrorMsg(
+                err.message || "Something went wrong"
+            );
+        } finally {
+            setLoading(false);
         }
-        setLoading(false);
     }
 
     if (!isOpen) return null;
