@@ -1,4 +1,4 @@
-import { supabase } from "@/lib/utils/supabase";
+import { supabase } from "@/lib/supabase";
 
 export const castBottle = async (senderId: string, content: string, category: string) => {
     // 1. Insert the new bottle
