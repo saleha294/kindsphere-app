@@ -5,6 +5,7 @@ import { useParams, useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabase";
 import { sendReplyToBottle } from "@/lib/db-queries";
 import { isUserOwner } from "@/lib/utils/authGuard";
+import { getCurrentUserId } from "@/lib/auth";
 import Link from "next/link";
 
 export default function ResponseDetailPage() {
@@ -17,8 +18,8 @@ export default function ResponseDetailPage() {
 
   useEffect(() => {
     // Sync auth state and re-read on auth-changed events
-    const syncAuth = () => {
-      setCurrentUserId(localStorage.getItem("kindsphere_uid"));
+    const syncAuth = async () => {
+      setCurrentUserId(await getCurrentUserId());
     };
 
     syncAuth(); // Read on mount

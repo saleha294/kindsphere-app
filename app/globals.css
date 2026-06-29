@@ -85,6 +85,9 @@ html.ks-splash body > *:not(#ks-splash-overlay) {
 }
 
 /* ─── CUSTOM KEYFRAMES ─── */
+
+/* ─── ADD THIS TO THE BOTTOM OF globals.css ─── */
+
 @keyframes sphereFloat {
   0%, 100% { transform: translateY(0px)  scale(1);     }
   33%       { transform: translateY(-18px) scale(1.015); }
@@ -105,4 +108,13 @@ html.ks-splash body > *:not(#ks-splash-overlay) {
   .animate-sphereFloat  { animation: sphereFloat  6s  ease-in-out infinite; }
   .animate-ambientDrift { animation: ambientDrift 12s ease-in-out infinite; }
   .animate-fade-in      { animation: fadeIn 0.35s ease-out both; }
+}
+
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.animate-marquee {
+  animation: marquee 20s linear infinite;
 }

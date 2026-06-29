@@ -4,26 +4,34 @@ import { useEffect, useState } from "react";
 import { getMyReplies } from "@/lib/db-queries";
 import { MessageCircle, ArrowLeft } from "lucide-react";
 import Link from "next/link";
+import { getCurrentUserId } from "@/lib/auth";
+
 
 export default function RepliesPage() {
     const [replies, setReplies] = useState<any[]>([]);
-    // Uncomment for actual usage:
-    // useEffect(() => {
-    //     const uid = localStorage.getItem("kindsphere_uid");
-    //     if (uid) {
-    //         getMyReplies(uid).then((data) => setReplies(data || []));
-    //     }
-    // }, []);
+    useEffect(() => {
+    async function loadReplies() {
+        const uid = await getCurrentUserId();
 
-    // Placeholder mock data for styling purposes
-    const displayReplies = replies.length > 0 ? replies : [
-        {
-            id: 'r1',
-            sender: { anonymous_handle: 'QuietThunder_7' },
-            content: "I felt the exact same way a year ago. It takes time, but you will eventually find your people. Keep going.",
-            bottle: { content: "I’ve spent the last year working completely isolated as a freelance contractor..." }
-        }
-    ];
+        if (!uid) return;
+
+        const data = await getMyReplies(uid);
+        setReplies(data || []);
+    }
+
+    loadReplies();
+}, []);
+
+   
+  const displayReplies = replies;
+
+  if (displayReplies.length === 0) {
+    return (
+        <div className="text-center py-20 text-stone-500">
+            No replies yet.
+        </div>
+    );
+}
 
     return (
         <div className="space-y-8 max-w-3xl pb-10">

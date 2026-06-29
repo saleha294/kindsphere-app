@@ -6,6 +6,7 @@ import Link from "next/link";
 import { getDriftingBottles } from "@/lib/db-queries";
 import { sendConnectionRequest } from "@/lib/db-queries";
 import { isUserOwner } from "@/lib/utils/authGuard";
+import { getCurrentUserId } from "@/lib/auth";
 
 type Category = "All" | "Career" | "Relationships" | "Creative" | "Health";
 const CATEGORIES: Category[] = ["All", "Career", "Relationships", "Creative", "Health"];
@@ -25,9 +26,9 @@ export default function DashboardPage() {
 
   useEffect(() => {
     // Read initial auth state
-    const syncAuth = () => {
+    const syncAuth = async () => {
       const savedHandle = localStorage.getItem("kindsphere_handle");
-      const savedUid = localStorage.getItem("kindsphere_uid");
+      const savedUid = await getCurrentUserId();
       if (savedHandle) setUserHandle(savedHandle);
       else setUserHandle(null);
       setCurrentUserId(savedUid);

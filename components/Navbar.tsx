@@ -6,6 +6,8 @@ import { usePathname, useRouter } from "next/navigation";
 import { Menu, X, User, LogOut, ChevronDown } from "lucide-react";
 import RegisterUser from "./RegisterUser";
 
+import { supabase } from "@/lib/supabase";
+
 const LINKS = [
   { href: "/", label: "Home" },
   { href: "/dashboard", label: "Feed" },
@@ -67,30 +69,28 @@ export function Navbar() {
   }
 
   // ── 11. Core Logout Functional Trigger ──
-  function handleLogout() {
-    localStorage.removeItem("kindsphere_handle");
-    localStorage.removeItem("kindsphere_uid");
-    setUserHandle(null);
-    setDropdownOpen(false);
-    setOpen(false);
+ async function handleLogout() {
+  await supabase.auth.signOut();
 
-    // Broadcast auth change so all listening pages update instantly
-    window.dispatchEvent(new Event("auth-changed"));
-    router.push("/");
-  }
+  localStorage.removeItem("kindsphere_handle");
+  localStorage.removeItem("kindsphere_uid");
+
+  setUserHandle(null);
+  setDropdownOpen(false);
+  setOpen(false);
+
+  window.dispatchEvent(new Event("auth-changed"));
+
+  router.push("/");
+}
 
   return (
     <>
-      <header className="sticky top-0 z-50 w-full bg-white/80 backdrop-blur-md border-b border-stone-200/50">
-        <div className="w-full max-w-6xl mx-auto px-6 md:px-12 h-16 flex items-center justify-between">
+      <header className="fixed top-4 left-4 right-4 z-50">
+        <div className="max-w-6xl mx-auto bg-white/70 backdrop-blur-xl border border-stone-200/50 rounded-full shadow-[0_8px_30px_rgb(0,0,0,0.04)] px-6 md:px-8 h-16 flex items-center justify-between">
 
           {/* Logo */}
-          <Link
-            href="/"
-            onClick={() => setOpen(false)}
-            className="flex items-center gap-2.5 shrink-0"
-            aria-label="KindSphere home"
-          >
+          <Link href="/" onClick={() => setOpen(false)} className="flex items-center gap-2.5 shrink-0 pl-2">
             <span className="h-8 w-8 rounded-full bg-[hsl(14,66%,62%)]/20 border border-[hsl(14,66%,62%)]/30 flex items-center justify-center">
               <span className="h-4 w-4 rounded-full bg-[hsl(14,66%,62%)]" />
             </span>

@@ -19,36 +19,65 @@ export default function DropPage() {
   const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
-    setIsClient(true);
-  }, []);
-  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+  setIsClient(true);
+
+  supabase.auth.getSession().then(({ data }) => {
+    console.log("DROP SESSION:", data.session);
+  });
+
+  supabase.auth.onAuthStateChange((event, session) => {
+    console.log("AUTH EVENT:", event);
+    console.log("AUTH SESSION:", session);
+  });
+}, []);
+
+ async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
+
+    console.log("STEP 1");
+
     setSubmitting(true);
     setError(null);
 
-    const { data: { session } } = await supabase.auth.getSession();
+    console.log("STEP 2");
+
+    const {
+        data: { session },
+    } = await supabase.auth.getSession();
+
+    console.log("STEP 3", session);
 
     if (!session) {
-      // COMMENT THIS OUT TO STOP THE LOGIN FORM FROM POPPING UP
-      // window.dispatchEvent(new Event("open-login-modal"));
-
-      // CHANGE THIS TO A SIMPLE ALERT TO TEST
-      alert("Supabase says no session exists!");
-      setSubmitting(false);
-      return;
+        console.log("FAILED HERE");
+        alert("No session");
+        setSubmitting(false);
+        return;
     }
 
-    // If you get past the alert, the bottle will try to send
+    console.log("STEP 4");
+
     try {
-      await castBottle(content, category);
-      alert("Bottle sent successfully!");
-      setSubmitted(true);
+        console.log("STEP 5");
+
+        await castBottle(content, category);
+
+        console.log("STEP 6");
+
+        alert("Bottle sent!");
+
     } catch (err: any) {
-      alert("Database error: " + err.message);
+
+        console.log("STEP ERROR", err);
+
+        alert(err.message);
+
     } finally {
-      setSubmitting(false);
+
+        console.log("STEP 7");
+
+        setSubmitting(false);
     }
-  }
+}
 
   if (!isClient) return null;
 
@@ -116,6 +145,7 @@ export default function DropPage() {
             >
               {isSubmitting ? "Dropping..." : "Drop This Bottle"}
             </button>
+
             {error && <p className="text-red-500 text-xs text-center">{error}</p>}
           </form>
         </div>

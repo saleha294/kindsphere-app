@@ -2,9 +2,10 @@
 
 import { useState } from "react";
 import { supabase } from "@/lib/supabase"; // Ensure this import is correct
-import bcrypt from "bcryptjs";
-import { Sparkles, ShieldCheck, X, Eye, EyeOff } from "lucide-react";
 import { authUser } from "@/lib/db-queries";
+
+import { Sparkles, ShieldCheck, X, Eye, EyeOff } from "lucide-react";
+
 
 export default function RegisterUser({ isOpen, onClose, onAccountCreated }: any) {
     const [mode, setMode] = useState<"register" | "login">("register");
@@ -30,9 +31,7 @@ export default function RegisterUser({ isOpen, onClose, onAccountCreated }: any)
         setLoading(true);
 
         try {
-            const cleanHandle = handle
-                .trim()
-                .toLowerCase();
+            const cleanHandle = handle.trim().toLowerCase();
 
             if (!cleanHandle) {
                 throw new Error("Enter a handle");
@@ -48,26 +47,47 @@ export default function RegisterUser({ isOpen, onClose, onAccountCreated }: any)
                 mode
             );
 
+
+            const {
+                data: { session },
+            } = await supabase.auth.getSession();
+
+            console.log("SESSION:", session);
+
+            console.log(
+                "LOCAL STORAGE TOKEN:",
+                localStorage.getItem(
+                    "sb-fgynntwcltmgjbehvpqy-auth-token"
+                )
+            );
+
+            const {
+                data: { user: authUserObj },
+            } = await supabase.auth.getUser();
+
+            console.log("AUTH USER:", authUserObj);
+
             localStorage.setItem(
                 "kindsphere_handle",
                 user.anonymous_handle
             );
 
-            // Use canonical key "kindsphere_uid" — matches all dashboard/digest reads
             localStorage.setItem(
                 "kindsphere_uid",
                 user.id
             );
 
-            // Broadcast auth change so all listening pages update instantly
-            window.dispatchEvent(new Event("auth-changed"));
+            window.dispatchEvent(
+                new Event("auth-changed")
+            );
 
             onAccountCreated(
-                cleanHandle,
+                user.anonymous_handle,
                 user.id
             );
 
             onClose();
+
         } catch (err: any) {
             setErrorMsg(
                 err.message || "Something went wrong"

@@ -6,7 +6,8 @@ import Link from "next/link";
 import { supabase } from "@/lib/supabase";
 import { acceptConnection } from "@/lib/services/connectionService";
 // Add this to your imports in digest/connections/page.tsx
-import { sendMessage } from "@/lib/db-queries";
+import { sendMessage, getMessages } from "@/lib/db-queries";
+import { getCurrentUserId } from "@/lib/auth";
 
 interface Chat {
     id: string;
@@ -20,37 +21,79 @@ export default function ConnectionsPage() {
     const [chats, setChats] = useState<Chat[]>([]);
     const [activeChatId, setActiveChatId] = useState<string | null>(null);
     const [newMessage, setNewMessage] = useState("");
+    const [currentUserId, setCurrentUserId] = useState<string | null>(null);
+
+    useEffect(() => {
+        getCurrentUserId().then(setCurrentUserId);
+    }, []);
+
+    const openChat = async (chatId: string) => {
+        setActiveChatId(chatId);
+        const uid = currentUserId ?? await getCurrentUserId();
+        if (!uid) return;
+        try {
+            const dbMessages = await getMessages(chatId);
+            setChats(prev => prev.map(c =>
+                c.id === chatId
+                    ? {
+                        ...c,
+                        messages: (dbMessages ?? []).map(m => ({
+                            sender: m.sender_id === uid ? "me" : "them",
+                            text: m.content,
+                        })),
+                    }
+                    : c
+            ));
+        } catch (err) {
+            console.error("[getMessages] failed to load history:", err);
+        }
+    };
 
     // 1. LOAD DATA FROM SUPABASE
     useEffect(() => {
-        async function fetchRequests() {
-            const { data: { user } } = await supabase.auth.getUser();
-            if (!user) return;
+       async function fetchRequests() {
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) return;
 
-            const { data, error } = await supabase
-                .from('connections')
-                .select(`
-                id, 
-                status, 
-                sender:users!connections_sender_id_fkey(anonymous_handle)
-            `)
-                .eq('receiver_id', user.id);
+    const { data, error } = await supabase
+  .from("connections")
+  .select("*")
+  .or(`sender_id.eq.${user.id},receiver_id.eq.${user.id}`);
 
-            if (data) {
-                setChats(data.map(req => {
-                    // FIX: Handle 'sender' which might come as an array
-                    const senderData = Array.isArray(req.sender) ? req.sender[0] : req.sender;
+    if (error) {
+        console.error(error);
+        return;
+    }
+const ids = [
+  ...new Set(
+    data.flatMap(c => [c.sender_id, c.receiver_id])
+  ),
+];
+const { data: users } = await supabase
+  .from("users")
+  .select("id, anonymous_handle")
+  .in("id", ids);
+  const userMap = Object.fromEntries(
+  users?.map(u => [u.id, u.anonymous_handle]) ?? []
+);
 
-                    return {
-                        id: req.id,
-                        partner: senderData?.anonymous_handle || "Anonymous",
-                        hasConsent: req.status === 'accepted',
-                        termsAccepted: false,
-                        messages: []
-                    };
-                }));
-            }
-        }
+   setChats(
+  data.map(req => {
+    const partnerId =
+      req.sender_id === user.id
+        ? req.receiver_id
+        : req.sender_id;
+
+    return {
+      id: req.id,
+      partner: userMap[partnerId] ?? "Anonymous",
+      hasConsent: req.status === "accepted",
+      termsAccepted: false,
+      messages: [],
+    };
+  })
+);
+}
         fetchRequests();
     }, []);
 
@@ -76,16 +119,29 @@ export default function ConnectionsPage() {
                 </div>
 
                 {!activeChat.hasConsent ? (
-                    <div className="flex-1 flex flex-col items-center justify-center p-8">
-                        <button onClick={() => handleAcceptRequest(activeChat.id)} className="bg-[#E07A5F] text-white px-6 py-2 rounded-full">
-                            Accept Request
-                        </button>
-                    </div>
-                ) : !activeChat.termsAccepted ? (
-                    <div className="flex-1 p-8 overflow-y-auto">
-                        <h2 className="text-lg font-bold mb-4">Terms & Conditions</h2>
-                        <p className="mb-6 text-sm">By proceeding, you agree to respect privacy and maintain a kind atmosphere.</p>
-                        <button onClick={() => setChats(prev => prev.map(c => c.id === activeChat.id ? { ...c, termsAccepted: true } : c))} className="bg-[#81B29A] text-white px-6 py-2 rounded-full">Yes, I agree</button>
+                    <div className="flex-1 flex items-center justify-center bg-[#FAF9F6] p-8">
+                        <div className="max-w-lg w-full bg-white rounded-3xl border border-stone-200 p-8 shadow-sm space-y-6">
+                            <div className="space-y-2">
+                                <h2 className="font-serif text-3xl text-[#1C2541]">
+                                    Connect with @{activeChat.partner}
+                                </h2>
+                                <p className="text-stone-500 leading-relaxed">
+                                    You're about to open a private conversation with another KindSphere member.
+                                </p>
+                            </div>
+                            <div className="rounded-2xl bg-[#FAF9F6] border border-stone-100 p-5 space-y-3 text-sm text-stone-600 leading-relaxed">
+                                <p>🌿 Be kind and respectful.</p>
+                                <p>🔒 Never share phone numbers, addresses, passwords or financial information.</p>
+                                <p>💬 Everyone deserves a safe and comfortable conversation.</p>
+                                <p>🚪 You can always leave the conversation later if it no longer feels right.</p>
+                            </div>
+                            <button
+                                onClick={() => handleAcceptRequest(activeChat.id)}
+                                className="w-full bg-[#E07A5F] hover:bg-[#d66d52] text-white font-semibold py-3 rounded-2xl transition-colors"
+                            >
+                                Accept Connection
+                            </button>
+                        </div>
                     </div>
                 ) : (
                     <>
@@ -105,7 +161,7 @@ export default function ConnectionsPage() {
                         <form
                             onSubmit={async (e) => {
                                 e.preventDefault();
-                                const senderId = localStorage.getItem("kindsphere_uid");
+                                const senderId = await getCurrentUserId();
 
                                 // Safety checks
                                 if (!senderId || !newMessage.trim()) return;
@@ -123,6 +179,20 @@ export default function ConnectionsPage() {
 
                                     // 3. Clear the input
                                     setNewMessage("");
+
+                                    // 4. Reload messages from DB to sync with server state
+                                    const dbMessages = await getMessages(activeChat.id);
+                                    setChats(prev => prev.map(c =>
+                                        c.id === activeChat.id
+                                            ? {
+                                                ...c,
+                                                messages: (dbMessages ?? []).map(m => ({
+                                                    sender: m.sender_id === senderId ? "me" : "them",
+                                                    text: m.content,
+                                                })),
+                                            }
+                                            : c
+                                    ));
                                 } catch (err) {
                                     console.error("Failed to send:", err);
                                     alert("Could not send message.");
@@ -185,7 +255,7 @@ export default function ConnectionsPage() {
                                     </div>
                                     <p className="font-medium text-stone-700">@{chat.partner}</p>
                                 </div>
-                                <button onClick={() => setActiveChatId(chat.id)} className="bg-stone-100 text-stone-600 px-5 py-2 rounded-full text-sm font-semibold hover:bg-stone-200 transition-colors">
+                                <button onClick={() => openChat(chat.id)} className="bg-stone-100 text-stone-600 px-5 py-2 rounded-full text-sm font-semibold hover:bg-stone-200 transition-colors">
                                     Open Chat
                                 </button>
                             </div>
@@ -209,7 +279,7 @@ export default function ConnectionsPage() {
                                     </div>
                                     <p className="font-medium text-stone-700">@{chat.partner}</p>
                                 </div>
-                                <button onClick={() => setActiveChatId(chat.id)} className="text-white px-5 py-2 rounded-full text-sm font-semibold shadow-sm transition-transform hover:scale-105 active:scale-95" style={{ backgroundColor: "#84A98C" }}>
+                                <button onClick={() => openChat(chat.id)} className="text-white px-5 py-2 rounded-full text-sm font-semibold shadow-sm transition-transform hover:scale-105 active:scale-95" style={{ backgroundColor: "#84A98C" }}>
                                     View Request
                                 </button>
                             </div>

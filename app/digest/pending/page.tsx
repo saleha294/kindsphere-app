@@ -3,22 +3,26 @@
 import { MessageSquarePlus, ArrowLeft } from "lucide-react";
 import Link from "next/link";
 
-const MOCK_PENDING_BOTTLES = [
-    {
-        id: "p1",
-        handle: "Solitary_Wave",
-        excerpt: "I’ve spent the last year working completely isolated as a freelance contractor. The isolation is starting to degrade my daily mental stamina. How do you find camaraderie when you work for yourself?",
-        timeHeading: "Intercepted 4 hours ago",
-    },
-    {
-        id: "p2",
-        handle: "Grounded_Tree",
-        excerpt: "How do you learn to gracefully accept praise or constructive feedback when your immediate defensive default reaction is to look for an ulterior motive?",
-        timeHeading: "Intercepted 1 day ago",
-    },
-];
+import { useEffect, useState } from "react";
+import { getCurrentUserId } from "@/lib/auth";
+import { getChosenBottles } from "@/lib/db-queries";
+
 
 export default function PendingDigestPage() {
+    const [bottles, setBottles] = useState<any[]>([]);
+    useEffect(() => {
+    async function load() {
+        const uid = await getCurrentUserId();
+
+        if (!uid) return;
+
+        const data = await getChosenBottles(uid);
+
+        setBottles(data || []);
+    }
+
+    load();
+}, []);
     return (
         <div className="space-y-8 max-w-3xl pb-10">
             {/* Back Button */}
@@ -42,27 +46,24 @@ export default function PendingDigestPage() {
 
             {/* List Section */}
             <div className="grid grid-cols-1 gap-5">
-                {MOCK_PENDING_BOTTLES.map((item) => (
+                {bottles.map((item) => (
                     <div key={item.id} className="bg-white rounded-[2rem] p-8 border border-stone-100 shadow-[0_2px_12px_rgba(0,0,0,0.02)] flex flex-col justify-between gap-6">
                         <div className="space-y-4">
                             <div className="flex justify-between items-center text-xs text-stone-400 font-medium tracking-wide">
-                                <span>@{item.handle}</span>
+                                <span>@{item.sender?.anonymous_handle}</span>
                                 <span className="uppercase">{item.timeHeading}</span>
                             </div>
                             <p className="text-[#1C2541] font-serif text-lg leading-relaxed">
-                                &ldquo;{item.excerpt}&rdquo;
+                                &ldquo;{item.content}&rdquo;
                             </p>
                         </div>
 
-                        <div className="flex justify-end pt-4 border-t border-stone-50">
-                            <button
-                                className="inline-flex items-center gap-2 rounded-full text-sm font-semibold px-6 py-3 transition-transform hover:scale-105 active:scale-95 text-white shadow-md"
-                                style={{ background: "#84A98C" }}
-                            >
-                                <MessageSquarePlus className="h-4 w-4" />
-                                Offer Reflection
-                            </button>
-                        </div>
+                       <div className="flex justify-end pt-4 border-t border-stone-50"> 
+    <Link href={`/dashboard/${item.id}`}>
+        <MessageSquarePlus className="h-4 w-4" />
+        Reply Now
+    </Link>
+</div>
                     </div>
                 ))}
             </div>
