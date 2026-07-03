@@ -10,7 +10,7 @@ import { supabase } from "@/lib/supabase";
 
 const LINKS = [
   { href: "/", label: "Home" },
-  { href: "/dashboard", label: "Feed" },
+  { href: "/dashboard", label: "Shore" },
   { href: "/drop", label: "Drop a Bottle" },
   { href: "/digest", label: "My Drift" },
   { href: "/globe", label: "The Sphere" },
@@ -33,6 +33,7 @@ export function Navbar() {
 
     const openModalTrigger = () => setIsModalOpen(true);
     window.addEventListener("open-login-modal", openModalTrigger);
+    window.addEventListener("open-register-modal", openModalTrigger);
 
     // Sync auth state instantly when login/registration succeeds (any component)
     const syncAuth = () => {
@@ -51,6 +52,7 @@ export function Navbar() {
 
     return () => {
       window.removeEventListener("open-login-modal", openModalTrigger);
+      window.removeEventListener("open-register-modal", openModalTrigger);
       window.removeEventListener("auth-changed", syncAuth);
       document.removeEventListener("mousedown", handleClickOutside);
     };
@@ -86,15 +88,16 @@ export function Navbar() {
 
   return (
     <>
-      <header className="fixed top-4 left-4 right-4 z-50">
+     <header className="fixed inset-x-0 top-4 z-50 bg-transparent">
         <div className="max-w-6xl mx-auto bg-white/70 backdrop-blur-xl border border-stone-200/50 rounded-full shadow-[0_8px_30px_rgb(0,0,0,0.04)] px-6 md:px-8 h-16 flex items-center justify-between">
 
           {/* Logo */}
           <Link href="/" onClick={() => setOpen(false)} className="flex items-center gap-2.5 shrink-0 pl-2">
-            <span className="h-8 w-8 rounded-full bg-[hsl(14,66%,62%)]/20 border border-[hsl(14,66%,62%)]/30 flex items-center justify-center">
-              <span className="h-4 w-4 rounded-full bg-[hsl(14,66%,62%)]" />
-            </span>
-            <span className="font-serif text-xl tracking-tight text-foreground">KindSphere</span>
+            <img src="/favicon.ico" alt="KindSphere" className="h-8 w-8 rounded-full" />
+            <div className="flex flex-col leading-none">
+              <span className="font-serif text-[18px] tracking-tight text-foreground">KindSphere</span>
+              <span className="text-[10px] text-stone-400 font-normal tracking-wide mt-1">Kindness connects us all.</span>
+            </div>
           </Link>
 
           {/* Desktop Navigation */}
@@ -147,7 +150,11 @@ export function Navbar() {
             ) : (
               <button
                 onClick={() => setIsModalOpen(true)}
-                className="inline-flex items-center justify-center rounded-lg bg-[hsl(14,66%,62%)] text-white text-sm font-semibold px-6 py-3 hover:opacity-90 active:scale-95 transition-all cursor-pointer"
+                className="inline-flex items-center justify-center rounded-full text-white text-sm font-semibold px-6 py-3 hover:opacity-90 active:scale-95 transition-all cursor-pointer"
+                style={{
+                  background: "linear-gradient(135deg,#8B5CF6 0%,#6366F1 60%,#818CF8 100%)",
+                  boxShadow: "0 4px 14px rgba(139,92,246,0.35)",
+                }}
               >
                 Join KindSphere
               </button>
@@ -165,9 +172,9 @@ export function Navbar() {
           </button>
         </div>
 
-        {/* Mobile drawer layout */}
+        {/* Mobile drawer layout — no background on the header wrapper itself */}
         {open && (
-          <nav className="md:hidden border-t border-stone-200/50 bg-white/98 backdrop-blur-md">
+          <nav className="md:hidden mt-2 mx-0 rounded-2xl border border-stone-200/50 bg-white/98 backdrop-blur-md overflow-hidden shadow-lg">
             <ul className="w-full max-w-6xl mx-auto px-6 py-4 flex flex-col gap-1 list-none m-0">
               {LINKS.map(({ href, label }) => (
                 <li key={href}>
@@ -210,7 +217,11 @@ export function Navbar() {
                       setOpen(false);
                       setIsModalOpen(true);
                     }}
-                    className="block w-full text-center rounded-lg bg-[hsl(14,66%,62%)] text-white text-sm font-semibold px-6 py-3 hover:opacity-90 transition-opacity cursor-pointer"
+                    className="block w-full text-center rounded-full text-white text-sm font-semibold px-6 py-3 hover:opacity-90 transition-opacity cursor-pointer"
+                    style={{
+                      background: "linear-gradient(135deg,#8B5CF6 0%,#6366F1 60%,#818CF8 100%)",
+                      boxShadow: "0 4px 14px rgba(139,92,246,0.35)",
+                    }}
                   >
                     Join KindSphere
                   </button>

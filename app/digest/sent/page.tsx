@@ -24,7 +24,7 @@ export default function SentDigestPage() {
             {/* Back Button */}
             <Link
                 href="/digest"
-                className="inline-flex items-center gap-2 text-white bg-[#E07A5F] hover:bg-[#d66d52] transition-colors px-4 py-2 rounded-full text-sm font-medium shadow-sm w-max"
+                className="inline-flex items-center gap-2 text-white bg-[#7C3AED] hover:bg-[#6D28D9] transition-colors px-4 py-2 rounded-full text-sm font-medium shadow-sm w-max"
             >
                 <ArrowLeft size={16} />
                 Back to Drift
@@ -45,7 +45,7 @@ export default function SentDigestPage() {
                 <Link
                     href="/drop"
                     className="shrink-0 flex items-center justify-center w-32 h-32 rounded-full text-white shadow-lg transition-transform hover:scale-105 active:scale-95"
-                    style={{ backgroundColor: "#E07A5F" }}
+                    style={{ backgroundColor: "#7C3AED" }}
                 >
                     <div className="flex flex-col items-center gap-2">
                         <Plus size={24} />
@@ -75,9 +75,9 @@ export default function SentDigestPage() {
                                 <span
                                     className="px-4 py-1.5 rounded-full font-semibold border"
                                     style={{
-                                        background: bottle.status === "drifting" ? "rgba(132,169,140,0.1)" : "rgba(168,218,220,0.15)",
-                                        borderColor: bottle.status === "drifting" ? "rgba(132,169,140,0.2)" : "rgba(168,218,220,0.3)",
-                                        color: bottle.status === "drifting" ? "#84A98C" : "#5d8e91",
+                                        background: bottle.status === "drifting" ? "rgba(167,139,250,0.1)" : "rgba(168,218,220,0.15)",
+                                        borderColor: bottle.status === "drifting" ? "rgba(167,139,250,0.2)" : "rgba(168,218,220,0.3)",
+                                        color: bottle.status === "drifting" ? "#A78BFA" : "#5d8e91",
                                     }}
                                 >
                                     {bottle.status.charAt(0).toUpperCase() + bottle.status.slice(1)}
@@ -94,7 +94,7 @@ export default function SentDigestPage() {
                                     Drifting through KindSphere
                                 </span>
                                 <span className="flex items-center gap-1.5">
-                                    <MessageCircle className="h-4 w-4" style={{ color: "#84A98C" }} />
+                                    <MessageCircle className="h-4 w-4" style={{ color: "#A78BFA" }} />
                                     <span className="text-stone-600">0 replies</span>
                                 </span>
                             </div>

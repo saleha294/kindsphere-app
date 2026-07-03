@@ -137,7 +137,7 @@ const { data: users } = await supabase
                             </div>
                             <button
                                 onClick={() => handleAcceptRequest(activeChat.id)}
-                                className="w-full bg-[#E07A5F] hover:bg-[#d66d52] text-white font-semibold py-3 rounded-2xl transition-colors"
+                                className="w-full bg-[#7C3AED] hover:bg-[#6D28D9] text-white font-semibold py-3 rounded-2xl transition-colors"
                             >
                                 Accept Connection
                             </button>
@@ -150,7 +150,7 @@ const { data: users } = await supabase
                                 <div key={i} className={`flex ${m.sender === 'me' ? 'justify-end' : 'justify-start'}`}>
                                     <div className={`max-w-[75%] px-5 py-3 rounded-[1.5rem] shadow-sm text-sm leading-relaxed ${
                                         m.sender === 'me' 
-                                        ? 'bg-[#E07A5F] text-white rounded-br-md' 
+                                        ? 'bg-[#7C3AED] text-white rounded-br-md' 
                                         : 'bg-white border border-stone-100 text-stone-800 rounded-bl-md'
                                     }`}>
                                         {m.text}
@@ -206,7 +206,7 @@ const { data: users } = await supabase
                                 className="flex-1 border rounded-lg p-2"
                                 placeholder="Type a message..."
                             />
-                            <button type="submit" className="ml-2 bg-[#E07A5F] text-white p-2 rounded-lg">
+                            <button type="submit" className="ml-2 bg-[#7C3AED] text-white p-2 rounded-lg">
                                 <Send size={16} />
                             </button>
                         </form>
@@ -224,7 +224,7 @@ const { data: users } = await supabase
             {/* Back Button */}
             <Link
                 href="/digest"
-                className="inline-flex items-center gap-2 text-white bg-[#E07A5F] hover:bg-[#d66d52] transition-colors px-4 py-2 rounded-full text-sm font-medium shadow-sm w-max"
+                className="inline-flex items-center gap-2 text-white bg-[#7C3AED] hover:bg-[#6D28D9] transition-colors px-4 py-2 rounded-full text-sm font-medium shadow-sm w-max"
             >
                 <ArrowLeft size={16} />
                 Back to Drift
@@ -279,7 +279,7 @@ const { data: users } = await supabase
                                     </div>
                                     <p className="font-medium text-stone-700">@{chat.partner}</p>
                                 </div>
-                                <button onClick={() => openChat(chat.id)} className="text-white px-5 py-2 rounded-full text-sm font-semibold shadow-sm transition-transform hover:scale-105 active:scale-95" style={{ backgroundColor: "#84A98C" }}>
+                                <button onClick={() => openChat(chat.id)} className="text-white px-5 py-2 rounded-full text-sm font-semibold shadow-sm transition-transform hover:scale-105 active:scale-95" style={{ backgroundColor: "#A78BFA" }}>
                                     View Request
                                 </button>
                             </div>

@@ -28,7 +28,7 @@ export default function PendingDigestPage() {
             {/* Back Button */}
             <Link
                 href="/digest"
-                className="inline-flex items-center gap-2 text-white bg-[#E07A5F] hover:bg-[#d66d52] transition-colors px-4 py-2 rounded-full text-sm font-medium shadow-sm w-max"
+                className="inline-flex items-center gap-2 text-white bg-[#7C3AED] hover:bg-[#6D28D9] transition-colors px-4 py-2 rounded-full text-sm font-medium shadow-sm w-max"
             >
                 <ArrowLeft size={16} />
                 Back to Drift
@@ -58,8 +58,11 @@ export default function PendingDigestPage() {
                             </p>
                         </div>
 
-                       <div className="flex justify-end pt-4 border-t border-stone-50"> 
-    <Link href={`/dashboard/${item.id}`}>
+                       <div className="flex justify-end pt-4 border-t border-stone-50">
+    <Link
+        href={`/dashboard/${item.id}`}
+        className="inline-flex items-center gap-2 bg-[#7C3AED] hover:bg-[#6D28D9] text-white text-sm font-semibold px-5 py-2.5 rounded-xl transition-colors"
+    >
         <MessageSquarePlus className="h-4 w-4" />
         Reply Now
     </Link>

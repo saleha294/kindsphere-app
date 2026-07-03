@@ -10,6 +10,7 @@ export const getDriftingBottles = async () => {
     if (error) throw error;
     return data;
 };
+
 export const getMySentBottles = async (userId: string) => {
     const { data, error } = await supabase
         .from("bottles")
@@ -28,6 +29,7 @@ export const getMySentBottles = async (userId: string) => {
     return data;
 };
 
+//It literally just inserts one row into the bottles table.
 export const castBottle = async (content: string, category: string) => {
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) throw new Error("Unauthorized: User not authenticated with Supabase.");
@@ -375,80 +377,105 @@ export const getMessages = async (connectionId: string) => {
     return data;
 };
 
-// Claim a bottle for later reflection
-export const claimBottle = async (bottleId: string, userId: string) => {
-    const { data, error } = await supabase
-        .from("bottles")
-        .update({
-            recipient_id: userId,
-            status: "captured",
-        })
-        .eq("id", bottleId)
-        .select()
-        .single();
-
-    if (error) throw error;
-
-    return data;
+// claimBottle: kept for backward compatibility only.
+// New code should use privatelyDeliverBottle() instead.
+// This function no longer writes recipient_id or captures the bottle status.
+export const claimBottle = async (_bottleId: string, _userId: string) => {
+    // No-op: private delivery is now tracked exclusively in private_bottle_deliveries.
+    return null;
 };
 
 
-// Bottles chosen specifically by this user
+// Bottles privately delivered to this user
 export const getChosenBottles = async (userId: string) => {
-    const { data, error } = await supabase
+
+    // Step 1
+    const { data: deliveries, error: deliveryError } = await supabase
+        .from("private_bottle_deliveries")
+        .select("bottle_id")
+        .eq("receiver_id", userId)
+        .eq("responded", false);
+
+    if (deliveryError) throw deliveryError;
+
+    if (!deliveries || deliveries.length === 0)
+        return [];
+
+    const bottleIds = deliveries.map(d => d.bottle_id);
+
+    // Step 2
+    const { data: bottles, error: bottleError } = await supabase
         .from("bottles")
         .select(`
             id,
+            sender_id,
             content,
             category,
-            created_at,
-            sender:users!bottles_sender_id_fkey(
-                anonymous_handle
-            )
+            created_at
         `)
-        .eq("recipient_id", userId)
-        .eq("status", "captured")
-        .order("created_at", { ascending: false });
+        .in("id", bottleIds);
 
-    if (error) throw error;
+    if (bottleError) throw bottleError;
 
-    return data;
+    if (!bottles || bottles.length === 0)
+        return [];
+
+    // Step 3
+    const senderIds = [...new Set(bottles.map(b => b.sender_id))];
+
+    const { data: users, error: userError } = await supabase
+        .from("users")
+        .select("id, anonymous_handle")
+        .in("id", senderIds);
+
+    if (userError) throw userError;
+
+    // Step 4
+    return bottles.map(bottle => ({
+        ...bottle,
+        sender: {
+            anonymous_handle:
+                users?.find(u => u.id === bottle.sender_id)
+                    ?.anonymous_handle ?? "Anonymous"
+        }
+    }));
 };
 
-export const getDigestStats = async (userId: string) => {
-  const { count: bottleCount } = await supabase
-    .from("bottles")
-    .select("*", { count: "exact", head: true })
-    .eq("sender_id", userId);
 
-  const { count: replyCount } = await supabase
-    .from("messages")
-    .select(
-      `
+export const getDigestStats = async (userId: string) => {
+    const { count: bottleCount } = await supabase
+        .from("bottles")
+        .select("*", { count: "exact", head: true })
+        .eq("sender_id", userId);
+
+    const { count: replyCount } = await supabase
+        .from("messages")
+        .select(
+            `
       id,
       bottle:bottles!inner(sender_id)
       `,
-      { count: "exact", head: true }
-    )
-    .eq("bottle.sender_id", userId);
+            { count: "exact", head: true }
+        )
+        .eq("bottle.sender_id", userId);
 
-  const { count: connectionCount } = await supabase
-    .from("connections")
-    .select("*", { count: "exact", head: true })
-    .or(`sender_id.eq.${userId},receiver_id.eq.${userId}`)
-    .eq("status", "accepted");
+    const { count: connectionCount } = await supabase
+        .from("connections")
+        .select("*", { count: "exact", head: true })
+        .or(`sender_id.eq.${userId},receiver_id.eq.${userId}`)
+        .eq("status", "accepted");
 
-  // 👇 ADD THESE
-  console.log("Digest Stats for:", userId);
-  console.log("Bottle Count:", bottleCount);
-  console.log("Reply Count:", replyCount);
-  console.log("Connection Count:", connectionCount);
+    // 👇 ADD THESE
+    console.log("Digest Stats for:", userId);
+    console.log("Bottle Count:", bottleCount);
+    console.log("Reply Count:", replyCount);
+    console.log("Connection Count:", connectionCount);
 
-  return {
-    bottles: bottleCount ?? 0,
-    replies: replyCount ?? 0,
-    connections: connectionCount ?? 0,
-  };
+    return {
+        bottles: bottleCount ?? 0,
+        replies: replyCount ?? 0,
+        connections: connectionCount ?? 0,
+    };
 };
 
 export const getInteractionResonance = async (userId: string) => {
@@ -484,4 +511,203 @@ export const getInteractionResonance = async (userId: string) => {
         score: 1,
         reason: "Connected"
     }));
+};
+
+export const privatelyDeliverBottle = async (bottleId: string) => {
+
+    console.log("========== PRIVATE DELIVERY ==========");
+
+    console.log("Bottle ID received:", bottleId);
+
+    const {
+        data: { user },
+        error: authError,
+    } = await supabase.auth.getUser();
+
+    console.log("Auth Error:", authError);
+    console.log("Current User:", user);
+
+    if (!user) {
+        throw new Error("Not logged in.");
+    }
+
+    // -------------------------------
+    // Check bottle exists
+    // -------------------------------
+
+    const { data: bottleCheck, error: bottleError } = await supabase
+        .from("bottles")
+        .select("*")
+        .eq("id", bottleId)
+        .single();
+
+    console.log("Bottle:", bottleCheck);
+    console.log("Bottle Error:", bottleError);
+
+    // -------------------------------
+    // Load possible recipients
+    // -------------------------------
+
+    const { data: users, error: userError } = await supabase
+        .from("users")
+        .select("id")
+        .neq("id", user.id);
+
+    console.log("Possible users:", users);
+    console.log("User Error:", userError);
+
+    if (userError) throw userError;
+
+    if (!users || users.length === 0) {
+        throw new Error("No users available.");
+    }
+
+    const randomUser =
+        users[Math.floor(Math.random() * users.length)];
+
+    console.log("Chosen User:", randomUser);
+
+    const payload = {
+        bottle_id: bottleId,
+        sender_id: user.id,
+        receiver_id: randomUser.id,
+    };
+
+    console.log("Payload about to insert:");
+    console.table(payload);
+
+    const { data, error } = await supabase
+        .from("private_bottle_deliveries")
+        .insert(payload)
+        .select();
+
+    console.log("Insert Result:", data);
+    console.log("Insert Error:", error);
+
+    if (error) {
+        throw error;
+    }
+
+    console.log("========== SUCCESS ==========");
+
+    return data;
+};
+
+// ── Private Bottle Delivery: receiver-side ────────────────────────────────
+
+/**
+ * Fetch private bottle deliveries addressed to this user that have not
+ * been responded to yet.  Uses two explicit queries rather than a PostgREST
+ * join hint so it works regardless of whether a named FK exists.
+ */
+export const getPrivateBottles = async (userId: string) => {
+    // Step 1 — deliveries for this receiver that are still pending
+    const { data: deliveries, error: deliveryError } = await supabase
+        .from("private_bottle_deliveries")
+        .select("id, responded, created_at, bottle_id")
+        .eq("receiver_id", userId)
+        .eq("responded", false)
+        .order("created_at", { ascending: false });
+
+    if (deliveryError) throw deliveryError;
+    if (!deliveries || deliveries.length === 0) return [];
+
+    const bottleIds = deliveries.map((d) => d.bottle_id);
+
+    // Step 2 — fetch the actual bottle content (no sender identity exposed)
+    const { data: bottles, error: bottleError } = await supabase
+        .from("bottles")
+        .select("id, content, category, created_at")
+        .in("id", bottleIds);
+
+    if (bottleError) throw bottleError;
+
+    const bottleMap = Object.fromEntries(
+        (bottles ?? []).map((b) => [b.id, b])
+    );
+
+    // Merge: each delivery gets its bottle attached, sender stays hidden
+    return deliveries.map((delivery) => ({
+        id: delivery.id,
+        responded: delivery.responded,
+        created_at: delivery.created_at,
+        bottle: bottleMap[delivery.bottle_id] ?? null,
+    }));
+};
+
+/**
+ * Mark a private delivery as responded and insert an anonymous reply
+ * message into the messages table.  The reply is linked to the original
+ * bottle so the sender can read it in their replies page — but the
+ * sender_id stored is the replier's real id, which is never shown in the
+ * UI (only the anonymous handle is displayed).
+ *
+ * After this call the delivery row has responded = true and the bottle
+ * will disappear from the receiver's private inbox on next load.
+ */
+export const replyToPrivateBottle = async (
+    deliveryId: string,
+    bottleId: string,
+    replyerId: string,
+    content: string
+) => {
+    // 1. Insert the anonymous reply message
+    const { error: msgError } = await supabase
+        .from("messages")
+        .insert([{
+            bottle_id: bottleId,
+            sender_id: replyerId,
+            content,
+        }]);
+
+    if (msgError) throw msgError;
+
+    // 2. Mark delivery as responded so it leaves the inbox
+    const { error: updateError } = await supabase
+        .from("private_bottle_deliveries")
+        .update({ responded: true })
+        .eq("id", deliveryId);
+
+    if (updateError) throw updateError;
+};
+
+// ── Sphere live stats ─────────────────────────────────────────────────────
+
+/**
+ * Returns aggregate counts for the live Sphere stats panel.
+ * All counts are cheap single-query aggregates — no user PII exposed.
+ */
+export const getSphereStats = async () => {
+    const [bottlesRes, repliesTodayRes, usersRes] = await Promise.all([
+        supabase
+            .from("bottles")
+            .select("*", { count: "exact", head: true })
+            .eq("status", "drifting"),
+        supabase
+            .from("messages")
+            .select("*", { count: "exact", head: true })
+            .gte("created_at", new Date(new Date().setHours(0, 0, 0, 0)).toISOString()),
+        supabase
+            .from("users")
+            .select("*", { count: "exact", head: true }),
+    ]);
+
+    return {
+        driftingBottles: bottlesRes.count ?? 0,
+        repliesToday: repliesTodayRes.count ?? 0,
+        totalSouls: usersRes.count ?? 0,
+    };
+};
+
+/**
+ * Returns all registered users as anonymous globe markers.
+ * Only the anonymous handle is returned — no emails, no auth ids exposed.
+ */
+export const getSphereUsers = async () => {
+    const { data, error } = await supabase
+        .from("users")
+        .select("id, anonymous_handle");
+
+    if (error) throw error;
+    return data ?? [];
 };

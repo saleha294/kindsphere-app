@@ -82,7 +82,7 @@ export default function ResponseDetailPage() {
   );
 
   return (
-    <div className="max-w-2xl mx-auto py-10 px-6">
+    <div className="max-w-2xl mx-auto pt-28 pb-10 px-6">
       <Link href="/dashboard" className="text-sm text-stone-500 hover:text-stone-800">← Back to feed</Link>
 
       <div className="mt-8 p-6 bg-white border border-stone-200 rounded-2xl shadow-sm">

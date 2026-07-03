@@ -10,10 +10,11 @@ import { usePathname } from "next/navigation";
 import { getInteractionResonance } from "@/lib/db-queries";
 
 const NAV_ITEMS = [
-  { href: "/digest/sent", label: "My Sent Bottles", color: "#E07A5F", hoverBg: "hover:bg-[#E07A5F]/10 hover:text-[#E07A5F]" },
-  { href: "/digest/pending", label: "Awaiting My Voice", color: "#81B29A", hoverBg: "hover:bg-[#81B29A]/10 hover:text-[#81B29A]" },
-  { href: "/digest/connections", label: "Mutual Connections", color: "#E07A5F", hoverBg: "hover:bg-[#E07A5F]/10 hover:text-[#E07A5F]" },
-  { href: "/digest/replies", label: "Replies", color: "#3D5A80", hoverBg: "hover:bg-[#3D5A80]/10 hover:text-[#3D5A80]" }, // New tab
+  { href: "/digest/sent", label: "My Sent Bottles", color: "#7C3AED", hoverBg: "hover:bg-[#7C3AED]/10 hover:text-[#7C3AED]" },
+  { href: "/digest/pending", label: "Awaiting My Voice", color: "#7C3AED", hoverBg: "hover:bg-[#7C3AED]/10 hover:text-[#7C3AED]" },
+  { href: "/digest/private", label: "Private Bottles", color: "#7C3AED", hoverBg: "hover:bg-[#7C3AED]/10 hover:text-[#7C3AED]" },
+  { href: "/digest/connections", label: "Mutual Connections", color: "#7C3AED", hoverBg: "hover:bg-[#7C3AED]/10 hover:text-[#7C3AED]" },
+  { href: "/digest/replies", label: "Replies", color: "#7C3AED", hoverBg: "hover:bg-[#7C3AED]/10 hover:text-[#7C3AED]" },
 ];
 
 
@@ -45,7 +46,7 @@ function ResonanceList({
 
       <div className="flex-1 h-3 bg-stone-100 rounded-full overflow-hidden">
         <div
-          className="h-full bg-[#E07A5F]"
+          className="h-full bg-[#7C3AED]"
           style={{ width: "100%" }}
         />
       </div>
@@ -104,10 +105,10 @@ setResonance(people);
 }, []);
 
   return (
-    <div className="w-full space-y-8">
+    <div className="w-full space-y-8 pt-8 md:pt-14">
 
       {/* Header */}
-      <header className="text-center space-y-2 pt-2">
+      <header className="text-center space-y-2">
         <h1 className="font-serif text-3xl md:text-4xl font-medium text-foreground leading-tight">
           {userHandle ? `@${userHandle}'s Personal Drift` : "Your Personalized Drift"}
         </h1>

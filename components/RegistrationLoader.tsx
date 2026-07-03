@@ -29,7 +29,7 @@ export default function RegistrationLoader() {
 
                 {/* The Character Shape - Continually morphs border-radius and rotates slowly */}
                 <div
-                    className="w-16 h-16 bg-gradient-to-tr from-[#81B29A] via-[#A2D2DF] to-[#E07A5F]/40 animate-blob shadow-md"
+                    className="w-16 h-16 bg-gradient-to-tr from-[#8B5CF6] via-[#A2D2DF] to-[#C4B5FD]/40 animate-blob shadow-md"
                     style={{
                         animation: "blobMorph 6s infinite ease-in-out, spinSlow 12s infinite linear"
                     }}

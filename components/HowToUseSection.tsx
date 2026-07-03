@@ -1,31 +1,37 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
 import RegisterUser from "@/components/RegisterUser";
 
-/* ── Section data ── */
+/* ── Step data ── */
 const STEPS = [
   {
-    image: "/assets/imagery/presence.png",
-    alt: "Create your anonymous presence",
-    title: "Create your presence",
-    body: "Sign in or log in to generate your unique, anonymous handle and start your journey.",
-    button: { label: "Sign up", variant: "terracotta" as const, href: null },
+    icon: "/assets/imagery/presence.png",
+    alt: "Create your handle",
+    number: "01",
+    title: "Create Your Handle",
+    body: "Sign up anonymously with a handle that's uniquely you.",
   },
   {
-    image: "/assets/imagery/globalreach.png",
-    alt: "Drop a bottle into the ocean",
-    title: "Drop a Bottle",
-    body: 'Use the "Drop a Bottle" option to share messages, queries, or advice for the world to hear.',
-    button: { label: "Drop a bottle", variant: "sage" as const, href: "/drop" },
+    icon: "/assets/imagery/bottle.png",
+    alt: "Share or send kindness",
+    number: "02",
+    title: "Share or Send Kindness",
+    body: "Post a message, send a kind note, or throw a bottle.",
   },
   {
-    image: "/assets/imagery/realgrowth.png",
-    alt: "Connect and grow together",
-    title: "Connect & Grow",
-    body: "Receive responses, track your records, maintain connections, and help others grow!",
-    button: { label: "Feed", variant: "terracotta" as const, href: "/dashboard" },
+    icon: "/assets/imagery/heart.png",
+    alt: "Spread positivity",
+    number: "03",
+    title: "Spread Positivity",
+    body: "Your words might be exactly what someone needs today.",
+  },
+  {
+    icon: "/assets/imagery/connect.png",
+    alt: "Keep it kind",
+    number: "04",
+    title: "Keep It Kind",
+    body: "Be respectful, supportive, and help keep this space safe for everyone.",
   },
 ] as const;
 
@@ -34,77 +40,74 @@ export default function HowToUseSection() {
 
   return (
     <>
-      <section className="w-full py-16 md:py-24 bg-[#FDFBF7]">
-        <div className="max-w-5xl mx-auto px-6 md:px-12">
+      <section className="w-full py-16 md:py-24">
+        <div className="w-full max-w-5xl mx-auto px-6 md:px-12">
 
-          {/* Section header */}
-          <div className="mb-12 text-left">
-            <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-stone-400 mb-2">
-              How to use
+          {/* Section header — left aligned */}
+          <div className="mb-10 space-y-2">
+            <p className="text-[9px] font-semibold uppercase tracking-[0.22em] text-stone-400">
+              Start Here
             </p>
-            <h2 className="text-3xl md:text-4xl font-serif text-[#1C2541]">
-              Become a {" "}
-              <span className="text-[#E07A5F]"> part of KindSphere</span>
+            <h2 className="font-serif text-3xl md:text-4xl text-[#1C2541] leading-tight">
+              How to use{" "}
+              <span className="text-[#6D28D9]">KindSphere</span>
             </h2>
+            <p className="text-[15px] text-stone-500 leading-relaxed max-w-xl pt-1">
+              Four simple steps to start sharing kindness with the world.
+            </p>
           </div>
 
-          {/* Step cards — image-left / content-right on desktop, stacked on mobile */}
-          <div className="max-w-3xl flex flex-col gap-6">
+          {/* Steps — horizontal on md+, vertical stack on mobile */}
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-8 md:gap-6">
             {STEPS.map((step, i) => (
-              <div
-                key={i}
-                className="group flex flex-col md:flex-row bg-white rounded-2xl overflow-hidden border border-stone-200/50 shadow-sm hover:shadow-md transition-shadow duration-300"
-              >
-                {/* Image — 35% width on desktop, full width on mobile */}
-                <div className="w-full md:w-[35%] aspect-[4/3] md:aspect-auto overflow-hidden bg-stone-100 shrink-0 relative min-h-[180px] md:min-h-0">
+              <div key={i} className="flex flex-col items-start gap-4">
+
+                <div
+                  className="relative w-[5rem] h-[5rem] rounded-full overflow-hidden bg-white border border-stone-200 shadow-lg flex items-center justify-center shrink-0"
+                  style={{ outline: "2px solid rgba(139,92,246,0.14)" }}
+                >
                   <img
-                    src={step.image}
+                    src={step.icon}
                     alt={step.alt}
-                    className="absolute inset-0 w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-500"
+                    className="w-[80%] h-[80%] object-contain"
+                    onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = "none"; }}
                   />
+                  <span
+                    className="absolute -top-1 -right-1 w-5 h-5 rounded-full flex items-center justify-center text-[8px] font-bold text-white shadow-md"
+                    style={{ background: "linear-gradient(135deg,#8B5CF6,#6366F1)" }}
+                  >
+                    {step.number}
+                  </span>
                 </div>
 
-                {/* Content — 65% width on desktop */}
-                <div className="flex-1 flex flex-col justify-center px-6 py-6 md:px-8 md:py-6 gap-3.5">
-                  <h3 className="font-serif text-lg md:text-xl font-medium text-[#1C2541]">
+                <div className="space-y-1.5">
+                  <p className="text-[15px] font-semibold text-[#1C2541] leading-snug">
                     {step.title}
-                  </h3>
-                  <p className="text-xs md:text-sm text-stone-500 leading-relaxed">
+                  </p>
+                  <p className="text-[12px] leading-[1.7] text-stone-500 md:max-w-[160px]">
                     {step.body}
                   </p>
-
-                  {/* CTA button */}
-                  {step.button.href ? (
-                    <Link
-                      href={step.button.href}
-                      className={`inline-flex items-center justify-center rounded-xl text-white text-xs font-semibold px-6 py-2.5 mt-1 w-fit hover:opacity-90 active:scale-[0.97] transition-all min-h-[40px] ${
-                        step.button.variant === "terracotta"
-                          ? "bg-[#E07A5F]"
-                          : "bg-[#81B29A]"
-                      }`}
-                    >
-                      {step.button.label}
-                    </Link>
-                  ) : (
-                    <button
-                      onClick={() => setShowRegister(true)}
-                      className={`inline-flex items-center justify-center rounded-xl text-white text-xs font-semibold px-6 py-2.5 mt-1 w-fit hover:opacity-90 active:scale-[0.97] transition-all min-h-[40px] cursor-pointer ${
-                        step.button.variant === "terracotta"
-                          ? "bg-[#E07A5F]"
-                          : "bg-[#81B29A]"
-                      }`}
-                    >
-                      {step.button.label}
-                    </button>
-                  )}
                 </div>
               </div>
             ))}
           </div>
+
+          {/* CTA — left aligned */}
+          <div className="mt-10 flex justify-start">
+            <button
+              onClick={() => setShowRegister(true)}
+              className="inline-flex items-center gap-2 text-sm font-semibold text-white px-7 py-3.5 rounded-full cursor-pointer hover:opacity-90 active:scale-[0.97] transition-all"
+              style={{
+                background: "linear-gradient(135deg,#7C3AED 0%,#6366F1 60%,#818CF8 100%)",
+                boxShadow: "0 8px 28px rgba(109,40,217,0.3)",
+              }}
+            >
+              Get started — it's free
+            </button>
+          </div>
         </div>
       </section>
 
-      {/* Registration modal */}
       <RegisterUser
         isOpen={showRegister}
         onClose={() => setShowRegister(false)}
@@ -112,7 +115,6 @@ export default function HowToUseSection() {
           localStorage.setItem("kindsphere_handle", handle);
           localStorage.setItem("kindsphere_uid", id);
           setShowRegister(false);
-          // Broadcast auth change so all listening pages update instantly (no full reload needed)
           window.dispatchEvent(new Event("auth-changed"));
         }}
       />

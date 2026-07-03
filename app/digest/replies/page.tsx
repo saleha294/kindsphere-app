@@ -38,7 +38,7 @@ export default function RepliesPage() {
             {/* Back Button */}
             <Link
                 href="/digest"
-                className="inline-flex items-center gap-2 text-white bg-[#E07A5F] hover:bg-[#d66d52] transition-colors px-4 py-2 rounded-full text-sm font-medium shadow-sm w-max"
+                className="inline-flex items-center gap-2 text-white bg-[#7C3AED] hover:bg-[#6D28D9] transition-colors px-4 py-2 rounded-full text-sm font-medium shadow-sm w-max"
             >
                 <ArrowLeft size={16} />
                 Back to Drift
@@ -65,7 +65,7 @@ export default function RepliesPage() {
 
                         {/* Reply content */}
                         <div className="space-y-3 pt-2">
-                            <div className="flex items-center gap-2 text-[#84A98C] font-semibold text-sm">
+                            <div className="flex items-center gap-2 text-[#A78BFA] font-semibold text-sm">
                                 <MessageCircle size={16} />
                                 <span>@{reply.sender?.anonymous_handle || 'Anonymous'}</span>
                             </div>

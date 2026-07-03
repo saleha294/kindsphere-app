@@ -32,16 +32,16 @@ export default function DigestLayout({ children }: { children: React.ReactNode }
 
             {/* ── Guest Onboarding Banner ── (Now disappears instantly for registered users!) */}
             {!userHandle && (
-                <div className="w-full bg-gradient-to-r from-[#E07A5F]/10 via-[#81B29A]/10 to-transparent border-b border-[#E07A5F]/15 py-3.5 px-6 animate-fade-in">
+                <div className="w-full bg-gradient-to-r from-[#7C3AED]/10 via-[#8B5CF6]/10 to-transparent border-b border-[#7C3AED]/15 py-3.5 px-6 animate-fade-in">
                     <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3 text-sm">
                         <p className="text-stone-600 font-medium flex items-center gap-2">
-                            <Sparkles className="h-4 w-4 text-[#E07A5F] shrink-0" />
+                            <Sparkles className="h-4 w-4 text-[#7C3AED] shrink-0" />
                             Viewing sandbox archive. These cards demonstrate how your personal space will look.
                         </p>
                         <button
                             onClick={() => window.dispatchEvent(new Event("open-login-modal"))}
                             className="px-4 py-1.5 rounded-full text-xs font-semibold text-white transition-all hover:opacity-90 active:scale-95 cursor-pointer"
-                            style={{ background: "#E07A5F" }}
+                            style={{ background: "linear-gradient(135deg,#7C3AED 0%,#6366F1 60%,#818CF8 100%)" }}
                         >
                             Claim Your Unique Handle
                         </button>

@@ -60,12 +60,12 @@ export default function JoinModal({ onClose, onSuccess }: JoinModalProps) {
             <div
                 className="relative w-full max-w-md rounded-3xl overflow-hidden"
                 style={{
-                    background: "#E07A5F",
+                    background: "linear-gradient(135deg,#7C3AED 0%,#6366F1 60%,#818CF8 100%)",
                     border: "1px solid rgba(255,255,255,0.2)",
-                    boxShadow: "0 24px 60px rgba(224, 122, 95, 0.35)",
+                    boxShadow: "0 24px 60px rgba(124,58,237,0.35)",
                 }}
             >
-                <div className="h-1.5 w-full" style={{ background: "#81B29A" }} />
+                <div className="h-1.5 w-full" style={{ background: "linear-gradient(90deg,#C4B5FD,#8B5CF6,#C4B5FD)" }} />
 
                 <div className="relative px-8 pt-7 pb-9 space-y-6">
                     <button
@@ -77,7 +77,7 @@ export default function JoinModal({ onClose, onSuccess }: JoinModalProps) {
                     </button>
 
                     <div className="space-y-3">
-                        <div className="w-11 h-11 rounded-2xl flex items-center justify-center shadow-sm" style={{ background: "#81B29A" }}>
+                        <div className="w-11 h-11 rounded-2xl flex items-center justify-center shadow-sm" style={{ background: "rgba(255,255,255,0.25)" }}>
                             <Sparkles className="h-5 w-5 text-white" />
                         </div>
                         <div>
@@ -123,7 +123,7 @@ export default function JoinModal({ onClose, onSuccess }: JoinModalProps) {
                             type="submit"
                             disabled={joining || trimmed.length < 3}
                             className="w-full rounded-xl py-3.5 text-sm font-semibold transition-all active:scale-[0.98] disabled:opacity-50 text-white cursor-pointer"
-                            style={{ background: "#81B29A" }}
+                            style={{ background: "rgba(255,255,255,0.25)" }}
                         >
                             {joining ? "Securing Handle..." : "Enter the Sphere →"}
                         </button>

@@ -3,6 +3,7 @@
 import { User } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useRef, ReactNode } from "react";
+import { useRouter } from "next/navigation";
 import HowToUseSection from "@/components/HowToUseSection";
 
 /* ─────────────────────────────────────────────
@@ -84,16 +85,16 @@ const SPHERES = [
     alt: "Anonymous by Design",
     title: "Anonymous by Design",
     body: "No profiles, no histories, no judgements. Your real identity is stripped away the moment you enter.",
-    accent: "#E07A5F",
-    tint: "rgba(224,122,95,0.07)",
+    accent: "#8B5CF6",
+    tint: "rgba(139,92,246,0.07)",
   },
   {
     image: "/assets/imagery/globalreach.png",
     alt: "Global Reach",
     title: "Global Reach",
     body: "Drop a digital bottle and receive perspectives from every corner of the world.",
-    accent: "#84A98C",
-    tint: "rgba(132,169,140,0.09)",
+    accent: "#A78BFA",
+    tint: "rgba(167,139,250,0.09)",
   },
   {
     image: "/assets/imagery/realgrowth.png",
@@ -146,11 +147,17 @@ function Eyebrow({ children }: { children: ReactNode }) {
    Page
 ───────────────────────────────────────────── */
 export default function LandingPage() {
+  const router = useRouter();
   return (
     <>
       {/* Global animation styles — scoped to this page */}
       <style>{`
-        .reveal-wrap {
+          /* Hide page content while splash is active — prevents flash */
+          html.ks-splash body > main {
+            visibility: hidden;
+            pointer-events: none;
+          }
+          .reveal-wrap {
           opacity: 0;
           transform: translateY(18px);
           transition: opacity 0.75s cubic-bezier(0.22,1,0.36,1),
@@ -182,155 +189,244 @@ export default function LandingPage() {
 
         /* Hairline divider */
         .hairline { border: none; border-top: 1px solid rgba(28,37,65,0.07); }
+
+        /* Hero join button hover */
+        .hero-join-btn:hover {
+          box-shadow: 0 12px 36px rgba(139,92,246,0.45), 0 4px 12px rgba(139,92,246,0.25);
+          transform: translateY(-1px);
+        }
       `}</style>
 
       <div className="w-full flex flex-col overflow-x-hidden bg-[#FAF9F6] font-sans">
 
         {/* ── HERO ─────────────────────────────────── */}
-        <section className="relative w-full min-h-[92vh] flex items-center justify-center bg-[url('/assets/imagery/background.png')] bg-cover bg-center bg-no-repeat">
-          {/* soft veil */}
-          <div className="absolute inset-0 bg-[#FAF9F6]/80" />
+        <section
+          className="ks-hero"
+          style={{
+            width: "100%",
+            minHeight: "calc(100vh - 80px)",
+            marginTop: "0",
+            paddingTop: "80px",
+            backgroundImage: "url('/assets/imagery/background.png')",
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+            backgroundRepeat: "no-repeat",
+            backgroundAttachment: "scroll",
+            display: "flex",
+            alignItems: "center",
+            position: "relative",
+          }}
+        >
+          {/* Content — centered block */}
+          <div
+            className="px-5 md:px-20 pt-12 pb-16"
+            style={{
+              width: "100%",
+              maxWidth: "72rem",
+              margin: "0 auto",
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              textAlign: "center",
+              gap: "1.5rem",
+            }}
+          >
+            {/* eyebrow pill */}
+            <span
+              className="inline-flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-[0.2em] px-4 py-1.5 rounded-full"
+              style={{
+                background: "rgba(139,92,246,0.15)",
+                color: "#5B21B6",
+                border: "1px solid rgba(139,92,246,0.25)",
+              }}
+            >
+              ✦ Anonymous · Global · Kind
+            </span>
 
-          <div className="relative z-10 w-full max-w-2xl mx-auto px-8 py-28 flex flex-col items-start gap-7 md:items-center md:text-center">
-            <Eyebrow>Anonymous · Global · Kind</Eyebrow>
-
-            <h1 className="font-serif text-5xl md:text-6xl lg:text-7xl leading-[1.06] tracking-tight text-[#1C2541]">
-              Be heard.<br />
-              Be kind.<br />
-              <em className="text-[#E07A5F] not-italic">Anonymously.</em>
+            {/* headline */}
+            <h1
+              className="font-serif leading-[1.07] tracking-tight"
+              style={{
+                fontSize: "clamp(2.4rem, 4.8vw, 3.6rem)",
+                color: "#1C1240",
+              }}
+            >
+              A kinder world<br />
+              starts with a<br />
+              <em className="not-italic" style={{ color: "#6D28D9" }}>
+                single message.
+              </em>
             </h1>
 
-            <p className="text-[15px] md:text-base text-stone-500 max-w-sm leading-relaxed">
-              A quiet, humane corner of the internet where people send thoughts
-              into the digital ocean — and receive honest kindness in return.
+            {/* sub-headline */}
+            <p
+              className="text-[15px] leading-[1.75]"
+              style={{ color: "#374151", maxWidth: "22rem" }}
+            >
+              KindSphere is a safe, anonymous place to share your thoughts, spread kindness, and remind each other that we're never alone.
             </p>
 
-            <Link
-              href="/dashboard"
-              className="mt-2 inline-flex items-center gap-2.5 rounded-xl bg-[#E07A5F] text-white text-sm font-semibold px-7 py-3.5 hover:opacity-90 active:scale-[0.97] transition-all min-h-[48px] shadow-sm"
+            {/* CTA row */}
+            <div className="flex flex-wrap items-center justify-center gap-3">
+              <button
+                onClick={() => window.dispatchEvent(new Event("open-register-modal"))}
+                className="hero-join-btn inline-flex items-center gap-2 text-sm font-semibold text-white px-7 py-3.5 rounded-full cursor-pointer transition-all active:scale-[0.97]"
+                style={{
+                  background: "linear-gradient(135deg,#7C3AED 0%,#6366F1 60%,#818CF8 100%)",
+                  boxShadow: "0 8px 28px rgba(109,40,217,0.35)",
+                }}
+              >
+                ✦ Join KindSphere
+              </button>
+
+              <button
+                onClick={() => router.push('/dashboard')}
+                className="hidden md:inline-flex items-center gap-2 text-sm font-semibold px-7 py-3.5 rounded-full cursor-pointer transition-all active:scale-[0.97]"
+                style={{
+                  color: "#5B21B6",
+                  border: "1.5px solid rgba(109,40,217,0.35)",
+                  background: "rgba(255,255,255,0.65)",
+                }}
+              >
+                ♡ Leave a Kindness
+              </button>
+            </div>
+
+            {/* tagline */}
+            <p
+              className="text-[13px] italic"
+              style={{ color: "rgba(109,40,217,0.6)", fontFamily: "var(--font-dm-serif)" }}
             >
-              Explore the Feed
-              <span className="text-white/70 text-base leading-none">→</span>
-            </Link>
+              You are more connected than you think… ♡
+            </p>
           </div>
-
-
-
-          {/* bottom fade to next section */}
-          <div className="absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-[#FAF9F6] to-transparent pointer-events-none" />
         </section>
 
 
         {/* ── PHILOSOPHY MARQUEE ──────────────────── */}
-        <section className="relative z-10 w-full #f7bb9bff py-16 overflow-hidden">
+        <section className="relative z-10 w-full py-16 overflow-hidden px-5 md:px-0">
           <div className="flex animate-marquee whitespace-nowrap gap-12 items-center">
-            {/* We duplicate the array to ensure seamless looping */}
             {[
-              "Wellbeing", "Friendship", "Kindness", "Conversation", "Safe & Secure",
-              "Wellbeing", "Friendship", "Kindness", "Conversation", "Safe & Secure"
+              "Wellbeing", "Friendship", "Kindness", "Conversation", "Safe",
+              "Connection", "Humanity", "Kindness", "Secure", "Private"
             ].map((item, index) => (
               <div key={index} className="flex items-center gap-12">
                 <span className="text-xl font-serif text-[#4A5D4E] opacity-70">
                   {item}
                 </span>
-                <span className="text-[#4A5D4E]/30">•</span>
+                <span className="text-[#6D28D9]/30">•</span>
               </div>
             ))}
           </div>
         </section>
 
-        {/* ── PRINCIPLES (Spheres) ──────────────────── */}
-        <section className="w-full bg-[#FDFBF7] py-20 md:py-28">
-          <div className="w-full max-w-5xl mx-auto px-6 md:px-12">
 
-            <Reveal className="mb-16 space-y-2">
-              <Eyebrow>Three principles</Eyebrow>
-              <h2 className="font-serif text-3xl md:text-4xl text-[#1C2541] leading-snug">
-                Built on what{" "}
-                <span className="text-[#E07A5F]">actually matters.</span>
-              </h2>
-            </Reveal>
-
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-10 md:gap-8">
-              {SPHERES.map((s, i) => (
-                <Reveal key={i} delay={i * 90}>
-                  <div className="flex flex-col items-center text-center gap-6">
-                    {/* Circle image */}
-                    <div
-                      className="sphere-img w-36 h-36 md:w-44 md:h-44 rounded-full overflow-hidden border-2 border-white shadow-md"
-                      style={{ backgroundColor: s.tint, outline: `1px solid ${s.accent}25` }}
-                    >
-                      <img
-                        src={s.image}
-                        alt={s.alt}
-                        className="w-full h-full object-cover"
-                        loading="lazy"
-                      />
-                    </div>
-
-                    <div className="space-y-2">
-                      <div
-                        className="inline-block w-6 h-0.5 rounded-full mx-auto"
-                        style={{ backgroundColor: s.accent }}
-                      />
-                      <h3 className="font-serif text-xl text-[#1C2541]">{s.title}</h3>
-                      <p className="text-stone-500 text-sm leading-relaxed max-w-[240px] mx-auto">
-                        {s.body}
-                      </p>
-                    </div>
-                  </div>
-                </Reveal>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        <hr className="hairline mx-6 md:mx-12 lg:mx-auto lg:max-w-5xl" />
-
-        {/* ── HOW IT WORKS ────────────────────────── */}
+        {/* ── WHAT YOU CAN DO ─────────────────────── */}
         <section className="w-full py-20 md:py-28">
           <div className="w-full max-w-5xl mx-auto px-6 md:px-12">
 
-            <Reveal className="mb-16 space-y-2">
-              <Eyebrow>How it works</Eyebrow>
-              <h2 className="font-serif text-3xl md:text-4xl text-[#1C2541] leading-snug">
-                Three{" "}
-                <em className="text-[#E07A5F]">quiet gestures.</em>
+            {/* Section header — left aligned */}
+            <Reveal className="mb-14 space-y-3 text-left">
+              <h2 className="font-serif text-3xl md:text-4xl text-[#1C2541] leading-tight">
+                Your Guide to{" "}
+                <span className="text-[#6D28D9]">Spread Kindness</span>
               </h2>
+              <p className="text-[17px] text-stone-500 leading-relaxed max-w-lg">
+                Small acts of kindness can brighten someone's world.
+              </p>
             </Reveal>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {HOW_STEPS.map((step, i) => (
-                <Reveal key={i} delay={i * 80}>
-                  <div className="card-lift group bg-white rounded-2xl overflow-hidden border border-stone-200/50 shadow-sm h-full flex flex-col">
-                    {/* Image */}
-                    <div className="w-full aspect-[4/3] overflow-hidden relative">
-                      <img
-                        src={step.image}
-                        alt={step.alt}
-                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.04]"
-                        loading="lazy"
-                      />
-                      {/* Step number badge */}
-                      <div className="absolute top-3 left-3 w-8 h-8 rounded-full bg-white/85 backdrop-blur-sm flex items-center justify-center">
-                        <span className="font-sans text-[10px] font-bold text-[#E07A5F] tracking-wider">
-                          {step.step}
-                        </span>
-                      </div>
-                    </div>
+            {/* 4-card grid — 2 cols on sm, 4 cols on md+ */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
 
-                    {/* Text */}
-                    <div className="px-6 py-6 flex-1 flex flex-col gap-2">
-                      <p className="font-sans text-sm font-semibold text-[#1C2541] leading-snug">
-                        {step.heading}
-                      </p>
-                      <p className="font-sans text-[13px] leading-[1.75] text-stone-500">
-                        {step.body}
-                      </p>
-                    </div>
+              {/* Card 1 — Share Anonymously */}
+              <Reveal delay={0}>
+                <div className="card-lift bg-white rounded-3xl border border-stone-200/60 shadow-sm p-5 md:p-7 flex flex-col items-start gap-5 min-h-[280px] h-full">
+                  <div className="w-20 h-20 rounded-full overflow-hidden bg-stone-100 border border-stone-200/60 shrink-0 flex items-center justify-center">
+                    <img
+                      src="/assets/imagery/chat.png"
+                      alt="Share Anonymously"
+                      className="w-full h-full object-contain p-4"
+                      onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = "none"; }}
+                    />
                   </div>
-                </Reveal>
-              ))}
+                  <div className="space-y-1.5">
+                    <p className="font-sans text-xl font-semibold text-[#1C2541] leading-snug">
+                      Share Anonymously
+                    </p>
+                    <p className="font-sans text-sm leading-[1.7] text-stone-500">
+                      Share your thoughts, feelings, or stories without revealing your identity.
+                    </p>
+                  </div>
+                </div>
+              </Reveal>
+
+              {/* Card 2 — Send Kind Messages */}
+              <Reveal delay={80}>
+                <div className="card-lift bg-white rounded-3xl border border-stone-200/60 shadow-sm p-5 md:p-7 flex flex-col items-start gap-5 min-h-[280px] h-full">
+                  <div className="w-20 h-20 rounded-full overflow-hidden bg-stone-100 border border-stone-200/60 shrink-0 flex items-center justify-center">
+                    <img
+                      src="/assets/imagery/heart.png"
+                      alt="Send Kind Messages"
+                      className="w-full h-full object-contain p-4"
+                      onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = "none"; }}
+                    />
+                  </div>
+                  <div className="space-y-1.5">
+                    <p className="font-sans text-xl font-semibold text-[#1C2541] leading-snug">
+                      Send Kind Messages
+                    </p>
+                    <p className="font-sans text-sm leading-[1.7] text-stone-500">
+                      Brighten someone's day with encouraging and kind words — anonymously.
+                    </p>
+                  </div>
+                </div>
+              </Reveal>
+
+              {/* Card 3 — Throw a Bottle */}
+              <Reveal delay={160}>
+                <div className="card-lift bg-white rounded-3xl border border-stone-200/60 shadow-sm p-5 md:p-7 flex flex-col items-start gap-5 min-h-[280px] h-full">
+                  <div className="w-20 h-20 rounded-full overflow-hidden bg-stone-100 border border-stone-200/60 shrink-0 flex items-center justify-center">
+                    <img
+                      src="/assets/imagery/bottle.png"
+                      alt="Throw a Bottle"
+                      className="w-full h-full object-contain p-4"
+                      onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = "none"; }}
+                    />
+                  </div>
+                  <div className="space-y-1.5">
+                    <p className="font-sans text-xl font-semibold text-[#1C2541] leading-snug">
+                      Throw a Bottle
+                    </p>
+                    <p className="font-sans text-sm leading-[1.7] text-stone-500">
+                      Send your message out into the world and let someone find it.
+                    </p>
+                  </div>
+                </div>
+              </Reveal>
+
+              {/* Card 4 — Feel Connected */}
+              <Reveal delay={240}>
+                <div className="card-lift bg-white rounded-3xl border border-stone-200/60 shadow-sm p-5 md:p-7 flex flex-col items-start gap-5 min-h-[280px] h-full">
+                  <div className="w-20 h-20 rounded-full overflow-hidden bg-stone-100 border border-stone-200/60 shrink-0 flex items-center justify-center">
+                    <img
+                      src="/assets/imagery/connect.png"
+                      alt="Feel Connected"
+                      className="w-full h-full object-contain p-4"
+                      onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = "none"; }}
+                    />
+                  </div>
+                  <div className="space-y-1.5">
+                    <p className="font-sans text-xl font-semibold text-[#1C2541] leading-snug">
+                      Feel Connected
+                    </p>
+                    <p className="font-sans text-sm leading-[1.7] text-stone-500">
+                      You're not alone. Kindness from strangers can make all the difference.
+                    </p>
+                  </div>
+                </div>
+              </Reveal>
+
             </div>
           </div>
         </section>
@@ -340,48 +436,18 @@ export default function LandingPage() {
 
         <hr className="hairline mx-6 md:mx-12 lg:mx-auto lg:max-w-5xl" />
 
-        {/* ── CORE PURPOSE ────────────────────────── */}
-        <section className="w-full py-20 md:py-28">
-          <div className="w-full max-w-5xl mx-auto px-6 md:px-12">
-            <div className="flex flex-col md:flex-row items-center gap-12 md:gap-20">
 
-              <Reveal className="flex-1 space-y-5 text-left">
-                <Eyebrow>Our core purpose</Eyebrow>
-                <h2 className="font-serif text-3xl md:text-4xl text-[#1C2541] leading-snug">
-                  A sanctuary for{" "}
-                  <em className="text-[#E07A5F]">honest growth.</em>
-                </h2>
-                <p className="text-[15px] leading-relaxed text-stone-500 max-w-sm">
-                  KindSphere was built for those moments when we need real advice
-                  but run into judgement. We strip away the noise of social media
-                  so you can focus on genuine connection.
-                </p>
-              </Reveal>
-
-              <Reveal delay={120} className="flex-1 flex justify-center">
-                <div className="w-64 h-64 md:w-72 md:h-72 rounded-full overflow-hidden border border-stone-200/50 shadow-xl bg-white shrink-0">
-                  <img
-                    src="/assets/imagery/ourcorepurpose.png"
-                    alt="Core Purpose"
-                    className="w-full h-full object-cover"
-                    loading="lazy"
-                  />
-                </div>
-              </Reveal>
-            </div>
-          </div>
-        </section>
 
         {/* ── ABOUT ───────────────────────────────── */}
         <section className="w-full py-20 md:py-28 bg-[#FDFBF7]">
           <div className="w-full max-w-5xl mx-auto px-6 md:px-12">
-            <div className="flex flex-col md:flex-row-reverse items-center gap-12 md:gap-20">
+            <div className="flex flex-col md:flex-row-reverse items-center gap-12 md:gap-12">
 
-              <Reveal className="flex-1 space-y-5 text-left">
+              <Reveal className="flex-1 max-w-xl space-y-6 text-left">
                 <Eyebrow>About this project</Eyebrow>
-                <h2 className="font-serif text-3xl md:text-4xl text-[#1C2541] leading-snug">
+                <h2 className="font-serif text-3xl md:text-4xl text-[#1C2541] leading-tight">
                   Built on the belief that{" "}
-                  <span className="text-[#E07A5F]">honest words</span> change people.
+                  <span className="text-[#6D28D9]">honest words</span> change people.
                 </h2>
 
                 {/* Glassmorphic quote card */}
@@ -391,29 +457,33 @@ export default function LandingPage() {
                     background: "rgba(255,255,255,0.55)",
                     backdropFilter: "blur(12px)",
                     WebkitBackdropFilter: "blur(12px)",
-                    border: "1px solid rgba(224,122,95,0.15)",
-                    boxShadow: "0 4px 24px rgba(129,178,154,0.09)",
+                    border: "1px solid rgba(139,92,246,0.15)",
+                    boxShadow: "0 4px 24px rgba(139,92,246,0.09)",
                   }}
                 >
                   <div
                     className="absolute top-0 left-8 right-8 h-px rounded-full"
                     style={{
                       background:
-                        "linear-gradient(90deg,transparent,rgba(224,122,95,0.3),transparent)",
+                        "linear-gradient(90deg,transparent,rgba(139,92,246,0.3),transparent)",
                     }}
                   />
                   <p className="text-[14px] leading-[1.8] text-stone-600">
-                    I wanted to create a meaningful corner on the internet for
-                    those moments when we need advice, but run into judgemental
-                    spaces online. KindSphere protects your identity, letting
-                    your message travel randomly to another human somewhere
-                    around the world.
+                    KindSphere was created with a simple belief:
+                    the world feels a little brighter when people are kind to each other.
+
+                    This is a space for anyone who needs to speak,
+                    be heard, or spread a little hope.
+                    You are not alone, there is a whole sphere of kind
+                    people here with you.
+
+                    Keep being kind. It matters more than you know.
                   </p>
                 </div>
               </Reveal>
 
-              <Reveal delay={120} className="flex-1 flex justify-center">
-                <div className="w-64 h-64 md:w-72 md:h-72 rounded-full overflow-hidden border border-stone-200/50 shadow-xl bg-white shrink-0">
+              <Reveal delay={120} className="flex-1 flex justify-start md:justify-end">
+                <div className="w-[280px] h-[280px] md:w-[420px] md:h-[420px] rounded-full overflow-hidden border border-stone-200/60 shadow-2xl bg-white shrink-0 md:-translate-x-[4%]">
                   <img
                     src="/assets/imagery/aboutthisproject.png"
                     alt="About the project"
@@ -445,9 +515,9 @@ export default function LandingPage() {
               <Reveal className="flex-1 space-y-6 text-left w-full">
                 <div className="space-y-2">
                   <Eyebrow>Community guidelines</Eyebrow>
-                  <h2 className="font-serif text-3xl md:text-4xl text-[#1C2541] leading-snug">
+              <h2 className="font-serif text-3xl md:text-4xl text-[#1C2541] leading-tight">
                     A safe space,{" "}
-                    <em className="text-[#E07A5F]">held gently by all of us.</em>
+                    <em className="text-[#8B5CF6]">held gently by all of us.</em>
                   </h2>
                 </div>
 
@@ -459,7 +529,7 @@ export default function LandingPage() {
                 <div className="rounded-2xl border border-stone-200/60 bg-white px-6 py-5 grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-3">
                   {GUIDELINES.map((item) => (
                     <div key={item} className="flex items-center gap-3">
-                      <span className="w-1.5 h-1.5 rounded-full bg-[#E07A5F] shrink-0" />
+                      <span className="w-1.5 h-1.5 rounded-full bg-[#7C3AED] shrink-0" />
                       <span className="text-[#1C2541] text-sm leading-snug">{item}</span>
                     </div>
                   ))}
@@ -469,98 +539,88 @@ export default function LandingPage() {
           </div>
         </section>
 
-        {/* ── DEVELOPER + FOOTER ───────────────────── */}
-        <section className="w-full bg-white border-t border-stone-200/40">
-          <div className="w-full max-w-5xl mx-auto px-6 md:px-12 py-16">
+        {/* ── FOOTER ───────────────────── */}
+        <section className="w-full bg-[#111827] relative overflow-hidden border-t border-white/5 rounded-t-[40px] pt-16 pb-8">
+          {/* Background Effects */}
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_20%,rgba(139,92,246,0.15),transparent_50%)] pointer-events-none" />
+          <div className="absolute inset-0 opacity-[0.03]" style={{ backgroundImage: "radial-gradient(#fff 0.5px, transparent 0.5px)", backgroundSize: "30px 30px" }} />
 
-            <Reveal>
-              <div className="flex flex-col md:flex-row items-start gap-8 md:gap-12 pb-10 border-b border-stone-100">
+          <div className="w-full max-w-5xl mx-auto px-6 md:px-12 relative z-10">
 
-                {/* Avatar */}
-                <div className="w-20 h-20 md:w-24 md:h-24 rounded-full overflow-hidden border border-stone-200/60 shadow-sm shrink-0">
-                  <img
-                    src="/assets/imagery/owner.png"
-                    alt="Saleha Zeeshan"
-                    className="w-full h-full object-cover"
-                    loading="lazy"
-                  />
-                </div>
+            {/* Main Footer Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-16">
 
-                {/* Bio */}
-                <div className="flex-1 flex flex-col gap-5">
-                  <div className="space-y-2 max-w-md">
-                    <div className="flex items-center gap-2 text-stone-400">
-                      <User className="w-3.5 h-3.5 text-[#E07A5F]" />
-                      <Eyebrow>The designer & developer</Eyebrow>
-                    </div>
-                    <h3 className="font-serif text-2xl text-[#1C2541]">Saleha Zeeshan</h3>
-                    <p className="text-xs text-stone-500 leading-relaxed">
-                      An independent designer and engineering student exploring
-                      how minimalist layouts and purposeful identity boundaries
-                      can establish empathetic communication frameworks.
-                    </p>
-                  </div>
-
-                  {/* Social links */}
-                  <div className="flex flex-wrap gap-3">
-                    {[
-                      {
-                        href: "https://www.linkedin.com/in/saleha-zeeshan-b846562a7",
-                        label: "LinkedIn",
-                        icon: (
-                          <svg className="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24">
-                            <path d="M20.447 20.452H16.89v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a1.977 1.977 0 01-1.972-1.977 1.975 1.975 0 111.972 1.977zm1.709 13.019H3.624V9h3.422v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
-                          </svg>
-                        ),
-                      },
-                      {
-                        href: "https://salehazportfolio.vercel.app",
-                        label: "Portfolio",
-                        icon: (
-                          <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                            <path d="M12 2L2 7l10 5 10-5-10-5z" />
-                            <path d="M2 17l10 5 10-5" />
-                            <path d="M2 12l10 5 10-5" />
-                          </svg>
-                        ),
-                      },
-                      {
-                        href: "https://github.com/saleha294",
-                        label: "GitHub",
-                        icon: (
-                          <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12" />
-                          </svg>
-                        ),
-                      },
-                    ].map((link) => (
-                      <Link
-                        key={link.label}
-                        href={link.href}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="group inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-stone-50 hover:bg-stone-100 border border-stone-200/60 text-xs font-medium text-[#1C2541] transition-all"
-                      >
-                        <span className="text-stone-400 group-hover:text-[#E07A5F] transition-colors">
-                          {link.icon}
-                        </span>
-                        {link.label}
-                        <span className="text-stone-300 group-hover:translate-x-0.5 transition-transform">↗</span>
-                      </Link>
+              {/* Brand Column */}
+              <div className="space-y-4">
+                <h2 className="font-serif text-2xl text-white">KindSphere</h2>
+                <p className="text-[12px] text-stone-400 leading-relaxed">
+                  Anonymous Support Platform<br /><br />
+                  A safe place where thoughts drift anonymously, kindness finds strangers, and meaningful connections begin.
+                </p>
+                <div className="pt-2">
+                  <p className="text-[10px] text-stone-500 uppercase tracking-widest mb-2">Created by Saleha Zeeshan</p>
+                  <div className="flex gap-4">
+                    {['LinkedIn', 'Portfolio', 'GitHub'].map((social) => (
+                      <a key={social} href="#" className="text-[11px] text-stone-300 hover:text-purple-400 transition-colors uppercase">
+                        {social}
+                      </a>
                     ))}
                   </div>
                 </div>
               </div>
-            </Reveal>
 
-            {/* Footer */}
-            <div className="pt-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-stone-400 text-[11px]">
-              <div className="flex items-center gap-2 font-serif text-xs text-[#1C2541]">
-                <span className="font-semibold tracking-wide">KindSphere</span>
-                <span className="w-1 h-1 rounded-full bg-stone-300" />
-                <span className="font-sans font-normal text-stone-400">Made with intention.</span>
+              {/* Nav Column */}
+              <div className="space-y-4">
+                <h4 className="text-[11px] font-bold text-white uppercase tracking-widest pt-[2px]">Platform</h4>
+                <div className="flex gap-8">
+                  <ul className="space-y-2">
+                    {['Home', 'Shore', 'Drop a Bottle', 'My Drift', 'The Sphere'].map((item) => (
+                      <li key={item}>
+                        <a href="#" className="text-[12px] text-stone-400 hover:text-white transition-colors">{item}</a>
+                      </li>
+                    ))}
+                  </ul>
+                  {/* Creator — to the right of Platform links on mobile */}
+                  <div className="md:hidden shrink-0">
+                    <div className="relative group">
+                      <div className="absolute inset-0 rounded-full bg-purple-500/20 blur-2xl scale-110 group-hover:scale-125 transition-transform duration-500" />
+                      <div className="relative w-40 h-40 rounded-full overflow-hidden border-[3px] border-white/10 shadow-[0_15px_40px_rgba(124,58,237,0.25)]">
+                        <img
+                          src="/assets/imagery/owner.png"
+                          alt="Saleha Zeeshan"
+                          className="w-full h-full object-cover"
+                          loading="lazy"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
+
+              {/* Creator Column — desktop only, right-aligned, vertically centered */}
+              <div className="hidden md:flex md:justify-end md:items-center">
+                <div className="relative group">
+                  <div className="absolute inset-0 rounded-full bg-purple-500/20 blur-2xl scale-110 group-hover:scale-125 transition-transform duration-500" />
+                  <div className="relative w-44 h-44 rounded-full overflow-hidden border-[3px] border-white/10 shadow-[0_15px_40px_rgba(124,58,237,0.25)]">
+                    <img
+                      src="/assets/imagery/owner.png"
+                      alt="Saleha Zeeshan"
+                      className="w-full h-full object-cover"
+                      loading="lazy"
+                    />
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+            {/* Bottom Bar */}
+            <div className="pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-4 text-[10px] text-stone-600 uppercase tracking-widest">
               <p>&copy; {new Date().getFullYear()} KindSphere. All rights reserved.</p>
+              <div className="flex items-center gap-2">
+                <span>Stay Kind. Stay Hopeful.</span>
+                <span className="text-purple-400 animate-pulse">♥</span>
+              </div>
             </div>
           </div>
         </section>

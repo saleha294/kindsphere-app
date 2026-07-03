@@ -132,7 +132,7 @@ export default function RegisterUser({ isOpen, onClose, onAccountCreated }: any)
                         </button>
                     </div>
 
-                    <button type="submit" disabled={loading} className="w-full bg-[#E07A5F] text-white p-4 rounded-xl font-semibold">
+                    <button type="submit" disabled={loading} className="w-full text-white p-4 rounded-xl font-semibold" style={{ background: "linear-gradient(135deg,#7C3AED 0%,#6366F1 60%,#818CF8 100%)" }}>
                         {loading ? "Processing..." : mode === "register" ? "Join the Sphere" : "Enter my Space"}
                     </button>
                 </form>
