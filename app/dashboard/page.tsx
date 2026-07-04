@@ -207,7 +207,7 @@ h-full
                 <Link
                   href={`/dashboard/${req.id}`}
                   onClick={handleResponseClick}
-                  className="flex-1 text-center rounded-xl border border-[#DDD6FE] bg-white py-2.5 text-sm font-semibold text-[#6D28D9] hover:bg-[#F5F3FF] hover:border-[#C4B5FD] transition-all duration-200"
+                  className="flex-1 text-center rounded-xl border border-[#DDD6FE] bg-white py-2.5 text-sm font-semibold text-[#7C3AED] hover:bg-[#F5F3FF] hover:border-[#C4B5FD] transition-all duration-200"
                 >
                   Reply
                 </Link>
@@ -227,7 +227,7 @@ h-full
                       alert("Could not send request. Please try again.");
                     }
                   }}
-                  className="flex-1 bg-[#7C3AED] text-white py-2.5 rounded-xl text-sm font-semibold hover:bg-[#6D28D9] transition-all duration-200"
+                  className="flex-1 bg-[#7C3AED] text-white py-2.5 rounded-xl text-sm font-semibold hover:bg-[#7C3AED] transition-all duration-200"
                 >
                   Connect
                 </button>

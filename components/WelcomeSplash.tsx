@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 export default function WelcomeSplash() {
-  const [active,  setActive]  = useState(false);
+  const [active, setActive] = useState(false);
   const [exiting, setExiting] = useState(false);
 
   useEffect(() => {
@@ -17,7 +17,7 @@ export default function WelcomeSplash() {
     if (exiting) return;
     setExiting(true);
     document.documentElement.classList.remove("ks-splash");
-    try { sessionStorage.setItem("ks_welcomed", "1"); } catch (_) {}
+    try { sessionStorage.setItem("ks_welcomed", "1"); } catch (_) { }
     setTimeout(() => setActive(false), 520);
   }
 
@@ -93,7 +93,7 @@ export default function WelcomeSplash() {
                 transition={{ delay: 0.35, duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
               >
                 A kinder world<br />
-                <span style={{ color: "#6D28D9" }}>starts with you.</span>
+                <span style={{ color: "#7C3AED" }}>starts with you.</span>
               </motion.h1>
 
               {/* Paragraph */}
@@ -183,7 +183,7 @@ export default function WelcomeSplash() {
                 transition={{ delay: 0.38, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
               >
                 A kinder world<br />
-                <span style={{ color: "#6D28D9" }}>starts with you.</span>
+                <span style={{ color: "#7C3AED" }}>starts with you.</span>
               </motion.h1>
 
               {/* Paragraph */}

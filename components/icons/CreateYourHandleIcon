@@ -1,0 +1,53 @@
+export function CreateYourHandleIcon({
+  className,
+}: {
+  className?: string;
+}) {
+  return (
+    <svg
+      viewBox="0 0 64 64"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      className={className}
+    >
+      {/* User */}
+      <circle
+        cx="24"
+        cy="24"
+        r="7"
+        fill="#8B5CF6"
+      />
+
+      <path
+        d="M14 44C14 37.5 19 34 24 34C29 34 34 37.5 34 44"
+        fill="#8B5CF6"
+      />
+
+      {/* @ Badge */}
+      <circle
+        cx="45"
+        cy="22"
+        r="9"
+        fill="#EC4899"
+      />
+
+      <text
+        x="45"
+        y="25"
+        textAnchor="middle"
+        fontSize="9"
+        fontWeight="700"
+        fill="white"
+        fontFamily="Arial"
+      >
+        @
+      </text>
+
+      {/* Sparkle */}
+      <path
+        d="M42 38L43 41L46 42L43 43L42 46L41 43L38 42L41 41L42 38Z"
+        fill="#FBBF24"
+      />
+    </svg>
+  );
+}

@@ -5,8 +5,11 @@ import { Shield } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { createClient } from '@/lib/utils/supabase/client';
 const supabase = createClient();
-import Image from "next/image";
-import BottleIcon from "@/components/icons/BottleIcon";
+
+import { ShareAnonymouslyIcon } from "@/components/icons/ShareAnonymouslyIcon";
+import RepliesIcon from "@/components/icons/RepliesIcon";
+import MutualConnectionsIcon from "@/components/icons/MutualConnectionsIcon";
+import { SpreadPositivityIcon } from "@/components/icons/SpreadPositivityIcon";
 
 import {
   castBottle,
@@ -142,22 +145,41 @@ export default function DropPage() {
   }
 
   return (
-    <div className="w-full min-h-[calc(100vh-4rem)] bg-[#FAF9F6] flex items-center justify-center px-4 py-6">
-      <div className="w-full max-w-3xl mx-auto rounded-3xl overflow-hidden border border-stone-200/60 shadow-xl flex flex-col md:flex-row bg-white mt-[8vh]">
-        <div className="relative w-full h-56 md:h-auto md:w-[42%] overflow-hidden">
-          <Image
+    <div className="w-full min-h-[calc(100vh-4rem)] bg-[#FAF9F6] flex items-center justify-center px-4 py-6 relative">
+      {/* Page-level decorative gradients — far corners, desktop only */}
+      <div className="hidden md:block absolute -top-40 -left-40 w-[500px] h-[500px] rounded-full bg-[#7C3AED]/[0.05] blur-[120px] pointer-events-none" />
+      <div className="hidden md:block absolute -bottom-40 -right-40 w-[500px] h-[500px] rounded-full bg-[#7C3AED]/[0.05] blur-[120px] pointer-events-none" />
+
+
+      <div className="w-full max-w-3xl md:max-w-5xl mx-auto rounded-3xl overflow-hidden border border-stone-200/60 shadow-xl flex flex-col md:grid md:grid-cols-[28%_44%_28%] bg-white mt-[8vh] relative">
+        {/* Decorative purple gradient circles */}
+        <div className="absolute -top-24 -right-24 w-48 h-48 rounded-full bg-[#7C3AED]/10 blur-3xl pointer-events-none" />
+        <div className="absolute -bottom-24 -left-24 w-48 h-48 rounded-full bg-[#7C3AED]/10 blur-3xl pointer-events-none" />
+
+        {/* LEFT PANEL: Image (mobile full-width, desktop left column) */}
+        <div className="relative w-full h-56 md:h-full overflow-hidden">
+          <img
             src="/assets/imagery/drop.png"
             alt="Drop Your Bottle"
-            fill
-            priority
-            className="object-cover"
+            className="absolute inset-0 w-full h-full object-cover"
           />
+          {/* Desktop-only gradient overlay with inspirational text */}
+          <div className="hidden md:flex absolute inset-0 bg-gradient-to-b from-[#7C3AED]/70 via-[#7C3AED]/10 to-transparent items-start p-8">
+            <div className="max-w-[260px]">
+              <h2 className="font-playfair text-white text-[38px] font-bold leading-[1.05] tracking-[-0.03em]">
+                Every bottle
+                <br />
+                carries a story...
+              </h2>
+            </div>
+          </div>
         </div>
 
-        <div className="flex-1 px-5 py-6 md:px-8 md:py-8">
-          <form onSubmit={handleSubmit} className="space-y-6">
-            <h1 className="font-serif text-xl font-medium flex items-center gap-3">
-              <BottleIcon className="w-9 h-9" />
+        {/* CENTER PANEL: Form */}
+        <div className="flex-1 md:flex-none px-5 py-6 md:px-10 md:py-10">
+          <form onSubmit={handleSubmit} className="space-y-6 md:space-y-8">
+            <h1 className="font-serif text-xl md:text-2xl font-medium flex items-center gap-3">
+              {/*  <BottleIcon className="w-9 h-9" /> */}
               Drop your thoughts...
             </h1>
 
@@ -199,6 +221,46 @@ export default function DropPage() {
 
             {error && <p className="text-red-500 text-xs text-center">{error}</p>}
           </form>
+        </div>
+
+        {/* RIGHT PANEL: Reassurance (desktop only) */}
+        <div className="hidden md:flex flex-col justify-center px-6 py-8 bg-gradient-to-b from-[#7C3AED]/[0.02] to-white border-l border-stone-100">
+          <h3 className="font-serif text-xl text-[#1C2541]">You&apos;re not alone.</h3>
+          <p className="text-xs text-stone-400 mt-1 mb-6">Here&apos;s what you can expect:</p>
+
+          <div className="space-y-5">
+            <div className="flex items-start gap-3">
+              <ShareAnonymouslyIcon className="w-9 h-9 shrink-0" />
+              <div>
+                <h4 className="font-medium text-[#1C2541] text-sm">Anonymous &amp; Safe</h4>
+                <p className="text-xs text-stone-500 mt-0.5 leading-relaxed">Your identity is never revealed.</p>
+              </div>
+            </div>
+
+            <div className="flex items-start gap-3">
+              <RepliesIcon className="w-9 h-9 shrink-0" />
+              <div>
+                <h4 className="font-medium text-[#1C2541] text-sm">Kind Replies</h4>
+                <p className="text-xs text-stone-500 mt-0.5 leading-relaxed">Receive thoughtful responses from people around the world.</p>
+              </div>
+            </div>
+
+            <div className="flex items-start gap-3">
+              <MutualConnectionsIcon className="w-9 h-9 shrink-0" />
+              <div>
+                <h4 className="font-medium text-[#1C2541] text-sm">Mutual Connections</h4>
+                <p className="text-xs text-stone-500 mt-0.5 leading-relaxed">Meaningful conversations can grow into lasting anonymous connections.</p>
+              </div>
+            </div>
+
+            <div className="flex items-start gap-3">
+              <SpreadPositivityIcon className="w-9 h-9 shrink-0" />
+              <div>
+                <h4 className="font-medium text-[#1C2541] text-sm">Make an Impact</h4>
+                <p className="text-xs text-stone-500 mt-0.5 leading-relaxed">Your words might become exactly what someone needed today.</p>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
       {showPrivatePrompt && (

@@ -51,49 +51,49 @@ export default function ConnectionsPage() {
 
     // 1. LOAD DATA FROM SUPABASE
     useEffect(() => {
-       async function fetchRequests() {
-    const { data: { user } } = await supabase.auth.getUser();
-    if (!user) return;
+        async function fetchRequests() {
+            const { data: { user } } = await supabase.auth.getUser();
+            if (!user) return;
 
-    const { data, error } = await supabase
-  .from("connections")
-  .select("*")
-  .or(`sender_id.eq.${user.id},receiver_id.eq.${user.id}`);
+            const { data, error } = await supabase
+                .from("connections")
+                .select("*")
+                .or(`sender_id.eq.${user.id},receiver_id.eq.${user.id}`);
 
-    if (error) {
-        console.error(error);
-        return;
-    }
-const ids = [
-  ...new Set(
-    data.flatMap(c => [c.sender_id, c.receiver_id])
-  ),
-];
-const { data: users } = await supabase
-  .from("users")
-  .select("id, anonymous_handle")
-  .in("id", ids);
-  const userMap = Object.fromEntries(
-  users?.map(u => [u.id, u.anonymous_handle]) ?? []
-);
+            if (error) {
+                console.error(error);
+                return;
+            }
+            const ids = [
+                ...new Set(
+                    data.flatMap(c => [c.sender_id, c.receiver_id])
+                ),
+            ];
+            const { data: users } = await supabase
+                .from("users")
+                .select("id, anonymous_handle")
+                .in("id", ids);
+            const userMap = Object.fromEntries(
+                users?.map(u => [u.id, u.anonymous_handle]) ?? []
+            );
 
-   setChats(
-  data.map(req => {
-    const partnerId =
-      req.sender_id === user.id
-        ? req.receiver_id
-        : req.sender_id;
+            setChats(
+                data.map(req => {
+                    const partnerId =
+                        req.sender_id === user.id
+                            ? req.receiver_id
+                            : req.sender_id;
 
-    return {
-      id: req.id,
-      partner: userMap[partnerId] ?? "Anonymous",
-      hasConsent: req.status === "accepted",
-      termsAccepted: false,
-      messages: [],
-    };
-  })
-);
-}
+                    return {
+                        id: req.id,
+                        partner: userMap[partnerId] ?? "Anonymous",
+                        hasConsent: req.status === "accepted",
+                        termsAccepted: false,
+                        messages: [],
+                    };
+                })
+            );
+        }
         fetchRequests();
     }, []);
 
@@ -137,7 +137,7 @@ const { data: users } = await supabase
                             </div>
                             <button
                                 onClick={() => handleAcceptRequest(activeChat.id)}
-                                className="w-full bg-[#7C3AED] hover:bg-[#6D28D9] text-white font-semibold py-3 rounded-2xl transition-colors"
+                                className="w-full bg-[#7C3AED] hover:bg-[#7C3AED] text-white font-semibold py-3 rounded-2xl transition-colors"
                             >
                                 Accept Connection
                             </button>
@@ -148,11 +148,10 @@ const { data: users } = await supabase
                         <div className="flex-1 p-6 bg-[#FAF9F6] overflow-y-auto space-y-4">
                             {activeChat.messages.map((m, i) => (
                                 <div key={i} className={`flex ${m.sender === 'me' ? 'justify-end' : 'justify-start'}`}>
-                                    <div className={`max-w-[75%] px-5 py-3 rounded-[1.5rem] shadow-sm text-sm leading-relaxed ${
-                                        m.sender === 'me' 
-                                        ? 'bg-[#7C3AED] text-white rounded-br-md' 
-                                        : 'bg-white border border-stone-100 text-stone-800 rounded-bl-md'
-                                    }`}>
+                                    <div className={`max-w-[75%] px-5 py-3 rounded-[1.5rem] shadow-sm text-sm leading-relaxed ${m.sender === 'me'
+                                            ? 'bg-[#7C3AED] text-white rounded-br-md'
+                                            : 'bg-white border border-stone-100 text-stone-800 rounded-bl-md'
+                                        }`}>
                                         {m.text}
                                     </div>
                                 </div>
@@ -220,73 +219,75 @@ const { data: users } = await supabase
     const pendingChats = chats.filter(c => !c.hasConsent);
 
     return (
-        <div className="max-w-3xl mx-auto space-y-12 pb-10">
-            {/* Back Button */}
-            <Link
-                href="/digest"
-                className="inline-flex items-center gap-2 text-white bg-[#7C3AED] hover:bg-[#6D28D9] transition-colors px-4 py-2 rounded-full text-sm font-medium shadow-sm w-max"
-            >
-                <ArrowLeft size={16} />
-                Back to Drift
-            </Link>
+        <div className="w-full min-h-screen pb-20 bg-stone-50">
+            <div className="w-full max-w-6xl mx-auto px-6 md:px-12 pt-28 pb-10 space-y-8">
 
-            {/* Header */}
-            <div className="bg-white p-8 rounded-3xl border border-stone-100 shadow-sm space-y-3">
-                <h1 className="font-serif text-3xl font-medium text-[#1C2541]">
-                    Mutual Connections
-                </h1>
-                <p className="text-stone-500 text-[15px] leading-relaxed max-w-2xl">
-                    These are the spaces where you've chosen to connect more deeply.
-                </p>
+                <Link
+                    href="/digest"
+                    className="inline-flex items-center gap-1.5 text-sm text-[#7C3AED] hover:text-[#6D28D9] transition-colors w-max"
+                >
+                    <ArrowLeft size={16} />
+                    Back to Drift
+                </Link>
+
+                {/* Header */}
+                <div className="bg-white p-8 rounded-3xl border border-stone-100 shadow-sm space-y-3">
+                    <h1 className="font-serif text-3xl font-medium text-[#1C2541]">
+                        Mutual Connections
+                    </h1>
+                    <p className="text-stone-500 text-[15px] leading-relaxed max-w-2xl">
+                        These are the spaces where you've chosen to connect more deeply.
+                    </p>
+                </div>
+
+                {/* Active Connections */}
+                <section className="space-y-4">
+                    <h2 className="font-serif text-xl text-stone-800 border-b border-stone-100 pb-2">Active Connections</h2>
+                    {activeChats.length === 0 ? (
+                        <p className="text-stone-400 text-sm italic">No active connections yet.</p>
+                    ) : (
+                        <div className="grid grid-cols-1 gap-3">
+                            {activeChats.map(chat => (
+                                <div key={chat.id} className="bg-white rounded-[2rem] p-4 pr-6 border border-stone-100 shadow-[0_2px_12px_rgba(0,0,0,0.02)] flex justify-between items-center transition-transform hover:scale-[1.01]">
+                                    <div className="flex items-center gap-4">
+                                        <div className="w-12 h-12 rounded-full flex items-center justify-center text-white font-serif text-lg shadow-sm" style={{ backgroundColor: "#A8DADC" }}>
+                                            {chat.partner.charAt(0).toUpperCase()}
+                                        </div>
+                                        <p className="font-medium text-stone-700">@{chat.partner}</p>
+                                    </div>
+                                    <button onClick={() => openChat(chat.id)} className="bg-stone-100 text-stone-600 px-5 py-2 rounded-full text-sm font-semibold hover:bg-stone-200 transition-colors">
+                                        Open Chat
+                                    </button>
+                                </div>
+                            ))}
+                        </div>
+                    )}
+                </section>
+
+                {/* Pending Requests */}
+                <section className="space-y-4">
+                    <h2 className="font-serif text-xl text-stone-800 border-b border-stone-100 pb-2">Pending Requests</h2>
+                    {pendingChats.length === 0 ? (
+                        <p className="text-stone-400 text-sm italic">No pending requests.</p>
+                    ) : (
+                        <div className="grid grid-cols-1 gap-3">
+                            {pendingChats.map(chat => (
+                                <div key={chat.id} className="bg-white rounded-[2rem] p-4 pr-6 border border-stone-100 shadow-[0_2px_12px_rgba(0,0,0,0.02)] flex justify-between items-center transition-transform hover:scale-[1.01]">
+                                    <div className="flex items-center gap-4">
+                                        <div className="w-12 h-12 rounded-full flex items-center justify-center text-white font-serif text-lg shadow-sm" style={{ backgroundColor: "#A8DADC" }}>
+                                            {chat.partner.charAt(0).toUpperCase()}
+                                        </div>
+                                        <p className="font-medium text-stone-700">@{chat.partner}</p>
+                                    </div>
+                                    <button onClick={() => openChat(chat.id)} className="text-white px-5 py-2 rounded-full text-sm font-semibold shadow-sm transition-transform hover:scale-105 active:scale-95" style={{ backgroundColor: "#A78BFA" }}>
+                                        View Request
+                                    </button>
+                                </div>
+                            ))}
+                        </div>
+                    )}
+                </section>
             </div>
-
-            {/* Active Connections */}
-            <section className="space-y-4">
-                <h2 className="font-serif text-xl text-stone-800 border-b border-stone-100 pb-2">Active Connections</h2>
-                {activeChats.length === 0 ? (
-                    <p className="text-stone-400 text-sm italic">No active connections yet.</p>
-                ) : (
-                    <div className="grid grid-cols-1 gap-3">
-                        {activeChats.map(chat => (
-                            <div key={chat.id} className="bg-white rounded-[2rem] p-4 pr-6 border border-stone-100 shadow-[0_2px_12px_rgba(0,0,0,0.02)] flex justify-between items-center transition-transform hover:scale-[1.01]">
-                                <div className="flex items-center gap-4">
-                                    <div className="w-12 h-12 rounded-full flex items-center justify-center text-white font-serif text-lg shadow-sm" style={{ backgroundColor: "#A8DADC" }}>
-                                        {chat.partner.charAt(0).toUpperCase()}
-                                    </div>
-                                    <p className="font-medium text-stone-700">@{chat.partner}</p>
-                                </div>
-                                <button onClick={() => openChat(chat.id)} className="bg-stone-100 text-stone-600 px-5 py-2 rounded-full text-sm font-semibold hover:bg-stone-200 transition-colors">
-                                    Open Chat
-                                </button>
-                            </div>
-                        ))}
-                    </div>
-                )}
-            </section>
-
-            {/* Pending Requests */}
-            <section className="space-y-4">
-                <h2 className="font-serif text-xl text-stone-800 border-b border-stone-100 pb-2">Pending Requests</h2>
-                {pendingChats.length === 0 ? (
-                    <p className="text-stone-400 text-sm italic">No pending requests.</p>
-                ) : (
-                    <div className="grid grid-cols-1 gap-3">
-                        {pendingChats.map(chat => (
-                            <div key={chat.id} className="bg-white rounded-[2rem] p-4 pr-6 border border-stone-100 shadow-[0_2px_12px_rgba(0,0,0,0.02)] flex justify-between items-center transition-transform hover:scale-[1.01]">
-                                <div className="flex items-center gap-4">
-                                    <div className="w-12 h-12 rounded-full flex items-center justify-center text-white font-serif text-lg shadow-sm" style={{ backgroundColor: "#A8DADC" }}>
-                                        {chat.partner.charAt(0).toUpperCase()}
-                                    </div>
-                                    <p className="font-medium text-stone-700">@{chat.partner}</p>
-                                </div>
-                                <button onClick={() => openChat(chat.id)} className="text-white px-5 py-2 rounded-full text-sm font-semibold shadow-sm transition-transform hover:scale-105 active:scale-95" style={{ backgroundColor: "#A78BFA" }}>
-                                    View Request
-                                </button>
-                            </div>
-                        ))}
-                    </div>
-                )}
-            </section>
         </div>
     );
 }

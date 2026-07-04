@@ -11,7 +11,7 @@ import { getInteractionResonance } from "@/lib/db-queries";
 
 const NAV_ITEMS = [
   { href: "/digest/sent", label: "My Sent Bottles", color: "#7C3AED", hoverBg: "hover:bg-[#7C3AED]/10 hover:text-[#7C3AED]" },
-  { href: "/digest/pending", label: "Awaiting My Voice", color: "#7C3AED", hoverBg: "hover:bg-[#7C3AED]/10 hover:text-[#7C3AED]" },
+  /* { href: "/digest/pending", label: "Awaiting My Voice", color: "#7C3AED", hoverBg: "hover:bg-[#7C3AED]/10 hover:text-[#7C3AED]" }, */
   { href: "/digest/private", label: "Private Bottles", color: "#7C3AED", hoverBg: "hover:bg-[#7C3AED]/10 hover:text-[#7C3AED]" },
   { href: "/digest/connections", label: "Mutual Connections", color: "#7C3AED", hoverBg: "hover:bg-[#7C3AED]/10 hover:text-[#7C3AED]" },
   { href: "/digest/replies", label: "Replies", color: "#7C3AED", hoverBg: "hover:bg-[#7C3AED]/10 hover:text-[#7C3AED]" },

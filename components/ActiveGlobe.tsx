@@ -41,7 +41,7 @@ type GeoFeature = {
 
 const GEO_URL = "https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json";
 const OCEAN_COLOR = "#A8D5E2";
-const LAND_COLOR = "#81B29A";
+const LAND_COLOR = "#E8A33D";
 const LAND_STROKE = "#6A9E87";
 const ACTIVE_DOT = "#7C3AED";
 const IDLE_DOT = "#9E9892";
@@ -91,23 +91,7 @@ export default function ActiveGlobe({ className, users = [] }: ActiveGlobeProps)
 
     // ── Smooth auto-rotation ────────────────────────────────────────────────────
     useEffect(() => {
-        function tick(ts: number) {
-            if (!isPausedRef.current) {
-                const delta = ts - (lastTimeRef.current || ts);
-                lastTimeRef.current = ts;
-                rotationRef.current = [
-                    rotationRef.current[0] + delta * 0.012,
-                    rotationRef.current[1],
-                    rotationRef.current[2],
-                ];
-                setRotation([...rotationRef.current]);
-            } else {
-                lastTimeRef.current = ts;
-            }
-            animFrameRef.current = requestAnimationFrame(tick);
-        }
-        animFrameRef.current = requestAnimationFrame(tick);
-        return () => cancelAnimationFrame(animFrameRef.current);
+        // Rotation disabled to keep users stationary
     }, []);
 
     // ── Build projection per frame ─────────────────────────────────────────────
@@ -303,7 +287,7 @@ export default function ActiveGlobe({ className, users = [] }: ActiveGlobeProps)
                                 gap: 8,
                             }}
                         >
-                            <span style={{ fontSize: 12, color: "#81B29A", fontWeight: 700 }}>@</span>
+                            <span style={{ fontSize: 12, color: "#E8A33D", fontWeight: 700 }}>@</span>
                             <span style={{ fontSize: 12, fontWeight: 600, color: "#1C2541", letterSpacing: "-0.01em" }}>
                                 {hoveredUser.anonymousHandle}
                             </span>

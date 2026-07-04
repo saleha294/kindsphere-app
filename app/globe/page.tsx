@@ -16,7 +16,7 @@ const ActiveGlobe = dynamic(
                     style={{
                         width: 48, height: 48, borderRadius: "50%",
                         border: "2px solid rgba(129,178,154,0.25)",
-                        borderTopColor: "#81B29A",
+                        borderTopColor: "#E8A33D",
                         animation: "spin 1s linear infinite",
                     }}
                 />
@@ -152,9 +152,9 @@ export default function GlobePage() {
         <div className="w-full min-h-screen flex flex-col overflow-hidden" style={{ background: "#FAF9F6" }}>
 
             {/* ── Header ─────────────────────────────────────────────────── */}
-            <div className="w-full max-w-6xl mx-auto px-6 md:px-12 pt-12 pb-6 flex flex-col md:flex-row md:items-end justify-between gap-6">
+            <div className="w-full max-w-6xl mx-auto px-6 md:px-12 pt-28 pb-6 flex flex-col md:flex-row md:items-end justify-between gap-6">
                 <div className="space-y-2">
-                    <p className="text-xs font-medium uppercase tracking-[0.18em]" style={{ color: "#81B29A" }}>
+                    <p className="text-xs font-medium uppercase tracking-[0.18em]" style={{ color: "#E8A33D" }}>
                         The Sphere — Live
                     </p>
                     <h1 className="font-serif text-4xl md:text-5xl font-medium leading-tight" style={{ color: "#1C2541" }}>
@@ -166,7 +166,7 @@ export default function GlobePage() {
                 {/* ── Live stats panel ───────────────────────────────────── */}
                 <div className="flex flex-wrap gap-3 md:gap-4">
                     {[
-                        { label: "Souls exploring", value: stats.totalSouls, color: "#81B29A" },
+                        { label: "Souls exploring", value: stats.totalSouls, color: "#E8A33D" },
                         { label: "Bottles drifting", value: stats.driftingBottles, color: "#7C3AED" },
                         { label: "Replies sent today", value: stats.repliesToday, color: "#A8DADC" },
                     ].map((stat) => (
@@ -204,7 +204,7 @@ export default function GlobePage() {
             {/* ── Currently on this page (Presence) ─────────────────────── */}
             {presenceHandles.size > 0 && (
                 <div className="w-full max-w-6xl mx-auto px-6 md:px-12 pb-16 space-y-4">
-                    <p className="text-xs font-semibold uppercase tracking-[0.18em]" style={{ color: "#81B29A" }}>
+                    <p className="text-xs font-semibold uppercase tracking-[0.18em]" style={{ color: "#E8A33D" }}>
                         Here right now
                     </p>
                     <div className="flex flex-wrap gap-2">

@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { Menu, X, User, LogOut, ChevronDown } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 import RegisterUser from "./RegisterUser";
 
 import { supabase } from "@/lib/supabase";
@@ -88,15 +89,14 @@ export function Navbar() {
 
   return (
     <>
-     <header className="fixed inset-x-0 top-4 z-50 bg-transparent">
-        <div className="max-w-6xl mx-auto bg-white/70 backdrop-blur-xl border border-stone-200/50 rounded-full shadow-[0_8px_30px_rgb(0,0,0,0.04)] px-6 md:px-8 h-16 flex items-center justify-between">
+     <header className="fixed inset-x-0 top-0 md:top-4 z-50 bg-white md:bg-transparent shadow-[0_1px_3px_rgba(0,0,0,0.06)] md:shadow-none">
+        <div className="max-w-6xl mx-auto md:bg-white/70 md:backdrop-blur-xl md:border md:border-stone-200/50 rounded-none md:rounded-full md:shadow-[0_8px_30px_rgb(0,0,0,0.04)] px-6 md:px-8 h-16 flex items-center justify-between">
 
           {/* Logo */}
           <Link href="/" onClick={() => setOpen(false)} className="flex items-center gap-2.5 shrink-0 pl-2">
             <img src="/favicon.ico" alt="KindSphere" className="h-8 w-8 rounded-full" />
             <div className="flex flex-col leading-none">
               <span className="font-serif text-[18px] tracking-tight text-foreground">KindSphere</span>
-              <span className="text-[10px] text-stone-400 font-normal tracking-wide mt-1">Kindness connects us all.</span>
             </div>
           </Link>
 
@@ -163,7 +163,7 @@ export function Navbar() {
 
           {/* Mobile hamburger button */}
           <button
-            className="md:hidden p-2 -mr-1 rounded-md text-foreground hover:bg-stone-100 transition-colors"
+            className="md:hidden p-2 -mr-1 rounded-lg text-[#7C3AED] hover:bg-purple-50 transition-colors"
             onClick={() => setOpen((v) => !v)}
             aria-label="Toggle navigation menu"
             aria-expanded={open}
@@ -172,64 +172,75 @@ export function Navbar() {
           </button>
         </div>
 
-        {/* Mobile drawer layout — no background on the header wrapper itself */}
-        {open && (
-          <nav className="md:hidden mt-2 mx-0 rounded-2xl border border-stone-200/50 bg-white/98 backdrop-blur-md overflow-hidden shadow-lg">
-            <ul className="w-full max-w-6xl mx-auto px-6 py-4 flex flex-col gap-1 list-none m-0">
-              {LINKS.map(({ href, label }) => (
-                <li key={href}>
-                  <Link
-                    href={href}
-                    onClick={(e) => {
-                      if (!userHandle && (href === "/drop" || href === "/digest")) {
-                        e.preventDefault();
-                        setIsModalOpen(true);
-                        setOpen(false);
-                      } else {
-                        setOpen(false);
-                      }
-                    }}
-                    className={`block text-base font-medium py-3 border-b border-stone-100 last:border-0 transition-colors ${pathname === href ? "text-primary" : "text-muted-foreground hover:text-foreground"
-                      }`}
-                  >
-                    {label}
-                  </Link>
-                </li>
-              ))}
-              <li className="pt-4 space-y-2">
-                {userHandle ? (
-                  <div className="flex flex-col gap-2">
-                    <div className="w-full text-center inline-flex items-center justify-center gap-1.5 px-4 py-3 rounded-xl bg-stone-50 border border-stone-200/60 text-sm font-semibold text-stone-700">
-                      <User className="h-4 w-4 text-stone-400" />
-                      <span>@{userHandle}</span>
-                    </div>
-                    <button
-                      onClick={handleLogout}
-                      className="w-full inline-flex items-center justify-center gap-2 rounded-xl bg-red-50 border border-red-100 text-red-600 text-sm font-semibold py-3 hover:bg-red-100/50 transition-colors cursor-pointer"
-                    >
-                      <LogOut className="h-4 w-4" />
-                      Logout Workspace
-                    </button>
-                  </div>
-                ) : (
-                  <button
-                    onClick={() => {
-                      setOpen(false);
-                      setIsModalOpen(true);
-                    }}
-                    className="block w-full text-center rounded-full text-white text-sm font-semibold px-6 py-3 hover:opacity-90 transition-opacity cursor-pointer"
-                    style={{
-                      background: "linear-gradient(135deg,#8B5CF6 0%,#6366F1 60%,#818CF8 100%)",
-                      boxShadow: "0 4px 14px rgba(139,92,246,0.35)",
-                    }}
-                  >
-                    Join KindSphere
-                  </button>
-                )}
-              </li>
-            </ul>
-          </nav>
-        )}
+        {/* Mobile dropdown menu */}
+        <AnimatePresence>
+          {open && (
+            <motion.nav
+              initial={{ opacity: 0, y: -6 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -6 }}
+              transition={{ duration: 0.18, ease: "easeInOut" }}
+              className="md:hidden border-t border-stone-100 bg-white shadow-[0_4px_12px_rgba(0,0,0,0.04)]"
+            >
+              <div className="max-w-6xl mx-auto px-6 py-4">
+                <ul className="flex flex-col gap-0.5 list-none m-0">
+                  {LINKS.map(({ href, label }) => (
+                    <li key={href}>
+                      <Link
+                        href={href}
+                        onClick={(e) => {
+                          if (!userHandle && (href === "/drop" || href === "/digest")) {
+                            e.preventDefault();
+                            setIsModalOpen(true);
+                            setOpen(false);
+                          } else {
+                            setOpen(false);
+                          }
+                        }}
+                        className={`block text-sm font-medium py-3 px-4 rounded-xl transition-colors ${
+                          pathname === href
+                            ? "bg-purple-50 text-[#7C3AED]"
+                            : "text-stone-600 hover:bg-stone-50 hover:text-stone-900"
+                        }`}
+                      >
+                        {label}
+                      </Link>
+                    </li>
+                  ))}
+                  <li className="pt-3 px-4 space-y-3">
+                    {userHandle ? (
+                      <>
+                        <div className="text-xs text-stone-400 font-medium">
+                          Signed in as <span className="text-stone-600">@{userHandle}</span>
+                        </div>
+                        <button
+                          onClick={handleLogout}
+                          className="w-full text-left text-sm font-medium py-2.5 text-red-500 hover:text-red-700 transition-colors"
+                        >
+                          Logout
+                        </button>
+                      </>
+                    ) : (
+                      <button
+                        onClick={() => {
+                          setOpen(false);
+                          setIsModalOpen(true);
+                        }}
+                        className="block w-full text-center rounded-xl text-white text-sm font-semibold px-6 py-3 hover:opacity-90 transition-opacity cursor-pointer"
+                        style={{
+                          background: "linear-gradient(135deg,#8B5CF6 0%,#6366F1 60%,#818CF8 100%)",
+                          boxShadow: "0 4px 14px rgba(139,92,246,0.35)",
+                        }}
+                      >
+                        Join KindSphere
+                      </button>
+                    )}
+                  </li>
+                </ul>
+              </div>
+            </motion.nav>
+          )}
+        </AnimatePresence>
       </header>
 
       <RegisterUser

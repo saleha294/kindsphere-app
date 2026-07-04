@@ -51,7 +51,7 @@ export default function PrivateBottlesPage() {
             {/* Back Button */}
             <Link
                 href="/digest"
-                className="inline-flex items-center gap-2 text-white bg-[#7C3AED] hover:bg-[#6D28D9] transition-colors px-4 py-2 rounded-full text-sm font-medium shadow-sm w-max"
+                className="inline-flex items-center gap-2 text-white bg-[#7C3AED] hover:bg-[#7C3AED] transition-colors px-4 py-2 rounded-full text-sm font-medium shadow-sm w-max"
             >
                 <ArrowLeft size={16} />
                 Back to Drift
@@ -134,7 +134,7 @@ export default function PrivateBottlesPage() {
                                             <button
                                                 disabled={isSending || !replyDrafts[delivery.id]?.trim()}
                                                 onClick={() => handleReply(delivery.id, bottle?.id)}
-                                                className="inline-flex items-center gap-2 bg-[#7C3AED] hover:bg-[#6D28D9] disabled:opacity-50 text-white text-sm font-semibold px-5 py-2.5 rounded-xl transition-colors"
+                                                className="inline-flex items-center gap-2 bg-[#7C3AED] hover:bg-[#7C3AED] disabled:opacity-50 text-white text-sm font-semibold px-5 py-2.5 rounded-xl transition-colors"
                                             >
                                                 <Send className="h-3.5 w-3.5" />
                                                 {isSending ? "Sending…" : "Send Anonymously"}
