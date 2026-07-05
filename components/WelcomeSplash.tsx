@@ -67,15 +67,16 @@ export default function WelcomeSplash() {
                 display: "flex",
                 flexDirection: "column",
                 justifyContent: "center",
+                marginTop: "-140px", // Add this line to shift it up
                 alignItems: "flex-start",
                 textAlign: "left",
-                padding: 0,
+                padding: 10,
                 gap: "0",
               }}
             >
               {/* Wordmark */}
               <motion.div
-                style={{ display: "flex", alignItems: "center", gap: "0.75rem", marginBottom: "2rem" }}
+                style={{ display: "flex", alignItems: "center", gap: "0.75rem", marginBottom: "1rem" }}
                 initial={{ opacity: 0, y: 12 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.2, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
@@ -98,7 +99,7 @@ export default function WelcomeSplash() {
 
               {/* Paragraph */}
               <motion.p
-                style={{ fontSize: 15, lineHeight: 1.75, color: "#374151", marginBottom: "2rem", maxWidth: "22rem" }}
+                style={{ fontSize: 15, lineHeight: 1.75, color: "#374151", marginBottom: "1rem", maxWidth: "22rem" }}
                 initial={{ opacity: 0, y: 14 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.5, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
