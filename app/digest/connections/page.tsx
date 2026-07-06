@@ -149,8 +149,8 @@ export default function ConnectionsPage() {
                             {activeChat.messages.map((m, i) => (
                                 <div key={i} className={`flex ${m.sender === 'me' ? 'justify-end' : 'justify-start'}`}>
                                     <div className={`max-w-[75%] px-5 py-3 rounded-[1.5rem] shadow-sm text-sm leading-relaxed ${m.sender === 'me'
-                                            ? 'bg-[#7C3AED] text-white rounded-br-md'
-                                            : 'bg-white border border-stone-100 text-stone-800 rounded-bl-md'
+                                        ? 'bg-[#7C3AED] text-white rounded-br-md'
+                                        : 'bg-white border border-stone-100 text-stone-800 rounded-bl-md'
                                         }`}>
                                         {m.text}
                                     </div>

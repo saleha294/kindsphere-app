@@ -195,57 +195,51 @@ export const getAcceptedConnections = async (
     return data;
 };
 
-// 3. Send a reply (creates a connection, a message, and locks the bottle)
-export const sendReplyToBottle = async (bottleId: string, senderId: string, content: string) => {
-    // 1. Get the bottle owner (receiver)
+
+export const sendReplyToBottle = async (
+    bottleId: string,
+    senderId: string,
+    content: string
+) => {
+
+    // 1. Get bottle owner
     const { data: bottle, error: fetchErr } = await supabase
-        .from('bottles')
-        .select('sender_id')
-        .eq('id', bottleId)
+        .from("bottles")
+        .select("sender_id")
+        .eq("id", bottleId)
         .single();
 
     if (fetchErr) throw fetchErr;
-    if (!bottle?.sender_id) throw new Error("Bottle has no owner to reply to.");
 
-    // Server-side guard: Prevent owner from replying to their own bottle
+    if (!bottle?.sender_id)
+        throw new Error("Bottle not found.");
+
+    // Prevent replying to your own bottle
     if (bottle.sender_id === senderId) {
         throw new Error("Cannot reply to your own bottle.");
     }
 
-    // 2. Create the connection
-    const { data: connection, error: connErr } = await supabase
-        .from('connections')
-        .insert([{
-            sender_id: senderId,
-            receiver_id: bottle.sender_id,
-            status: 'accepted'
-        }])
-        .select()
-        .single();
-
-    if (connErr) throw connErr;
-
-    // 3. Insert the message, linking the connection_id
-    /* SQL IF FAILS:
-       ALTER TABLE public.messages ADD COLUMN connection_id UUID REFERENCES public.connections(id);
-    */
+    // 2. Save anonymous reply ONLY
     const { data: message, error: msgError } = await supabase
-        .from('messages')
-        .insert([{
-            bottle_id: bottleId,
-            connection_id: connection.id,
-            sender_id: senderId,
-            content
-        }])
+        .from("messages")
+        .insert([
+            {
+                bottle_id: bottleId,
+                sender_id: senderId,
+                content,
+            },
+        ])
         .select();
 
     if (msgError) throw msgError;
 
-    // 4. Update the bottle status to 'locked' so no one else can reply
+    // 3. Keep existing behaviour if your app still expects locked bottles
     const { error: bottleError } = await supabase
-        .from('bottles')
-        .update({ status: 'locked' })
-        .eq('id', bottleId);
+        .from("bottles")
+        .update({
+            status: "locked",
+        })
+        .eq("id", bottleId);
 
     if (bottleError) throw bottleError;
 
