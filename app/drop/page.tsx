@@ -145,7 +145,7 @@ export default function DropPage() {
   }
 
   return (
-    <div className="w-full min-h-[calc(100vh-4rem)] bg-[#FAF9F6] flex items-center justify-center px-4 py-6 relative">
+    <div className="w-full min-h-[calc(100vh-4rem)] md:h-screen bg-[#FAF9F6] flex items-center justify-center px-4 py-6 relative md:overflow-hidden">
       {/* Page-level decorative gradients — far corners, desktop only */}
       <div className="hidden md:block absolute -top-40 -left-40 w-[500px] h-[500px] rounded-full bg-[#7C3AED]/[0.05] blur-[120px] pointer-events-none" />
       <div className="hidden md:block absolute -bottom-40 -right-40 w-[500px] h-[500px] rounded-full bg-[#7C3AED]/[0.05] blur-[120px] pointer-events-none" />

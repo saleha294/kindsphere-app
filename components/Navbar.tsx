@@ -72,31 +72,31 @@ export function Navbar() {
   }
 
   // ── 11. Core Logout Functional Trigger ──
- async function handleLogout() {
-  await supabase.auth.signOut();
+  async function handleLogout() {
+    await supabase.auth.signOut();
 
-  localStorage.removeItem("kindsphere_handle");
-  localStorage.removeItem("kindsphere_uid");
+    localStorage.removeItem("kindsphere_handle");
+    localStorage.removeItem("kindsphere_uid");
 
-  setUserHandle(null);
-  setDropdownOpen(false);
-  setOpen(false);
+    setUserHandle(null);
+    setDropdownOpen(false);
+    setOpen(false);
 
-  window.dispatchEvent(new Event("auth-changed"));
+    window.dispatchEvent(new Event("auth-changed"));
 
-  router.push("/");
-}
+    router.push("/");
+  }
 
   return (
     <>
-     <header className="fixed inset-x-0 top-0 md:top-4 z-50 bg-white md:bg-transparent shadow-[0_1px_3px_rgba(0,0,0,0.06)] md:shadow-none">
+      <header className="fixed inset-x-0 top-0 md:top-4 z-50 bg-white md:bg-transparent shadow-[0_1px_3px_rgba(0,0,0,0.06)] md:shadow-none">
         <div className="max-w-6xl mx-auto md:bg-white/70 md:backdrop-blur-xl md:border md:border-stone-200/50 rounded-none md:rounded-full md:shadow-[0_8px_30px_rgb(0,0,0,0.04)] px-6 md:px-8 h-16 flex items-center justify-between">
 
           {/* Logo */}
-          <Link href="/" onClick={() => setOpen(false)} className="flex items-center gap-2.5 shrink-0 pl-2">
-            <img src="/favicon.ico" alt="KindSphere" className="h-8 w-8 rounded-full" />
+          <Link href="/" onClick={() => setOpen(false)} className="flex items-center gap--7.5 shrink-0 pl-2">
+            <img src="/favicon.ico" alt="KindSphere" className="w-20 h-20 object-contain rounded-full" />
             <div className="flex flex-col leading-none">
-              <span className="font-serif text-[18px] tracking-tight text-foreground">KindSphere</span>
+              <span className="-ml-3 font-serif text-[18px] tracking-tight text-foreground">KindSphere</span>
             </div>
           </Link>
 
@@ -197,11 +197,10 @@ export function Navbar() {
                             setOpen(false);
                           }
                         }}
-                        className={`block text-sm font-medium py-3 px-4 rounded-xl transition-colors ${
-                          pathname === href
-                            ? "bg-purple-50 text-[#7C3AED]"
-                            : "text-stone-600 hover:bg-stone-50 hover:text-stone-900"
-                        }`}
+                        className={`block text-sm font-medium py-3 px-4 rounded-xl transition-colors ${pathname === href
+                          ? "bg-purple-50 text-[#7C3AED]"
+                          : "text-stone-600 hover:bg-stone-50 hover:text-stone-900"
+                          }`}
                       >
                         {label}
                       </Link>

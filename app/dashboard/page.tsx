@@ -144,37 +144,18 @@ function FeedGrid({
       {visible.map((req) => (
         <div
           key={req.id}
-          className="
-relative
-overflow-hidden
-rounded-3xl
-border
-border-violet-100
-bg-gradient-to-b
-from-violet-50/40
-to-white
-p-6
-shadow-sm
-hover:-translate-y-1
-hover:shadow-lg
-transition-all
-duration-300
-flex
-flex-col
-h-full
-"
+          className="group relative overflow-hidden rounded-3xl border border-stone-200 bg-white p-6 shadow-sm transition-all duration-300 hover:border-violet-200 hover:shadow-lg hover:-translate-y-1 flex flex-col h-full"
         >
-
-          <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-[#C4B5FD] via-[#8B5CF6] to-[#C4B5FD]" />
+          {/* Subtle top indicator that glows on hover */}
+          <div className="absolute inset-x-0 top-0 h-1 bg-transparent group-hover:bg-gradient-to-r group-hover:from-[#C4B5FD] group-hover:via-[#8B5CF6] group-hover:to-[#C4B5FD] transition-colors duration-300" />
 
           {/* Header */}
           <div className="flex justify-between items-center mb-4">
-            <span className="text-sm font-semibold tracking-wide text-[#7C3AED]">
+            <span className="text-sm font-semibold tracking-wide text-stone-500 group-hover:text-[#7C3AED] transition-colors">
               @{req.anonymous_handle || "Anonymous"}
             </span>
             <span
-              className={`text-xs px-2.5 py-1 rounded-full border ${TAG_STYLES[req.category] || "bg-stone-100"
-                }`}
+              className={`text-xs px-2.5 py-1 rounded-full border ${TAG_STYLES[req.category] || "bg-stone-100"}`}
             >
               {req.category}
             </span>
@@ -185,29 +166,25 @@ h-full
             {req.content}
           </p>
 
-          {/* Action Buttons — Enforce Ownership Logic */}
-          <div className="flex gap-3 pt-4 mt-auto border-t border-violet-100 bg-violet-50/40 -mx-6 px-6 pb-1 rounded-b-3xl">
-
+          {/* Action Buttons */}
+          <div className="flex gap-3 pt-4 mt-auto border-t border-stone-100 -mx-6 px-6 pb-1 rounded-b-3xl group-hover:bg-violet-50/30 transition-colors">
             {isUserOwner(req.sender_id, currentUserId) ? (
-              /* STATE 1: Logged in, own bottle */
               <div className="flex-1 text-center text-xs font-semibold text-stone-500 py-2 bg-stone-100 rounded-lg">
                 This is your portal
               </div>
             ) : !currentUserId ? (
-              /* STATE 2: Not logged in */
               <button
                 onClick={() => window.dispatchEvent(new Event("open-login-modal"))}
-                className="flex-1 bg-violet-500 text-white py-2 rounded-lg text-sm font-semibold hover:bg-violet-600 transition-colors"
+                className="flex-1 border border-stone-300 text-stone-600 py-2 rounded-lg text-sm font-semibold hover:border-violet-400 hover:text-violet-600 transition-all"
               >
                 Login to interact
               </button>
             ) : (
-              /* STATE 3: Logged in, someone else's bottle */
               <>
                 <Link
                   href={`/dashboard/${req.id}`}
                   onClick={handleResponseClick}
-                  className="flex-1 text-center rounded-xl border border-[#DDD6FE] bg-white py-2.5 text-sm font-semibold text-[#7C3AED] hover:bg-[#F5F3FF] hover:border-[#C4B5FD] transition-all duration-200"
+                  className="flex-1 text-center rounded-xl border border-stone-200 bg-white py-2.5 text-sm font-semibold text-stone-600 hover:border-[#C4B5FD] hover:text-[#7C3AED] transition-all"
                 >
                   Reply
                 </Link>
@@ -218,16 +195,14 @@ h-full
                       window.dispatchEvent(new Event("open-login-modal"));
                       return;
                     }
-                    console.log("[Connect] myId:", myId, "| receiver:", req.sender_id);
                     try {
                       await sendConnectionRequest(myId, req.sender_id);
                       alert("Connect request sent!");
                     } catch (err) {
-                      console.error("[sendConnectionRequest] error:", err);
                       alert("Could not send request. Please try again.");
                     }
                   }}
-                  className="flex-1 bg-[#7C3AED] text-white py-2.5 rounded-xl text-sm font-semibold hover:bg-[#7C3AED] transition-all duration-200"
+                  className="flex-1 border border-[#7C3AED] text-[#7C3AED] bg-white py-2.5 rounded-xl text-sm font-semibold group-hover:bg-[#7C3AED] group-hover:text-white transition-all duration-300"
                 >
                   Connect
                 </button>

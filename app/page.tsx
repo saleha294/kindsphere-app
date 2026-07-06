@@ -322,17 +322,15 @@ export default function LandingPage() {
           </div>
         </section>
 
-        {/* ──Discover KindSphere ─────────────────────── */}
+        {/* ── Discover KindSphere ─────────────────────── */}
         <section className="w-full py-20 md:py-24">
-          <div className="w-full max-w-5xl mx-auto px-6 md:px-12">
-
-            {/* Section header — centered on desktop with lines, left-aligned on mobile */}
-            <Reveal className="mb-10 space-y-3">
+          <div className="w-full max-w-6xl mx-auto px-6">
+            {/* Section header */}
+            <Reveal className="mb-12 space-y-3">
               <div className="flex items-center gap-4">
                 <span className="hidden md:block h-px flex-1 bg-stone-300" />
                 <h2 className="font-serif text-3xl md:text-4xl text-[#1C2541] leading-tight shrink-0">
-                  Discover{" "}
-                  <span className="text-[#7C3AED]">KindSphere</span>
+                  Discover <span className="text-[#7C3AED]">KindSphere</span>
                 </h2>
                 <span className="hidden md:block h-px flex-1 bg-stone-300" />
               </div>
@@ -341,83 +339,57 @@ export default function LandingPage() {
               </p>
             </Reveal>
 
-            {/* Grid Container */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
-              {DiscoverKindSphereData.map((step, index) => (
-                <Reveal key={step.number} delay={index * 80} className="w-full">
-                  <div
-                    className="
-              group relative overflow-hidden
-              bg-gradient [color:#ffffff]
-              border border-[#DCCFF7]
-              rounded-[2rem] p-7
-              flex flex-col items-start text-left gap-5
-              h-full w-full max-w-[280px] sm:max-w-none               shadow-[0_1px_2px_rgba(109,40,217,0.04)]
-              transition-all duration-300
-              hover:border-[#C4AFF2] hover:shadow-[0_8px_24px_rgba(109,40,217,0.10)]
-            "
+            {/* Bento Grid Container */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 auto-rows-fr">
+              {DiscoverKindSphereData.map((step, index) => {
+                // Logic to make first and last cards wide (bento style)
+                const isWide = index === 0 || index === DiscoverKindSphereData.length - 1;
+
+                return (
+                  <Reveal
+                    key={step.number}
+                    delay={index * 80}
+                    className={`w-full ${isWide ? "md:col-span-2" : "md:col-span-1"}`}
                   >
-                    {/* eyebrow + icon badge row */}
-                    <div className="flex items-center justify-between w-full">
+                    <div className="group relative overflow-hidden bg-white border border-[#E0D4FF] rounded-[2rem] p-8 flex flex-col items-start text-left gap-5 h-full w-full shadow-[0_1px_2px_rgba(109,40,217,0.04)] transition-all duration-300 hover:border-purple-300 hover:shadow-[0_8px_24px_rgba(109,40,217,0.10)]">
+                      {step.image ? (
+                        <img
+                          src={step.image}
+                          alt={step.alt}
+                          className="w-16 h-16 shrink-0 object-contain"
+                        />
+                      ) : (
+                        <div className="w-16 h-16 rounded-full bg-transparent shrink-0" />
+                      )}
 
-                      <div
-                        className="
-                  w-24 h-24 rounded-2xl shrink-0
-                  bg-white/70 border border-[#DCCFF7]
-                  flex items-center justify-center
-                  shadow-[inset_0_1px_1px_rgba(255,255,255,0.8)]
-                "
-                      >
-                        {step.image ? (
-                          <img
-                            src={step.image}
-                            alt={step.alt}
-                            className="w-12 h-12 object-contain rounded-lg"
-                          />
-                        ) : (
-                          <div className="w-12 h-12 rounded-lg bg-[#DCCFF7]/40" />
-                        )}
+                      <div className="space-y-2.5">
+                        <p className="font-sans text-[19px] font-semibold text-[#2E1F52] leading-[1.3]">
+                          {step.title}
+                        </p>
+                        <p className="font-sans text-[17px] leading-[1.7] text-[#6E6288]">
+                          {step.body}
+                        </p>
                       </div>
+
+                      {/* Soft ambient glow */}
+                      <div className="pointer-events-none absolute -bottom-6 -right-6 w-24 h-24 rounded-full bg-[#B79EF0]/20 blur-2xl" />
                     </div>
-
-                    {/* title + body */}
-                    <div className="space-y-2.5">
-                      <p className="font-sans text-[18px] font-semibold text-[#2E1F52] leading-[1.3]">
-                        {step.title}
-                      </p>
-                      <p className="font-sans text-[14px] leading-[1.7] text-[#6E6288]">
-                        {step.body}
-                      </p>
-                    </div>
-
-                    {/* soft ambient glow accent, like the dot in the reference */}
-                    <div
-                      className="
-                pointer-events-none absolute -bottom-6 -right-6
-                w-24 h-24 rounded-full
-                bg-[#B79EF0]/25 blur-2xl
-              "
-                    />
-                  </div>
-                </Reveal>
-
-
-              ))}
+                  </Reveal>
+                );
+              })}
             </div>
 
             {/* Explore More CTA */}
-            <Reveal delay={320} className="mt-10">
+            <Reveal delay={320} className="mt-16">
               <div className="text-left md:text-center max-w-2xl md:mx-auto space-y-4">
                 <p className="text-[15px] md:text-base leading-7 text-stone-500">
                   And that's only the beginning.
                 </p>
-
                 <button
                   onClick={() => setShowRegister(true)}
                   className="inline-flex items-center gap-2 rounded-full px-7 py-3.5 text-sm font-semibold text-white transition-all hover:opacity-90 active:scale-[0.98]"
                   style={{
-                    background:
-                      "linear-gradient(135deg,#7C3AED 0%,#6366F1 60%,#818CF8 100%)",
+                    background: "linear-gradient(135deg,#7C3AED 0%,#6366F1 60%,#818CF8 100%)",
                     boxShadow: "0 8px 28px rgba(109,40,217,0.28)",
                   }}
                 >
@@ -425,7 +397,6 @@ export default function LandingPage() {
                 </button>
               </div>
             </Reveal>
-
           </div>
         </section>
 
@@ -437,73 +408,52 @@ export default function LandingPage() {
 
 
         {/* ── ABOUT ───────────────────────────────── */}
-        <section className="w-full py-20 md:py-24 bg-[#FDFBF7]">
-          <div className="w-full max-w-5xl mx-auto px-6 md:px-12">
+        <section className="relative w-full py-24 md:py-32 overflow-hidden">
+          {/* Full-bleed Background Image */}
+          <div className="absolute inset-0 z-0">
+            <img
+              src="/assets/imagery/aboutthisproject.png"
+              alt="Background"
+              className="w-full h-full object-cover"
+            />
+            <div className="absolute inset-0 bg-stone-900/20 backdrop-blur-[2px]" />
+            <div className="absolute inset-0 bg-gradient-to-r from-stone-900/40 via-transparent to-transparent" />
+          </div>
 
-            {/* Desktop heading */}
-            <div className="hidden md:block mb-8 space-y-2">
-              <div className="flex items-center gap-4">
-                <span className="h-px flex-1 bg-stone-300" />
-                <h2 className="font-serif text-4xl text-[#1C2541] leading-tight shrink-0">
-                  Why{" "}
-                  <span className="text-[#7C3AED]">KindSphere Exists</span>
+          {/* Content Layer */}
+          <div className="relative z-10 w-full max-w-4xl mx-auto px-6">
+            <Reveal className="flex flex-col items-center">
+
+              {/* Centered Desktop Heading with Lines */}
+              <div className="w-full mb-12 flex items-center gap-6">
+                <span className="hidden md:block h-px flex-1 bg-white/40" />
+                <h2 className="font-serif text-3xl md:text-5xl text-white leading-tight shrink-0 text-center">
+                  Why KindSphere Exists
                 </h2>
-                <span className="h-px flex-1 bg-stone-300" />
+                <span className="hidden md:block h-px flex-1 bg-white/40" />
               </div>
-            </div>
 
-            <div className="flex flex-col md:flex-row-reverse items-center gap-12 md:gap-12">
+              {/* Glassmorphic Container (Centered on Laptop, Natural on Mobile) */}
+              <div
+                className="w-full max-w-2xl rounded-3xl px-8 py-10 border text-left"
+                style={{
+                  background: "rgba(255, 255, 255, 0.15)",
+                  backdropFilter: "blur(16px)",
+                  WebkitBackdropFilter: "blur(16px)",
+                  border: "1px solid rgba(255, 255, 255, 0.2)",
+                  boxShadow: "0 8px 32px rgba(0, 0, 0, 0.1)",
+                }}
+              >
+                <p className="text-base md:text-lg leading-[1.8] text-white/90">
+                  KindSphere was created with a simple belief: the world feels a little brighter when people are kind to each other.
+                  <br /><br />
+                  This is a space for anyone who needs to speak, be heard, or spread a little hope. You are not alone; there is a whole sphere of kind people here with you.
+                  <br /><br />
+                  <span className="font-semibold text-white">Keep being kind. It matters more than you know.</span>
+                </p>
+              </div>
 
-              <Reveal className="flex-1 max-w-xl space-y-6 text-left">
-
-                <h2 className="font-serif text-3xl md:hidden text-[#1C2541] leading-tight">
-                  Why{" "}
-                  <span className="text-[#7C3AED]">KindSphere Exists</span>
-                </h2>
-
-                {/* Glassmorphic quote card */}
-                <div
-                  className="relative rounded-2xl px-6 py-5 mt-1"
-                  style={{
-                    background: "rgba(255,255,255,0.55)",
-                    backdropFilter: "blur(12px)",
-                    WebkitBackdropFilter: "blur(12px)",
-                    border: "1px solid rgba(139,92,246,0.15)",
-                    boxShadow: "0 4px 24px rgba(139,92,246,0.09)",
-                  }}
-                >
-                  <div
-                    className="absolute top-0 left-8 right-8 h-px rounded-full"
-                    style={{
-                      background:
-                        "linear-gradient(90deg,transparent,rgba(139,92,246,0.3),transparent)",
-                    }}
-                  />
-                  <p className="text-[14px] leading-[1.8] text-stone-600">
-                    KindSphere was created with a simple belief:
-                    the world feels a little brighter when people are kind to each other.
-
-                    This is a space for anyone who needs to speak,
-                    be heard, or spread a little hope.
-                    You are not alone, there is a whole sphere of kind
-                    people here with you.
-
-                    Keep being kind. It matters more than you know.
-                  </p>
-                </div>
-              </Reveal>
-
-              <Reveal delay={120} className="flex-1 flex justify-start md:justify-end">
-                <div className="w-[280px] h-[280px] md:w-[420px] md:h-[420px] rounded-full overflow-hidden border border-stone-200/60 shadow-2xl bg-white shrink-0 md:-translate-x-[4%]">
-                  <img
-                    src="/assets/imagery/aboutthisproject.png"
-                    alt="About the project"
-                    className="w-full h-full object-cover"
-                    loading="lazy"
-                  />
-                </div>
-              </Reveal>
-            </div>
+            </Reveal>
           </div>
         </section>
 
@@ -511,55 +461,43 @@ export default function LandingPage() {
         <section className="w-full py-20 md:py-24 border-t border-stone-200/40">
           <div className="w-full max-w-5xl mx-auto px-6 md:px-12">
 
-            {/* Desktop heading */}
-            <div className="hidden md:block mb-8 space-y-2">
-              <div className="flex items-center gap-4">
+            {/* Heading Section - Centered */}
+            <div className="mb-12 text-center space-y-4">
+              <div className="hidden md:flex items-center gap-4">
                 <span className="h-px flex-1 bg-stone-300" />
                 <h2 className="font-serif text-4xl text-[#1C2541] leading-tight shrink-0">
-                  A safe space,{" "}
-                  <em className="text-[#8B5CF6]">held gently by all of us.</em>
+                  A safe space, <em className="text-[#8B5CF6]">held gently by all of us.</em>
                 </h2>
                 <span className="h-px flex-1 bg-stone-300" />
               </div>
+
+              {/* Mobile Heading */}
+              <h2 className="font-serif text-3xl md:hidden text-[#1C2541] leading-tight text-center">
+                A safe space, <em className="text-[#8B5CF6]">held gently by all of us.</em>
+              </h2>
+
+              <p className="text-[15px] md:text-base text-stone-500 leading-relaxed max-w-xl mx-auto">
+                To keep KindSphere a place worth returning to, we ask everyone to avoid:
+              </p>
             </div>
 
-            <div className="flex flex-col md:flex-row items-center gap-12 md:gap-20">
+            {/* Guidelines Grid */}
+            <Reveal className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 max-w-5xl mx-auto">
+              {GUIDELINES.map((item, index) => (
+                <div
+                  key={index}
+                  className="bg-stone-50 border border-stone-200/60 rounded-2xl p-5 flex items-start gap-3 h-auto transition-colors hover:border-[#DCCFF7] hover:bg-white"
+                >
+                  {/* Bullet Indicator */}
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#7C3AED] shrink-0 mt-2" />
 
-              {/* Image */}
-              <Reveal delay={80} className="flex-1 w-full">
-                <img
-                  src="/assets/imagery/communityguidelines.png"
-                  alt="Community Guidelines"
-                  className="w-full h-auto rounded-2xl shadow-md object-cover"
-                  loading="lazy"
-                />
-              </Reveal>
-
-              {/* Text */}
-              <Reveal className="flex-1 space-y-6 text-left w-full">
-                <div className="space-y-2">
-
-                  <h2 className="font-serif text-3xl md:hidden text-[#1C2541] leading-tight">
-                    A safe space,{" "}
-                    <em className="text-[#8B5CF6]">held gently by all of us.</em>
-                  </h2>
+                  {/* Guideline Text */}
+                  <span className="text-[#1C2541] text-sm leading-relaxed font-medium">
+                    {item}
+                  </span>
                 </div>
-
-                <p className="text-[14px] text-stone-500 leading-relaxed">
-                  To keep KindSphere a place worth returning to, we ask everyone
-                  to avoid:
-                </p>
-
-                <div className="rounded-2xl border border-stone-200/60 bg-white px-6 py-5 grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-3">
-                  {GUIDELINES.map((item) => (
-                    <div key={item} className="flex items-center gap-3">
-                      <span className="w-1.5 h-1.5 rounded-full bg-[#7C3AED] shrink-0" />
-                      <span className="text-[#1C2541] text-sm leading-snug">{item}</span>
-                    </div>
-                  ))}
-                </div>
-              </Reveal>
-            </div>
+              ))}
+            </Reveal>
           </div>
         </section>
 

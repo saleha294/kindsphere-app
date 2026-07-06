@@ -77,7 +77,7 @@ export default function ResponseDetailPage() {
   if (!bottle) return (
     <div className="flex flex-col items-center justify-center min-h-screen">
       <h1 className="text-2xl font-serif">Request not found.</h1>
-      <Link href="/dashboard" className="text-stone-500 underline mt-2">Back to feed</Link>
+      <Link href="/dashboard" className="text-stone-500 underline mt-2">Back to Shore</Link>
     </div>
   );
 
@@ -116,7 +116,7 @@ export default function ResponseDetailPage() {
             placeholder="Write your response..."
             required
           />
-          <button type="submit" className="w-full bg-stone-800 text-white py-3 rounded-xl font-semibold">
+          <button type="submit" className="w-full bg-[#7C3AED] text-white py-3 rounded-xl font-semibold">
             Send Reply
           </button>
         </form>
