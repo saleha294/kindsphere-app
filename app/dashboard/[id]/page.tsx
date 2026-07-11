@@ -83,7 +83,7 @@ export default function ResponseDetailPage() {
 
   return (
     <div className="max-w-2xl mx-auto pt-28 pb-10 px-6">
-      <Link href="/dashboard" className="text-sm text-stone-500 hover:text-stone-800">← Back to feed</Link>
+      <Link href="/dashboard" className="text-sm text-stone-500 hover:text-stone-800">← Back to Shore</Link>
 
       <div className="mt-8 p-6 bg-white border border-stone-200 rounded-2xl shadow-sm">
         <p className="text-lg text-stone-800 leading-relaxed">{bottle.content}</p>
@@ -108,17 +108,65 @@ export default function ResponseDetailPage() {
         </div>
       ) : (
         // Authenticated and it's someone else's bottle — show reply form
-        <form onSubmit={handleSendReply} className="mt-8 space-y-4">
+        <form onSubmit={handleSendReply} className="mt-8 bg-white p-8 rounded-3xl border border-stone-100 shadow-sm space-y-6">
+          {/* Header */}
+          <div className="flex items-start gap-4">
+            <div className="w-10 h-10 rounded-full bg-violet-100 flex items-center justify-center text-violet-600">
+              <span className="text-xl">🍃</span>
+            </div>
+            <div>
+              <h3 className="font-semibold text-stone-900">Your reply</h3>
+              <p className="text-sm text-stone-500">Only the bottle author will see this</p>
+            </div>
+          </div>
+
+          {/* Textarea */}
           <textarea
             value={replyContent}
             onChange={(e) => setReplyContent(e.target.value)}
-            className="w-full p-4 border border-stone-200 rounded-xl"
-            placeholder="Write your response..."
+            className="w-full p-4 bg-stone-50 border border-stone-200 rounded-2xl focus:ring-2 focus:ring-violet-500/20 focus:border-violet-500 outline-none transition-all min-h-[160px]"
+            placeholder="Write something warm, honest, or encouraging..."
+            maxLength={500}
             required
           />
-          <button type="submit" className="w-full bg-[#7C3AED] text-white py-3 rounded-xl font-semibold">
-            Send Reply
-          </button>
+
+          {/* Footer & Meta */}
+          <div className="flex justify-between items-center text-sm text-stone-500">
+            <div className="flex items-center gap-2 text-violet-600 font-medium">
+              <span>💜</span>
+              <span>Be kind. Be real. Be you.</span>
+            </div>
+            <span>{replyContent.length}/500</span>
+          </div>
+
+          {/* Privacy Notice */}
+          <div className="flex items-start gap-3 p-4 bg-stone-50 rounded-2xl border border-stone-100">
+            <div className="mt-1 shrink-0 text-stone-400">
+              <span className="text-xl">🔒</span>
+            </div>
+            <div>
+              <p className="text-sm font-semibold text-stone-900">Your identity stays hidden</p>
+              <p className="text-xs text-stone-500 leading-relaxed">
+                This reply will be delivered anonymously. If they respond and you both consent, you may choose to connect.
+              </p>
+            </div>
+          </div>
+
+          {/* Buttons */}
+          <div className="flex gap-4">
+            <button
+              type="submit"
+              className="flex-1 bg-[#7C3AED] hover:bg-[#6D28D9] text-white py-4 rounded-full font-semibold transition-all flex items-center justify-center gap-2"
+            >
+              <span>🌊</span> Send with love
+            </button>
+            <button
+              type="button"
+              className="px-8 py-4 rounded-full border border-stone-200 font-semibold text-stone-700 hover:bg-stone-50 transition-all"
+            >
+              Cancel
+            </button>
+          </div>
         </form>
       )}
     </div>

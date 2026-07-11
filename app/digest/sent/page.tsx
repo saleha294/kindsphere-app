@@ -1,6 +1,7 @@
 "use client";
 
-import { Eye, MessageCircle, Plus, ArrowLeft } from "lucide-react";
+
+import { ArrowLeft, Eye, MessageCircle, Send, Plus } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { getMySentBottles } from "@/lib/db-queries";
@@ -30,9 +31,8 @@ export default function SentDigestPage() {
                     <ArrowLeft size={16} />
                     Back to Drift
                 </Link>
-
                 {/* Header Section */}
-                <div className="bg-white p-8 rounded-3xl border border-stone-100 shadow-sm flex flex-col md:flex-row gap-6 justify-between items-start md:items-center">
+                <div className="bg-gradient-to-br from-violet-50 to-white p-8 rounded-[2rem] border border-violet-100 shadow-sm flex flex-col md:flex-row gap-8 justify-between items-start md:items-center">
                     <div className="max-w-lg space-y-3">
                         <h1 className="font-serif text-3xl font-medium text-[#1C2541]">
                             Welcome to your sent bottles.
@@ -42,29 +42,38 @@ export default function SentDigestPage() {
                         </p>
                     </div>
 
-                    {/* Circular Terracotta Button */}
+                    {/* Modern Horizontal CTA */}
                     <Link
                         href="/drop"
-                        className="shrink-0 flex items-center justify-center w-32 h-32 rounded-full text-white shadow-lg transition-transform hover:scale-105 active:scale-95"
-                        style={{ backgroundColor: "#7C3AED" }}
+                        className="shrink-0 flex items-center gap-2.5 bg-[#7C3AED] hover:bg-[#6D28D9] text-white px-8 py-4 rounded-full font-semibold shadow-md transition-all hover:shadow-lg hover:-translate-y-0.5 active:scale-95"
                     >
-                        <div className="flex flex-col items-center gap-2">
-                            <Plus size={24} />
-                            <span className="font-semibold text-sm">Drop a Bottle</span>
-                        </div>
+                        <Send size={20} />
+                        <span>Drop a Bottle</span>
                     </Link>
                 </div>
 
                 {/* List Section */}
                 <div className="space-y-5">
                     {bottles.length === 0 ? (
-                        <div className="bg-white rounded-[2rem] p-8 border border-stone-100 shadow-[0_2px_12px_rgba(0,0,0,0.02)] text-center space-y-2">
-                            <p className="text-[#1C2541] font-serif text-lg">You haven't dropped any bottles yet.</p>
-                            <p className="text-stone-400 text-sm">Every bottle you send into KindSphere will appear here.</p>
+                        <div className="bg-gradient-to-br from-violet-50 to-white rounded-[2rem] p-12 border border-violet-100 shadow-sm text-center space-y-4">
+                            <div className="text-5xl">🍾</div>
+                            <div className="space-y-1">
+                                <p className="text-[#1C2541] font-serif text-xl">You haven't dropped any bottles yet</p>
+                                <p className="text-stone-500 text-sm max-w-sm mx-auto">Every bottle you release into KindSphere has the chance to reach someone who needs it.</p>
+                            </div>
+                            <Link
+                                href="/drop"
+                                className="inline-block bg-[#7C3AED] text-white px-6 py-3 rounded-full font-semibold hover:bg-[#6D28D9] transition-all"
+                            >
+                                Drop Your First Bottle
+                            </Link>
                         </div>
                     ) : (
                         bottles.map((bottle) => (
-                            <div key={bottle.id} className="bg-white rounded-[2rem] p-8 border border-stone-100 shadow-[0_2px_12px_rgba(0,0,0,0.02)] space-y-5">
+                            <div
+                                key={bottle.id}
+                                className="group bg-white rounded-[2rem] p-8 border border-stone-100 shadow-[0_2px_12px_rgba(0,0,0,0.02)] space-y-5 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
+                            >
                                 <div className="flex justify-between items-center text-xs">
                                     <span className="text-stone-400 font-medium tracking-wide uppercase">
                                         {new Date(bottle.created_at).toLocaleDateString("en-US", {
@@ -74,7 +83,7 @@ export default function SentDigestPage() {
                                         })}
                                     </span>
                                     <span
-                                        className="px-4 py-1.5 rounded-full font-semibold border"
+                                        className="px-5 py-2 rounded-full font-bold border shadow-sm"
                                         style={{
                                             background: bottle.status === "drifting" ? "rgba(167,139,250,0.1)" : "rgba(168,218,220,0.15)",
                                             borderColor: bottle.status === "drifting" ? "rgba(167,139,250,0.2)" : "rgba(168,218,220,0.3)",
@@ -85,18 +94,18 @@ export default function SentDigestPage() {
                                     </span>
                                 </div>
 
-                                <p className="text-[#1C2541] leading-relaxed font-serif text-lg">
+                                <p className="text-[#1C2541] leading-relaxed font-serif text-xl">
                                     &ldquo;{bottle.content}&rdquo;
                                 </p>
 
-                                <div className="flex items-center gap-6 pt-4 text-xs font-medium text-stone-400 border-t border-stone-50">
+                                <div className="flex items-center gap-6 pt-4 text-xs font-medium text-stone-400 border-t border-stone-50 group-hover:text-stone-500 transition-colors">
                                     <span className="flex items-center gap-1.5">
                                         <Eye className="h-4 w-4" />
                                         Drifting through KindSphere
                                     </span>
                                     <span className="flex items-center gap-1.5">
-                                        <MessageCircle className="h-4 w-4" style={{ color: "#A78BFA" }} />
-                                        <span className="text-stone-600">0 replies</span>
+                                        <MessageCircle className="h-4 w-4 group-hover:text-[#7C3AED] transition-colors" style={{ color: "#A78BFA" }} />
+                                        <span className="text-stone-600">This is how you were feeling back then.. we hope you are doing better now</span>
                                     </span>
                                 </div>
                             </div>

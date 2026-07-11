@@ -39,64 +39,53 @@ export default function HowToUseSection() {
 
   return (
     <>
-      <section className="w-full py-16 md:py-20">
-        <div className="w-full max-w-6xl mx-auto px-6 md:px-12">
+      <section className="w-full py-24 bg-slate-50">
+        <div className="w-full max-w-7xl mx-auto px-6">
+
           {/* Header */}
-          <div className="mb-16 space-y-2">
-            <div className="flex items-center gap-4">
-              <span className="hidden md:block h-px flex-1 bg-stone-300" />
-              <h2 className="font-serif text-3xl md:text-4xl text-[#1C2541] leading-tight shrink-0">
-                <span className="text-black">How</span> <span className="text-[#7C3AED]">it works</span>
-              </h2>
-              <span className="hidden md:block h-px flex-1 bg-stone-300" />
-            </div>
+          <div className="text-center mb-16 space-y-3">
+            <p className="text-[11px] font-bold uppercase tracking-widest text-violet-600">SIMPLE BY DESIGN</p>
+            <h2 className="font-serif text-4xl md:text-6xl text-slate-950 leading-[1.1] tracking-tight">
+              How it <span className="text-violet-600 italic">works</span>
+            </h2>
+            <p className="text-lg md:text-xl text-slate-600 max-w-xl mx-auto leading-relaxed">
+              Three simple steps between you and someone whose day you'll change forever.
+            </p>
           </div>
 
-          {/* Timeline Grid */}
-          <div className="relative">
-            {/* Desktop Timeline Line */}
-            <div className="hidden xl:block absolute top-[52px] left-[10%] right-[10%] h-[2px] bg-gradient-to-r from-purple-300 via-purple-500 to-purple-300 z-0" />
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-8 items-start relative z-10">
-              {HowToUseSectionData.map((step) => (
-                <div
-                  key={step.number}
-                  className="bg-white rounded-3xl border border-stone-200 shadow-sm p-6 h-auto flex flex-col gap-5 transition-transform hover:-translate-y-1"
-                >
-                  {/* Upper Row: Icon Left, Number Right */}
-                  <div className="flex justify-between items-center w-full">
-                    <div className="w-16 h-16 shrink-0 flex items-center justify-center">
-                      <img
-                        src={step.icon}
-                        alt={step.alt}
-                        className="w-full h-full object-contain"
-                        onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = "none"; }}
-                      />
-                    </div>
-                    <div className="text-2xl font-bold text-[#7C3AED]/40 font-serif">
-                      {step.number}
-                    </div>
+          {/* Cards Carousel/Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-6 overflow-x-auto pb-6 md:pb-0 snap-x scrollbar-hide">
+            {HowToUseSectionData.map((step) => (
+              <div
+                key={step.number}
+                className="min-w-[280px] md:min-w-0 snap-center bg-white border border-slate-100 rounded-[2rem] p-8 flex flex-col gap-6 transition-all hover:-translate-y-2 hover:shadow-xl shadow-sm"
+              >
+                <div className="relative w-16 h-16 shrink-0">
+                  <div className="w-16 h-16 rounded-2xl bg-violet-600 flex items-center justify-center text-white shadow-lg shadow-violet-200">
+                    <img src={step.icon} alt={step.alt} className="w-8 h-8 object-contain brightness-0 invert" />
                   </div>
-
-                  {/* Lower Section: Text Left-Aligned */}
-                  <div className="space-y-3 text-left">
-                    <h3 className="text-[19px] font-semibold text-[#1C2541] leading-snug">
-                      {step.title}
-                    </h3>
-                    <p className="text-[17px] leading-6 text-stone-500">
-                      {step.body}
-                    </p>
+                  <div className="absolute -top-1 -right-1 w-6 h-6 rounded-full bg-amber-400 flex items-center justify-center text-[10px] font-bold text-white border-2 border-white">
+                    {step.number}
                   </div>
                 </div>
-              ))}
-            </div>
+
+                <div className="space-y-2 text-left">
+                  <h3 className="font-serif text-2xl text-slate-950 leading-tight">
+                    {step.title}
+                  </h3>
+                  <p className="text-slate-600 leading-relaxed text-sm md:text-base">
+                    {step.body}
+                  </p>
+                </div>
+              </div>
+            ))}
           </div>
 
           {/* CTA */}
           <div className="mt-16 flex justify-center">
             <button
               onClick={() => setShowRegister(true)}
-              className="inline-flex items-center gap-2 text-sm font-semibold text-white px-8 py-4 rounded-full shadow-lg hover:opacity-90 active:scale-[0.97] transition-all"
+              className="inline-flex items-center gap-2 text-base font-semibold text-white px-10 py-4 rounded-full shadow-lg hover:opacity-90 active:scale-[0.97] transition-all"
               style={{
                 background: "linear-gradient(135deg,#7C3AED 0%,#6366F1 60%,#818CF8 100%)",
               }}

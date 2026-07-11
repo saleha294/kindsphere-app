@@ -145,54 +145,34 @@ export default function DropPage() {
   }
 
   return (
-    <div className="w-full min-h-[calc(100vh-4rem)] md:h-screen bg-[#FAF9F6] flex items-center justify-center px-4 py-6 relative md:overflow-hidden">
-      {/* Page-level decorative gradients — far corners, desktop only */}
-      <div className="hidden md:block absolute -top-40 -left-40 w-[500px] h-[500px] rounded-full bg-[#7C3AED]/[0.05] blur-[120px] pointer-events-none" />
-      <div className="hidden md:block absolute -bottom-40 -right-40 w-[500px] h-[500px] rounded-full bg-[#7C3AED]/[0.05] blur-[120px] pointer-events-none" />
+    // Updated pt-32 to push everything down significantly from the navbar
+    <div className="w-full min-h-screen bg-[#FAF9F6] pt-32 pb-20">
 
+      {/* Added pl-5 (approx 20px) to shift the entire content container to the right relative to the edge */}
+      <div className="max-w-4xl mx-auto pl-5 pr-6 md:px-0 space-y-16">
 
-      <div className="w-full max-w-3xl md:max-w-5xl mx-auto rounded-3xl overflow-hidden border border-stone-200/60 shadow-xl flex flex-col md:grid md:grid-cols-[28%_44%_28%] bg-white mt-[8vh] relative">
-        {/* Decorative purple gradient circles */}
-        <div className="absolute -top-24 -right-24 w-48 h-48 rounded-full bg-[#7C3AED]/10 blur-3xl pointer-events-none" />
-        <div className="absolute -bottom-24 -left-24 w-48 h-48 rounded-full bg-[#7C3AED]/10 blur-3xl pointer-events-none" />
-
-        {/* LEFT PANEL: Image (mobile full-width, desktop left column) */}
-        <div className="relative w-full h-56 md:h-full overflow-hidden">
-          <img
-            src="/assets/imagery/drop.png"
-            alt="Drop Your Bottle"
-            className="absolute inset-0 w-full h-full object-cover"
-          />
-          {/* Desktop-only gradient overlay with inspirational text */}
-          <div className="hidden md:flex absolute inset-0 bg-gradient-to-b from-[#7C3AED]/70 via-[#7C3AED]/10 to-transparent items-start p-8">
-            <div className="max-w-[260px]">
-              <h2 className="font-playfair text-white text-[38px] font-bold leading-[1.05] tracking-[-0.03em]">
-                Every bottle
-                <br />
-                carries a story...
-              </h2>
-            </div>
-          </div>
+        {/* Header Section */}
+        <div className="space-y-2">
+          <h1 className="font-serif text-4xl text-stone-900">Drop a Bottle</h1>
+          <p className="text-stone-600">Share your thoughts anonymously with the KindSphere community.</p>
         </div>
 
-        {/* CENTER PANEL: Form */}
-        <div className="flex-1 md:flex-none px-5 py-6 md:px-10 md:py-10">
-          <form onSubmit={handleSubmit} className="space-y-6 md:space-y-8">
-            <h1 className="font-serif text-xl md:text-2xl font-medium flex items-center gap-3">
-              {/*  <BottleIcon className="w-9 h-9" /> */}
-              Drop your thoughts...
-            </h1>
+        {/* Your Story Section */}
+        <section className="space-y-6">
+          <h2 className="font-serif text-2xl text-stone-900 border-b border-stone-200 pb-2">Your Story</h2>
 
-            {/* Category Selector */}
-            <div className="space-y-2">
-              <label className="text-xs font-semibold text-stone-500 uppercase">Category</label>
-              <div className="grid grid-cols-3 gap-2">
+          <form onSubmit={handleSubmit} className="space-y-6">
+            <div className="space-y-3">
+              <label className="text-xs font-bold text-stone-400 uppercase tracking-widest">Category</label>
+              <div className="flex flex-wrap gap-2">
                 {CATEGORIES.map((cat) => (
                   <button
                     key={cat}
                     type="button"
                     onClick={() => setCategory(cat)}
-                    className={`text-xs py-2 rounded-lg border ${category === cat ? "bg-[#7C3AED] text-white border-[#7C3AED]" : "bg-white border-stone-200 text-stone-600"
+                    className={`px-6 py-2 rounded-full text-sm font-medium border transition-all ${category === cat
+                      ? "bg-[#7C3AED] text-white border-[#7C3AED]"
+                      : "bg-white border-stone-200 text-stone-600 hover:border-violet-300"
                       }`}
                   >
                     {cat}
@@ -206,62 +186,48 @@ export default function DropPage() {
               onChange={(e) => setContent(e.target.value)}
               required
               minLength={20}
-              className="w-full min-h-[110px] rounded-xl border border-stone-200 p-3 text-sm"
-              placeholder="Describe your situation..."
+              className="w-full min-h-[200px] rounded-[24px] border border-[#E9DDFD] bg-[#F8F5FF] p-6 text-stone-600 placeholder:text-stone-400 focus:ring-2 focus:ring-violet-500/20 outline-none transition-all"
+              placeholder="What do you want to send into the world today? A thought, a feeling, a small kindness..."
             />
 
             <button
               type="submit"
               disabled={isSubmitting}
-              className="w-full text-white py-3 rounded-xl text-sm font-semibold"
-              style={{ background: "linear-gradient(135deg,#7C3AED 0%,#6366F1 60%,#818CF8 100%)" }}
+              className="px-8 py-3 bg-[#7C3AED] text-white rounded-full text-sm font-semibold hover:bg-[#6D28D9] transition-all"
             >
               {isSubmitting ? "Dropping..." : "Drop This Bottle"}
             </button>
-
-            {error && <p className="text-red-500 text-xs text-center">{error}</p>}
           </form>
-        </div>
+        </section>
 
-        {/* RIGHT PANEL: Reassurance (desktop only) */}
-        <div className="hidden md:flex flex-col justify-center px-6 py-8 bg-gradient-to-b from-[#7C3AED]/[0.02] to-white border-l border-stone-100">
-          <h3 className="font-serif text-xl text-[#1C2541]">You&apos;re not alone.</h3>
-          <p className="text-xs text-stone-400 mt-1 mb-6">Here&apos;s what you can expect:</p>
-
-          <div className="space-y-5">
-            <div className="flex items-start gap-3">
-              <ShareAnonymouslyIcon className="w-9 h-9 shrink-0" />
+        {/* Section 2: Expanded What happens next */}
+        <section className="space-y-8 pt-8 border-t border-stone-200">
+          <h2 className="font-serif text-2xl text-stone-900">What happens next?</h2>
+          <div className="grid gap-8">
+            <div className="flex items-start gap-4">
+              <div className="text-[#7C3AED] mt-1"><Shield size={24} /></div>
               <div>
-                <h4 className="font-medium text-[#1C2541] text-sm">Anonymous &amp; Safe</h4>
-                <p className="text-xs text-stone-500 mt-0.5 leading-relaxed">Your identity is never revealed.</p>
+                <h4 className="font-medium text-stone-900 text-lg">Your identity stays hidden</h4>
+                <p className="text-stone-500 mt-1">We take anonymity seriously. Your name, email, and location are never attached to your bottle. It’s just you and your thoughts, floating freely in the sphere.</p>
               </div>
             </div>
-
-            <div className="flex items-start gap-3">
-              <RepliesIcon className="w-9 h-9 shrink-0" />
+            <div className="flex items-start gap-4">
+              <div className="text-[#7C3AED] mt-1"><RepliesIcon className="w-6 h-6" /></div>
               <div>
-                <h4 className="font-medium text-[#1C2541] text-sm">Kind Replies</h4>
-                <p className="text-xs text-stone-500 mt-0.5 leading-relaxed">Receive thoughtful responses from people around the world.</p>
+                <h4 className="font-medium text-stone-900 text-lg">Thoughtful, kind replies</h4>
+                <p className="text-stone-500 mt-1">Once your bottle is live, community members can respond with empathy and advice. You’ll be notified whenever someone takes a moment to offer you kindness.</p>
               </div>
             </div>
-
-            <div className="flex items-start gap-3">
-              <MutualConnectionsIcon className="w-9 h-9 shrink-0" />
+            <div className="flex items-start gap-4">
+              <div className="text-[#7C3AED] mt-1"><SpreadPositivityIcon className="w-6 h-6" /></div>
               <div>
-                <h4 className="font-medium text-[#1C2541] text-sm">Mutual Connections</h4>
-                <p className="text-xs text-stone-500 mt-0.5 leading-relaxed">Meaningful conversations can grow into lasting anonymous connections.</p>
-              </div>
-            </div>
-
-            <div className="flex items-start gap-3">
-              <SpreadPositivityIcon className="w-9 h-9 shrink-0" />
-              <div>
-                <h4 className="font-medium text-[#1C2541] text-sm">Make an Impact</h4>
-                <p className="text-xs text-stone-500 mt-0.5 leading-relaxed">Your words might become exactly what someone needed today.</p>
+                <h4 className="font-medium text-stone-900 text-lg">A growing impact</h4>
+                <p className="text-stone-500 mt-1">Every bottle you drop helps build a more supportive, understanding world. Your vulnerability often becomes the exact comfort someone else needs to hear today.</p>
               </div>
             </div>
           </div>
-        </div>
+        </section>
+
       </div>
       {showPrivatePrompt && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">

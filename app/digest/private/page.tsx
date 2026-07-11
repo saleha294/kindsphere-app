@@ -47,105 +47,144 @@ export default function PrivateBottlesPage() {
     };
 
     return (
-        <div className="space-y-8 max-w-3xl pb-10">
-            {/* Back Button */}
-            <Link
-                href="/digest"
-                className="inline-flex items-center gap-2 text-white bg-[#7C3AED] hover:bg-[#7C3AED] transition-colors px-4 py-2 rounded-full text-sm font-medium shadow-sm w-max"
-            >
-                <ArrowLeft size={16} />
-                Back to Drift
-            </Link>
+        <div className="w-full min-h-screen bg-stone-50 pb-20">
+            <div className="max-w-6xl mx-auto px-6 md:px-12 pt-28 pb-10 space-y-8">
+                {/* Back Button */}
+                <Link
+                    href="/digest"
+                    className="inline-flex items-center gap-2 text-[#7C3AED] hover:text-[#6D28D9] transition-colors px-4 py-2 rounded-full text-sm font-medium w-max"
+                >
+                    <ArrowLeft size={16} />
+                    Back to Drift
+                </Link>
 
-            {/* Header */}
-            <div className="bg-white p-8 rounded-3xl border border-stone-100 shadow-sm space-y-3">
-                <div className="flex items-center gap-3">
-                    <Lock className="h-5 w-5 text-[#7C3AED]" />
-                    <h1 className="font-serif text-3xl font-medium text-[#1C2541]">
-                        Private Bottles
-                    </h1>
-                </div>
-                <p className="text-stone-500 text-[15px] leading-relaxed max-w-2xl">
-                    Someone dropped a bottle and it found its way to you — anonymously.
-                    Only you can see these. Reply kindly, then they drift on.
-                </p>
-            </div>
-
-            {/* List */}
-            <div className="space-y-5">
-                {bottles.length === 0 ? (
-                    <div className="bg-white rounded-[2rem] p-8 border border-stone-100 shadow-[0_2px_12px_rgba(0,0,0,0.02)] text-center space-y-2">
-                        <p className="text-[#1C2541] font-serif text-lg">No private bottles waiting.</p>
-                        <p className="text-stone-400 text-sm">When someone sends a bottle your way, it will appear here.</p>
+                {/* Header */}
+                <div className="bg-gradient-to-br from-violet-50 to-white p-8 rounded-[2rem] border border-violet-100 shadow-sm relative overflow-hidden">
+                    <div className="relative z-10 max-w-2xl space-y-3">
+                        <h1 className="font-serif text-3xl font-medium text-[#1C2541]">
+                            Private Bottles
+                        </h1>
+                        <p className="text-stone-500 text-[15px] leading-relaxed">
+                            Someone dropped a bottle and it found its way to you, anonymously.
+                            Only you can see these. Reply kindly, then they drift on.
+                        </p>
                     </div>
-                ) : (
-                    bottles.map((delivery) => {
-                        const bottle = Array.isArray(delivery.bottle)
-                            ? delivery.bottle[0]
-                            : delivery.bottle;
+                    {/* Decorative Lock */}
+                    <div className="absolute right-10 top-1/2 -translate-y-1/2 text-violet-200/50 pointer-events-none">
+                        <Lock size={80} strokeWidth={1} />
+                    </div>
+                </div>
 
-                        const isSent = sent[delivery.id];
-                        const isSending = sending[delivery.id];
+                {/* Kindness Reminder Section */}
+                <div className="bg-white p-8 rounded-[2rem] border border-violet-100 shadow-sm space-y-6">
+                    <h2 className="flex items-center gap-2 text-[#7C3AED] font-semibold text-sm">
+                        <span className="text-lg">🌿</span> Reply with Kindness
+                    </h2>
+                    <p className="text-stone-600 text-sm leading-relaxed max-w-2xl">
+                        Every anonymous reply has the chance to brighten someone's day.
+                    </p>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs text-stone-600">
+                        <div className="flex items-center gap-2">🌿 Encourage instead of judging.</div>
+                        <div className="flex items-center gap-2">💜 Listen before giving advice.</div>
+                        <div className="flex items-center gap-2">🤝 Respect different experiences.</div>
+                        <div className="flex items-center gap-2">🔒 Never ask for personal information.</div>
+                    </div>
+                </div>
 
-                        return (
-                            <div
-                                key={delivery.id}
-                                className="bg-white rounded-[2rem] p-8 border border-stone-100 shadow-[0_2px_12px_rgba(0,0,0,0.02)] space-y-5"
-                            >
-                                {/* Anonymous sender badge */}
-                                <div className="flex justify-between items-center text-xs text-stone-400 font-medium tracking-wide">
-                                    <span className="flex items-center gap-1.5">
-                                        <Lock className="h-3 w-3" />
-                                        Anonymous · Private delivery
-                                    </span>
-                                    <span className="uppercase">
-                                        {new Date(delivery.created_at).toLocaleDateString("en-US", {
-                                            month: "short",
-                                            day: "numeric",
-                                        })}
-                                    </span>
-                                </div>
+                {/* List Header */}
+                <div className="space-y-1 pt-4">
+                    <h2 className="text-xl font-serif text-[#1C2541]">Private Bottles</h2>
+                    <p className="text-stone-400 text-sm">Every anonymous message waiting for your kindness appears below.</p>
+                </div>
 
-                                {/* Bottle content */}
-                                <p className="text-[#1C2541] font-serif text-lg leading-relaxed">
-                                    &ldquo;{bottle?.content}&rdquo;
-                                </p>
+                {/* Bottle List */}
+                <div className="space-y-5">
+                    {bottles.length === 0 ? (
+                        <div className="bg-white rounded-[2rem] p-8 border border-stone-100 shadow-[0_2px_12px_rgba(0,0,0,0.02)] text-center space-y-2">
+                            <p className="text-[#1C2541] font-serif text-lg">No private bottles waiting.</p>
+                            <p className="text-stone-400 text-sm">When someone sends a bottle your way, it will appear here.</p>
+                        </div>
+                    ) : (
+                        bottles.map((delivery) => {
+                            const bottle = Array.isArray(delivery.bottle)
+                                ? delivery.bottle[0]
+                                : delivery.bottle;
 
-                                {/* Reply form */}
-                                {isSent ? (
-                                    <p className="text-[#A78BFA] text-sm font-medium pt-2 border-t border-stone-50">
-                                        ✓ Your reply has been sent anonymously.
-                                    </p>
-                                ) : (
-                                    <div className="pt-4 border-t border-stone-50 space-y-3">
-                                        <textarea
-                                            value={replyDrafts[delivery.id] ?? ""}
-                                            onChange={(e) =>
-                                                setReplyDrafts((prev) => ({
-                                                    ...prev,
-                                                    [delivery.id]: e.target.value,
-                                                }))
-                                            }
-                                            rows={3}
-                                            className="w-full p-4 border border-stone-200 rounded-xl text-sm resize-none focus:outline-none focus:border-stone-300"
-                                            placeholder="Write an anonymous reply…"
-                                        />
-                                        <div className="flex justify-end">
-                                            <button
-                                                disabled={isSending || !replyDrafts[delivery.id]?.trim()}
-                                                onClick={() => handleReply(delivery.id, bottle?.id)}
-                                                className="inline-flex items-center gap-2 bg-[#7C3AED] hover:bg-[#7C3AED] disabled:opacity-50 text-white text-sm font-semibold px-5 py-2.5 rounded-xl transition-colors"
-                                            >
-                                                <Send className="h-3.5 w-3.5" />
-                                                {isSending ? "Sending…" : "Send Anonymously"}
-                                            </button>
-                                        </div>
+                            const isSent = sent[delivery.id];
+                            const isSending = sending[delivery.id];
+
+                            return (
+                                <div
+                                    key={delivery.id}
+                                    className="bg-white rounded-[2rem] p-8 border border-stone-100 shadow-[0_2px_12px_rgba(0,0,0,0.02)] space-y-5 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:border-violet-100"
+                                >
+                                    <div className="flex justify-between items-center text-xs text-stone-400 font-medium tracking-wide">
+                                        <span className="flex items-center gap-1.5">
+                                            <Lock className="h-3 w-3" />
+                                            Anonymous · Private delivery
+                                        </span>
+                                        <span className="uppercase">
+                                            {new Date(delivery.created_at).toLocaleDateString("en-US", {
+                                                month: "short",
+                                                day: "numeric",
+                                            })}
+                                        </span>
                                     </div>
-                                )}
-                            </div>
-                        );
-                    })
-                )}
+
+                                    <p className="text-[#1C2541] font-serif text-lg leading-relaxed">
+                                        &ldquo;{bottle?.content}&rdquo;
+                                    </p>
+
+                                    {isSent ? (
+                                        <p className="text-[#A78BFA] text-sm font-medium pt-2 border-t border-stone-50">
+                                            ✓ Your reply has been sent anonymously.
+                                        </p>
+                                    ) : (
+                                        <div className="pt-4 border-t border-stone-50 space-y-3">
+                                            <textarea
+                                                value={replyDrafts[delivery.id] ?? ""}
+                                                onChange={(e) =>
+                                                    setReplyDrafts((prev) => ({
+                                                        ...prev,
+                                                        [delivery.id]: e.target.value,
+                                                    }))
+                                                }
+                                                rows={3}
+                                                className="w-full p-4 bg-white border border-stone-200 rounded-2xl text-sm resize-none focus:outline-none focus:ring-2 focus:ring-violet-200 focus:border-violet-300 transition-all"
+                                                placeholder="Write an anonymous reply…"
+                                            />
+                                            <div className="flex justify-end">
+                                                <button
+                                                    disabled={isSending || !replyDrafts[delivery.id]?.trim()}
+                                                    onClick={() => handleReply(delivery.id, bottle?.id)}
+                                                    className="inline-flex items-center gap-2 bg-[#7C3AED] hover:bg-[#6D28D9] disabled:opacity-50 text-white text-sm font-semibold px-5 py-2.5 rounded-full shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg active:scale-95"
+                                                >
+                                                    <Send className="h-3.5 w-3.5" />
+                                                    {isSending ? "Sending…" : "Send Anonymously"}
+                                                </button>
+                                            </div>
+                                        </div>
+                                    )}
+                                </div>
+                            );
+                        })
+                    )}
+                </div>
+
+                {/* Bottom CTA */}
+                <div className="bg-gradient-to-r from-violet-600 to-indigo-600 p-8 rounded-[2rem] text-white shadow-lg space-y-5">
+                    <h3 className="font-serif text-xl">💌 Enjoying Private Bottles?</h3>
+                    <p className="text-violet-100 text-sm leading-relaxed max-w-2xl">
+                        If you enjoy exchanging anonymous conversations, why not send one yourself?
+                        When creating your next bottle, choose the Private Delivery option to send it directly to another KindSphere member.
+                    </p>
+                    <Link
+                        href="/drop"
+                        className="inline-block bg-white text-[#7C3AED] font-semibold px-6 py-3 rounded-full text-sm transition-transform hover:scale-105 active:scale-95 w-max"
+                    >
+                        Send a Private Bottle →
+                    </Link>
+                </div>
             </div>
         </div>
     );

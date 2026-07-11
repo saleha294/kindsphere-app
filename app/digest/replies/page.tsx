@@ -43,21 +43,28 @@ export default function RepliesPage() {
                     </div>
                 ) : (
                     <>
-                        {/* Header Section */}
-                        <div className="bg-white p-8 rounded-3xl border border-stone-100 shadow-sm space-y-3">
-                            <h1 className="font-serif text-3xl font-medium text-[#1C2541]">
-                                Your Replies
-                            </h1>
-                            <p className="text-stone-500 text-[15px] leading-relaxed max-w-2xl">
-                                These are the answers and thoughts people have returned to your drifting bottles.
-                            </p>
+                        {/* Redesigned Header Section */}
+                        <div className="bg-gradient-to-br from-violet-50 to-white p-8 rounded-[2rem] border border-violet-100 shadow-sm relative overflow-hidden animate-fade-in">
+                            <div className="absolute inset-0 opacity-50 bg-[radial-gradient(circle_at_top_right,_var(--tw-gradient-stops))] from-violet-100 via-transparent to-transparent pointer-events-none" />
+                            <div className="relative z-10 space-y-3">
+                                <h1 className="font-serif text-3xl font-medium text-[#1C2541]">
+                                    Your Replies
+                                </h1>
+                                <p className="text-stone-600 text-[15px] leading-relaxed max-w-2xl">
+                                    These are the answers and thoughts people have returned to your drifting bottles.
+                                </p>
+                            </div>
                         </div>
 
                         {/* List Section */}
                         <div className="space-y-5">
                             {displayReplies.map((reply) => (
-                                <div key={reply.id} className="bg-white rounded-[2rem] p-8 border border-stone-100 shadow-[0_2px_12px_rgba(0,0,0,0.02)] space-y-5">
-                                    <div className="bg-[#FAF9F6] p-4 rounded-2xl border border-stone-100 text-sm text-stone-500 italic">
+                                <div
+                                    key={reply.id}
+                                    className="bg-white rounded-[2rem] p-8 border border-stone-100 shadow-[0_2px_12px_rgba(0,0,0,0.02)] space-y-5 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl cursor-default"
+                                >
+                                    {/* Updated Bottle Quote background */}
+                                    <div className="bg-violet-50/50 p-4 rounded-2xl border border-violet-100 text-sm text-stone-600 italic">
                                         &ldquo;{reply.bottle.content}&rdquo;
                                     </div>
                                     <div className="space-y-3 pt-2">

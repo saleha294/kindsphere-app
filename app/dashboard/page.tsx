@@ -24,8 +24,11 @@ export default function DashboardPage() {
   const [currentUserId, setCurrentUserId] = useState<string | null>(null);
   const [liveBottles, setLiveBottles] = useState<any[]>([]);
 
+  // New state for dynamic greeting and date
+  const [greeting, setGreeting] = useState("");
+  const [currentDate, setCurrentDate] = useState("");
+
   useEffect(() => {
-    // Read initial auth state
     const syncAuth = async () => {
       const savedHandle = localStorage.getItem("kindsphere_handle");
       const savedUid = await getCurrentUserId();
@@ -34,10 +37,21 @@ export default function DashboardPage() {
       setCurrentUserId(savedUid);
     };
 
-    syncAuth(); // Read on mount
-
-    // Sync instantly when auth changes (login/logout/register)
+    syncAuth();
     window.addEventListener("auth-changed", syncAuth);
+
+    // Dynamic Date/Time Logic
+    const now = new Date();
+    const hour = now.getHours();
+    if (hour < 12) setGreeting("Good morning ☀️");
+    else if (hour < 18) setGreeting("Good afternoon 🌤️");
+    else setGreeting("Good evening 🌙");
+
+    setCurrentDate(now.toLocaleDateString("en-US", {
+      weekday: "long",
+      month: "long",
+      day: "numeric"
+    }));
 
     getDriftingBottles().then((data: any) => {
       if (data) setLiveBottles(data);
@@ -48,22 +62,47 @@ export default function DashboardPage() {
     };
   }, []);
 
-  const handleResponseClick = (e: React.MouseEvent) => {
-    // Add your click logic here if needed
-  };
+  const handleResponseClick = (e: React.MouseEvent) => { };
 
   return (
     <div className="w-full flex flex-col min-h-screen pb-20 bg-stone-50">
       <div className="w-full max-w-6xl mx-auto px-6 md:px-12 pt-28 pb-10 space-y-10">
 
-        {/* --- BIG BOLD WELCOME BANNER --- */}
-        <div className="w-full">
+        {/* --- PREMIUM WELCOME HERO --- */}
+        <div className="w-full mb-12">
           {userHandle ? (
-            <h1 className="text-3xl font-serif text-stone-800 font-medium">
-              👋 Welcome back, {userHandle}!
-            </h1>
+            <div className="flex flex-col gap-8">
+              <div className="space-y-3">
+                <p className="text-sm font-medium text-stone-500 uppercase tracking-widest">
+                  {currentDate} • {greeting}
+                </p>
+                <div className="space-y-1">
+                  <h1 className="text-5xl font-serif text-stone-900">
+                    Welcome back, <span className="italic text-[#7C3AED]">{userHandle}.</span>
+                  </h1>
+                </div>
+                <p className="text-lg text-stone-600 max-w-lg pt-2">
+                  The world is a little kinder because you're in it. Ready to drop something beautiful today?
+                </p>
+              </div>
+
+              <div className="flex items-center gap-4">
+                <Link
+                  href="/drop"
+                  className="px-8 py-4 bg-[#7C3AED] hover:bg-[#6D28D9] text-white rounded-full font-semibold transition-all shadow-lg shadow-violet-200"
+                >
+                  Drop a Bottle
+                </Link>
+                <Link
+                  href="/globe"
+                  className="px-8 py-4 bg-white hover:bg-stone-50 text-stone-800 border border-stone-200 rounded-full font-semibold transition-all"
+                >
+                  Explore Sphere
+                </Link>
+              </div>
+            </div>
           ) : (
-            <div className="bg-white p-6 rounded-2xl border border-stone-200 shadow-sm">
+            <div className="bg-white p-8 rounded-3xl border border-stone-200 shadow-sm">
               <h1 className="text-2xl font-serif text-stone-800 mb-2">
                 👋 Welcome to KindSphere
               </h1>
@@ -99,7 +138,7 @@ export default function DashboardPage() {
           </div>
 
           <h3 className="font-serif text-2xl font-medium text-stone-800">
-            Active Requests
+            See Who Needs Kindness
           </h3>
 
           <Suspense fallback={<div className="h-64 bg-stone-100 rounded-2xl" />}>
@@ -116,6 +155,7 @@ export default function DashboardPage() {
   );
 }
 
+// FeedGrid function remains unchanged as requested
 function FeedGrid({
   bottles,
   activeFilter,
@@ -146,10 +186,7 @@ function FeedGrid({
           key={req.id}
           className="group relative overflow-hidden rounded-3xl border border-stone-200 bg-white p-6 shadow-sm transition-all duration-300 hover:border-violet-200 hover:shadow-lg hover:-translate-y-1 flex flex-col h-full"
         >
-          {/* Subtle top indicator that glows on hover */}
           <div className="absolute inset-x-0 top-0 h-1 bg-transparent group-hover:bg-gradient-to-r group-hover:from-[#C4B5FD] group-hover:via-[#8B5CF6] group-hover:to-[#C4B5FD] transition-colors duration-300" />
-
-          {/* Header */}
           <div className="flex justify-between items-center mb-4">
             <span className="text-sm font-semibold tracking-wide text-stone-500 group-hover:text-[#7C3AED] transition-colors">
               @{req.anonymous_handle || "Anonymous"}
@@ -160,13 +197,9 @@ function FeedGrid({
               {req.category}
             </span>
           </div>
-
-          {/* Content */}
           <p className="text-stone-700 text-[15px] leading-7 flex-grow line-clamp-4 mb-6">
             {req.content}
           </p>
-
-          {/* Action Buttons */}
           <div className="flex gap-3 pt-4 mt-auto border-t border-stone-100 -mx-6 px-6 pb-1 rounded-b-3xl group-hover:bg-violet-50/30 transition-colors">
             {isUserOwner(req.sender_id, currentUserId) ? (
               <div className="flex-1 text-center text-xs font-semibold text-stone-500 py-2 bg-stone-100 rounded-lg">

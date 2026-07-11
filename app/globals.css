@@ -118,3 +118,12 @@ html.ks-splash body > *:not(#ks-splash-overlay) {
 .animate-marquee {
   animation: marquee 20s linear infinite;
 }
+
+/* Add to global.css to hide scrollbar but keep functionality */
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
