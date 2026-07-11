@@ -24,7 +24,7 @@ function useReveal() {
           observer.disconnect();
         }
       },
-      { threshold: 0.12 }
+      { threshold: 0.1 }
     );
     observer.observe(el);
     return () => observer.disconnect();
@@ -141,19 +141,106 @@ export default function LandingPage() {
             visibility: hidden;
             pointer-events: none;
           }
-          .reveal-wrap {
+        .reveal-wrap {
           opacity: 0;
-          transform: translateY(18px);
-          transition: opacity 0.75s cubic-bezier(0.22,1,0.36,1),
-                      transform 0.75s cubic-bezier(0.22,1,0.36,1);
           will-change: opacity, transform;
         }
         .reveal-wrap.revealed {
           opacity: 1;
-          transform: translateY(0);
         }
+
+        /* Hero Section Reveal */
+        .reveal-hero {
+          transform: translate3d(0, 30px, 0);
+          transition: opacity 0.8s cubic-bezier(0.25, 1, 0.5, 1),
+                      transform 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+        .reveal-hero.revealed {
+          transform: translate3d(0, 0, 0);
+        }
+
+        /* Discover Reveal ("Everything you need to spread kindness") */
+        .reveal-kindness-feed {
+          transform: translate3d(-30px, 0, 0);
+          transition: opacity 0.8s cubic-bezier(0.25, 1, 0.5, 1),
+                      transform 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+        .reveal-kindness-feed.revealed {
+          transform: translate3d(0, 0, 0);
+        }
+
+        /* How It Works Reveal step cards */
+        .reveal-how-it-works-card {
+          transform: translate3d(0, 25px, 0);
+          transition: opacity 0.8s cubic-bezier(0.25, 1, 0.5, 1),
+                      transform 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+        .reveal-how-it-works-card.revealed {
+          transform: translate3d(0, 0, 0);
+        }
+
+        /* Testimonials Reveal ("STORIES FROM OUR COMMUNITY") */
+        .reveal-testimonials {
+          transform: translate3d(30px, 0, 0);
+          transition: opacity 0.8s cubic-bezier(0.25, 1, 0.5, 1),
+                      transform 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+        .reveal-testimonials.revealed {
+          transform: translate3d(0, 0, 0);
+        }
+
+        /* Guidelines Reveal ("A safe space, held gently...") */
+        .reveal-guidelines {
+          transform: scale3d(0.98, 0.98, 1);
+          transition: opacity 0.8s cubic-bezier(0.25, 1, 0.5, 1),
+                      transform 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+        .reveal-guidelines.revealed {
+          transform: scale3d(1, 1, 1);
+        }
+
+        /* Footer Reveal */
+        .reveal-footer {
+          transition: opacity 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
         @media (prefers-reduced-motion: reduce) {
-          .reveal-wrap { opacity: 1; transform: none; transition: none; }
+          .reveal-wrap,
+          .reveal-hero,
+          .reveal-kindness-feed,
+          .reveal-how-it-works-card,
+          .reveal-testimonials,
+          .reveal-guidelines,
+          .reveal-footer {
+            opacity: 1 !important;
+            transform: none !important;
+            transition: none !important;
+          }
+        }
+
+        /* Mobile layout refinements - uniform spacing and left alignment */
+        @media (max-width: 767px) {
+          .homepage-section,
+          .homepage-section section {
+            text-align: left !important;
+            padding-top: 4rem !important;
+            padding-bottom: 4rem !important;
+          }
+          
+          .homepage-section .text-center,
+          .homepage-section section .text-center {
+            text-align: left !important;
+          }
+          
+          .homepage-section p.mx-auto,
+          .homepage-section section p.mx-auto {
+            margin-left: 0 !important;
+            margin-right: auto !important;
+          }
+          
+          .homepage-section .mt-16.flex.justify-center {
+            justify-content: flex-start !important;
+          }
         }
 
         /* Sweeping gradient border on Kindness cards */
@@ -199,15 +286,75 @@ export default function LandingPage() {
           box-shadow: 0 12px 36px rgba(139,92,246,0.45), 0 4px 12px rgba(139,92,246,0.25);
           transform: translateY(-1px);
         }
+
+        /* Floating Card Animations */
+        @keyframes float-anonymous {
+          0%, 100% {
+            transform: translate3d(0, 0, 0) rotate(-0.5deg);
+          }
+          50% {
+            transform: translate3d(0, -10px, 0) rotate(0.5deg);
+          }
+        }
+
+        @keyframes float-request {
+          0%, 100% {
+            transform: translate3d(0, 0, 0) rotate(0.5deg);
+          }
+          50% {
+            transform: translate3d(0, 8px, 0) rotate(-0.5deg);
+          }
+        }
+
+        .animate-float-slow {
+          animation: float-anonymous 5.5s ease-in-out infinite;
+          will-change: transform;
+        }
+
+        .animate-float-delayed {
+          animation: float-request 6.5s ease-in-out infinite;
+          will-change: transform;
+          animation-delay: -2s; /* Offsets animation timing so they never move together */
+        }
+
+        .animate-float-slow:hover,
+        .animate-float-delayed:hover {
+          animation-play-state: paused;
+        }
+
+        .hover-card-trigger {
+          transition: transform 250ms cubic-bezier(0.25, 1, 0.5, 1), box-shadow 250ms cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        .animate-float-slow:hover .hover-card-trigger {
+          transform: translate3d(0, -6px, 0) scale(1.02);
+          box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.18), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+        }
+
+        .animate-float-delayed:hover .hover-card-trigger {
+          transform: translate3d(0, -6px, 0) scale(1.02);
+          box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.15), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+          .animate-float-slow,
+          .animate-float-delayed {
+            animation: none !important;
+          }
+          .hover-card-trigger {
+            transition: none !important;
+            transform: none !important;
+          }
+        }
       `}</style>
 
       <div className="w-full flex flex-col overflow-x-hidden bg-[#FAF9F6] font-sans">
 
         {/* ── HERO ─────────────────────────────────── */}
-        <section className="relative w-full min-h-[calc(100vh-80px)] bg-slate-50 overflow-hidden pt-24 pb-20 md:pb-28">
+        <section className="homepage-section relative w-full min-h-[calc(100vh-80px)] bg-slate-50 overflow-hidden pt-24 pb-20 md:pb-28">
           <div className="absolute inset-0 opacity-[0.6]" style={{ background: 'radial-gradient(circle at 50% 50%, #e0e7ff66 0%, transparent 70%)' }} />
 
-          <div className="relative w-full max-w-7xl mx-auto px-6 md:px-10 lg:px-20">
+          <Reveal className="reveal-hero relative w-full max-w-7xl mx-auto px-6 md:px-10 lg:px-20">
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
 
               <div className="lg:col-span-6 text-left z-10 space-y-8 md:space-y-10">
@@ -237,7 +384,7 @@ export default function LandingPage() {
                   </button>
                   <button
                     onClick={() => router.push('/dashboard')}
-                    className="inline-flex items-center justify-center gap-2 text-base font-semibold text-violet-700 px-10 py-4 rounded-full hover:bg-violet-100 transition-all duration-300"
+                    className="inline-flex items-center justify-center gap-2 rounded-full border border-violet-200 bg-white px-8 py-4 text-base font-semibold text-violet-900 shadow-sm transition-all duration-300 hover:border-violet-400 hover:bg-violet-50 hover:shadow-md"
                   >
                     Explore KindSphere
                     <span className="transition-transform group-hover:translate-x-1">→</span>
@@ -246,62 +393,66 @@ export default function LandingPage() {
               </div>
 
               <div className="lg:col-span-6 relative h-[450px] md:h-[600px] w-full mt-10 lg:mt-0 flex items-center justify-center lg:justify-end">
-                <div className="absolute top-0 right-0 md:right-10 lg:-right-5 z-20 bg-white p-7 rounded-3xl shadow-xl border border-slate-100 w-[300px] md:w-[350px] space-y-5 animate-float-slow">
-                  <div className="flex items-center justify-between gap-4">
-                    <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-full bg-slate-200 border-2 border-violet-100" />
-                      <div>
-                        <p className="text-sm font-semibold text-slate-950">Anonymous Soul</p>
-                        <p className="text-xs text-slate-400">just now</p>
+                <div className="absolute top-0 right-0 md:right-10 lg:-right-5 z-20 w-[300px] md:w-[350px] animate-float-slow">
+                  <div className="relative bg-white p-7 rounded-3xl shadow-xl border border-slate-100 space-y-5 hover-card-trigger">
+                    <div className="flex items-center justify-between gap-4">
+                      <div className="flex items-center gap-3">
+                        <div className="w-10 h-10 rounded-full bg-slate-200 border-2 border-violet-100" />
+                        <div>
+                          <p className="text-sm font-semibold text-slate-950">Anonymous Soul</p>
+                          <p className="text-xs text-slate-400">just now</p>
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-2 text-slate-500 bg-violet-50/50 px-3 py-1 rounded-full">
+                        <span className="text-sm text-violet-400">♡</span>
+                        <span className="text-xs font-medium text-violet-800">24+</span>
                       </div>
                     </div>
-                    <div className="flex items-center gap-2 text-slate-500 bg-violet-50/50 px-3 py-1 rounded-full">
-                      <span className="text-sm text-violet-400">♡</span>
-                      <span className="text-xs font-medium text-violet-800">24+</span>
+                    <p className="text-base text-slate-700 leading-relaxed">
+                      "You are exactly where you need to be. This moment is temporary, but your light is permanent."
+                    </p>
+                    <div className="flex items-center justify-between text-xs pt-2 border-t border-slate-100">
+                      <button className="text-slate-600 font-medium hover:text-violet-600">Share kindness →</button>
+                      <span className="text-slate-400">•••</span>
                     </div>
-                  </div>
-                  <p className="text-base text-slate-700 leading-relaxed">
-                    "You are exactly where you need to be. This moment is temporary, but your light is permanent."
-                  </p>
-                  <div className="flex items-center justify-between text-xs pt-2 border-t border-slate-100">
-                    <button className="text-slate-600 font-medium hover:text-violet-600">Share kindness →</button>
-                    <span className="text-slate-400">•••</span>
                   </div>
                 </div>
 
-                <div className="absolute bottom-20 md:bottom-32 left-0 md:left-10 z-30 bg-white p-6 rounded-2xl shadow-lg border border-slate-100 w-[260px] md:w-[290px] space-y-3 animate-float-delayed">
-                  <div className="flex items-center gap-2.5 text-amber-600">
-                    <span className="text-sm">★</span>
-                    <p className="text-[11px] font-semibold uppercase tracking-wider">Today's Request</p>
-                  </div>
-                  <p className="text-sm text-slate-800 leading-snug font-medium">
-                    Respond to someone who wants to connect with you.
-                  </p>
-                  <button className="text-sm font-semibold text-violet-700 hover:text-violet-800 pt-1.5">Accept request?</button>
-                  <div className="absolute -bottom-6 -left-6 w-12 h-12 rounded-full bg-white shadow-md flex items-center justify-center border border-slate-50 text-violet-400/60 text-xl rotate-12">
-                    ✦
+                <div className="absolute bottom-20 md:bottom-32 left-0 md:left-10 z-30 w-[260px] md:w-[290px] animate-float-delayed">
+                  <div className="relative bg-white p-6 rounded-2xl shadow-lg border border-slate-100 space-y-3 hover-card-trigger">
+                    <div className="flex items-center gap-2.5 text-amber-600">
+                      <span className="text-sm">★</span>
+                      <p className="text-[11px] font-semibold uppercase tracking-wider">Today's Request</p>
+                    </div>
+                    <p className="text-sm text-slate-800 leading-snug font-medium">
+                      Respond to someone who wants to connect with you.
+                    </p>
+                    <button className="text-sm font-semibold text-violet-700 hover:text-violet-800 pt-1.5">Accept request?</button>
+                    <div className="absolute -bottom-6 -left-6 w-12 h-12 rounded-full bg-white shadow-md flex items-center justify-center border border-slate-50 text-violet-400/60 text-xl rotate-12">
+                      ✦
+                    </div>
                   </div>
                 </div>
 
                 <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[500px] h-[300px] bg-violet-100/60 rounded-full blur-[100px] opacity-50 z-0"></div>
 
-                <div className="absolute bottom-4 right-0 z-40 flex items-center gap-3 bg-violet-700 text-white px-6 py-3 rounded-full shadow-lg shadow-violet-300/60">
-                  <span className="text-sm font-medium">15+ bottles dropped today</span>
+                <div className="absolute -bottom-8 right-0 z-40 flex items-center gap-3 bg-violet-700 text-white px-4 py-3 rounded-full shadow-lg shadow-violet-300/60">
+                  <span className="text-sm font-medium">5+ bottles dropped today</span>
                 </div>
               </div>
             </div>
-          </div>
+          </Reveal>
         </section>
 
         {/* ── PHILOSOPHY DIVIDER ───────────────── */}
-        <section className="relative w-full overflow-hidden py-5">
+        <section className="relative w-full overflow-hidden py-2">
 
           <div className="
     w-full
     bg-gradient-to-r
     from-violet-100
-    via-purple-100
-    to-pink-100
+    via-purple-20
+    to-pink-20
     py-3
     opacity-80
   ">
@@ -346,8 +497,8 @@ export default function LandingPage() {
         </section>
 
         {/* ── Discover KindSphere ─────────────────────── */}
-        <section className="w-full py-24 bg-slate-50">
-          <div className="w-full max-w-7xl mx-auto px-6">
+        <section className="homepage-section w-full py-24 bg-slate-50 py-2">
+          <Reveal className="reveal-kindness-feed w-full max-w-7xl mx-auto px-6">
 
             {/* Section Header */}
             <div className="text-left md:text-center mb-8 space-y-4">
@@ -355,7 +506,7 @@ export default function LandingPage() {
                 Everything you need to<br />
                 <span className="text-violet-600 italic">spread kindness</span>
               </h2>
-              <p className="text-lg md:text-xl text-slate-600 max-w-2xl mx-auto leading-relaxed">
+              <p className="text-lg md:text-xl text-slate-600 max-w-2xl ml-0 mr-auto md:mx-auto leading-relaxed">
                 Built for people who believe small acts of kindness create enormous waves of positive change.
               </p>
             </div>
@@ -413,19 +564,21 @@ export default function LandingPage() {
               </div>
 
             </div>
-          </div>
+          </Reveal>
         </section>
 
         {/* ── HOW TO USE ─────────────────────────── */}
-        <HowToUseSection />
+        <div className="homepage-section">
+          <HowToUseSection />
+        </div>
 
         <hr className="hairline mx-6 md:mx-12 lg:mx-auto lg:max-w-5xl" />
 
         {/* ── testimonials ─────────────────────────── */}
-        <section className="w-full py-24 bg-white">
-          <div className="w-full max-w-7xl mx-auto px-6">
+        <section className="homepage-section w-full py-24 bg-white">
+          <Reveal className="reveal-testimonials w-full max-w-7xl mx-auto px-6">
             {/* Header */}
-            <div className="text-center mb-16 space-y-4">
+            <div className="text-left md:text-center mb-16 space-y-4">
               <p className="text-[11px] font-bold uppercase tracking-widest text-violet-600">STORIES FROM OUR COMMUNITY</p>
               <h2 className="font-serif text-4xl md:text-6xl text-slate-950 leading-[1.1] tracking-tight">
                 Real people,<br />
@@ -482,21 +635,21 @@ export default function LandingPage() {
                 </div>
               ))}
             </div>
-          </div>
+          </Reveal>
         </section>
 
 
 
         {/* ── COMMUNITY GUIDELINES ─────────────────── */}
-        <section className="w-full py-24 bg-white border-t border-slate-100">
-          <div className="w-full max-w-7xl mx-auto px-6">
+        <section className="homepage-section w-full py-24 bg-white border-t border-slate-100">
+          <Reveal className="reveal-guidelines w-full max-w-7xl mx-auto px-6">
 
             {/* Heading Section */}
             <div className="mb-16 space-y-4 text-left md:text-center">
-              <h2 className="font-serif text-4xl md:text-5xl text-slate-950 leading-[1.1] tracking-tight">
+              <h2 className="font-serif text-4xl md:text-6xl text-slate-950 leading-[1.1] tracking-tight">
                 A safe space, <span className="text-violet-600 italic">held gently by all of us.</span>
               </h2>
-              <p className="text-lg text-slate-600 max-w-xl md:mx-auto leading-relaxed">
+              <p className="text-lg md:text-xl text-slate-600 max-w-xl ml-0 mr-auto md:mx-auto leading-relaxed">
                 To keep KindSphere a place worth returning to, we ask everyone to avoid:
               </p>
             </div>
@@ -518,7 +671,7 @@ export default function LandingPage() {
                 </div>
               ))}
             </div>
-          </div>
+          </Reveal>
         </section>
 
         {/* ── FOOTER ───────────────────── */}
@@ -529,10 +682,10 @@ export default function LandingPage() {
               "radial-gradient(circle at 50% 50%, #e0e7ff66 0%, transparent 70%)",
           }}
         >
-          <div className="w-full max-w-5xl mx-auto px-6 md:px-12 relative z-10">
+          <Reveal className="reveal-footer w-full max-w-5xl mx-auto px-6 md:px-12 relative z-10">
 
             {/* Footer Links */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8 items-start">
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8 items-start">
 
               {/* Mission */}
               <div className="space-y-3">
@@ -560,11 +713,12 @@ export default function LandingPage() {
 
               {/* Creator */}
               <div className="space-y-3">
-                <p className="text-[10px] text-black uppercase tracking-widest font-semibold">
-                  Created by Saleha Zeeshan
-                </p>
+                <h4 className="text-[11px] font-bold text-black uppercase tracking-widest">
+                  Creator
+                </h4>
 
                 <div className="flex flex-col gap-1.5">
+                  <p className="text-[12px] text-black/80 font-medium">Saleha Zeeshan</p>
                   <a
                     href="https://github.com/saleha294"
                     target="_blank"
@@ -606,15 +760,25 @@ export default function LandingPage() {
                 </div>
               </div>
 
+              {/* About Column */}
+              <div className="space-y-3">
+                <h4 className="text-[11px] font-bold text-black uppercase tracking-widest">
+                  About
+                </h4>
+                <p className="text-[12px] text-black/70 leading-relaxed max-w-[200px]">
+                  KindSphere is a safe haven built to inspire daily kindness, one anonymous drop at a time.
+                </p>
+              </div>
+
             </div>
 
             {/* Brand */}
-            <div className="flex flex-col items-start mb-6">
+            <div className="flex flex-col items-start md:items-center mb-6 text-left md:text-center">
 
               <img
                 src="/favicon.ico"
                 alt="KindSphere Logo"
-                className="w-12 h-12 md:w-16 md:h-16 mb-2"
+                className="w-12 h-12 md:w-16 md:h-16 mb-2 mx-0 md:mx-auto"
               />
 
               <h2 className="font-serif text-4xl md:text-5xl tracking-wide">
@@ -629,7 +793,7 @@ export default function LandingPage() {
             </div>
 
             {/* Bottom */}
-            <div className="pt-4 border-t border-black/10 flex flex-col items-start gap-2">
+            <div className="pt-4 border-t border-black/10 flex flex-col items-start md:items-center gap-2 text-left md:text-center">
 
               <p className="text-[10px] text-black/60 uppercase tracking-widest">
                 © {new Date().getFullYear()} KindSphere. All rights reserved.
@@ -642,7 +806,7 @@ export default function LandingPage() {
 
             </div>
 
-          </div>
+          </Reveal>
         </section>
       </div>
     </>

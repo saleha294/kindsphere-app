@@ -1,7 +1,48 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useRef, ReactNode } from "react";
 import RegisterUser from "@/components/RegisterUser";
+
+function useReveal() {
+  const ref = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          el.classList.add("revealed");
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.1 }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+  return ref;
+}
+
+function Reveal({
+  children,
+  delay = 0,
+  className = "",
+}: {
+  children: ReactNode;
+  delay?: number;
+  className?: string;
+}) {
+  const ref = useReveal();
+  return (
+    <div
+      ref={ref}
+      className={`reveal-wrap ${className}`}
+      style={{ transitionDelay: `${delay}ms` }}
+    >
+      {children}
+    </div>
+  );
+}
 
 const HowToUseSectionData = [
   {
@@ -39,8 +80,8 @@ export default function HowToUseSection() {
 
   return (
     <>
-      <section className="w-full py-24 bg-slate-50">
-        <div className="w-full max-w-7xl mx-auto px-6">
+      <section className="w-full bg-slate-50 ">
+        <div className="w-full max-w-7xl mx-auto px-6 py-14">
 
           {/* Header */}
           <div className="text-center mb-16 space-y-3">
@@ -55,29 +96,32 @@ export default function HowToUseSection() {
 
           {/* Cards Carousel/Grid */}
           <div className="grid grid-cols-1 md:grid-cols-4 gap-6 overflow-x-auto pb-6 md:pb-0 snap-x scrollbar-hide">
-            {HowToUseSectionData.map((step) => (
-              <div
+            {HowToUseSectionData.map((step, index) => (
+              <Reveal
                 key={step.number}
-                className="min-w-[280px] md:min-w-0 snap-center bg-white border border-slate-100 rounded-[2rem] p-8 flex flex-col gap-6 transition-all hover:-translate-y-2 hover:shadow-xl shadow-sm"
+                delay={index * 120}
+                className="reveal-how-it-works-card min-w-[280px] md:min-w-0 snap-center"
               >
-                <div className="relative w-16 h-16 shrink-0">
-                  <div className="w-16 h-16 rounded-2xl bg-violet-600 flex items-center justify-center text-white shadow-lg shadow-violet-200">
-                    <img src={step.icon} alt={step.alt} className="w-8 h-8 object-contain brightness-0 invert" />
+                <div className="bg-white border border-slate-100 rounded-[2rem] p-8 flex flex-col gap-6 transition-all hover:-translate-y-2 hover:shadow-xl shadow-sm h-full">
+                  <div className="relative w-16 h-16 shrink-0">
+                    <div className="w-16 h-16 rounded-2xl bg-violet-600 flex items-center justify-center text-white shadow-lg shadow-violet-200">
+                      <img src={step.icon} alt={step.alt} className="w-8 h-8 object-contain brightness-0 invert" />
+                    </div>
+                    <div className="absolute -top-1 -right-1 w-6 h-6 rounded-full bg-amber-400 flex items-center justify-center text-[10px] font-bold text-white border-2 border-white">
+                      {step.number}
+                    </div>
                   </div>
-                  <div className="absolute -top-1 -right-1 w-6 h-6 rounded-full bg-amber-400 flex items-center justify-center text-[10px] font-bold text-white border-2 border-white">
-                    {step.number}
-                  </div>
-                </div>
 
-                <div className="space-y-2 text-left">
-                  <h3 className="font-serif text-2xl text-slate-950 leading-tight">
-                    {step.title}
-                  </h3>
-                  <p className="text-slate-600 leading-relaxed text-sm md:text-base">
-                    {step.body}
-                  </p>
+                  <div className="space-y-2 text-left">
+                    <h3 className="font-serif text-2xl text-slate-950 leading-tight">
+                      {step.title}
+                    </h3>
+                    <p className="text-slate-600 leading-relaxed text-sm md:text-base">
+                      {step.body}
+                    </p>
+                  </div>
                 </div>
-              </div>
+              </Reveal>
             ))}
           </div>
 

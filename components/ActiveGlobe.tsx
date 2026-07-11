@@ -41,7 +41,7 @@ type GeoFeature = {
 
 const GEO_URL = "https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json";
 const OCEAN_COLOR = "#A8D5E2";
-const LAND_COLOR = "#E8A33D";
+const LAND_COLOR = "#42b04dff ";
 const LAND_STROKE = "#6A9E87";
 const ACTIVE_DOT = "#7C3AED";
 const IDLE_DOT = "#9E9892";
