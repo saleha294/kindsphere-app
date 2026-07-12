@@ -127,3 +127,11 @@ html.ks-splash body > *:not(#ks-splash-overlay) {
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
+
+@@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-15px); }
+}
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}

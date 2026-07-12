@@ -26,6 +26,23 @@ const ActiveGlobe = dynamic(
     }
 );
 
+const quotes = [
+    { text: "No act of kindness, no matter how small, is ever wasted.", author: "Aesop" },
+    { text: "Kindness is the language which the deaf can hear and the blind can see.", author: "Mark Twain" },
+    { text: "Be kind, for everyone you meet is fighting a hard battle.", author: "Plato" },
+    { text: "The smallest act of kindness is worth more than the grandest intention.", author: "Oscar Wilde" },
+    { text: "Always be a little kinder than necessary.", author: "J.M. Barrie" },
+    { text: "Kindness is the golden chain by which society is bound together.", author: "Johann Wolfgang von Goethe" },
+    { text: "A warm smile is the universal language of kindness.", author: "William Arthur Ward" },
+    { text: "In a world where you can be anything, be kind.", author: "Unknown" },
+    { text: "Kindness is the sunshine in which virtue grows.", author: "Robert Green Ingersoll" },
+    { text: "The best portion of a good man's life is his little, nameless, unremembered acts of kindness and love.", author: "William Wordsworth" }
+];
+
+// Logic: Changes index every hour (3600000ms = 1 hour)
+const quoteIndex = Math.floor(Date.now() / 3600000) % quotes.length;
+const currentQuote = quotes[quoteIndex];
+
 interface SphereUser {
     id: string;
     anonymousHandle: string;
@@ -163,29 +180,7 @@ export default function GlobePage() {
                     </h1>
                 </div>
 
-                {/* ── Live stats panel ───────────────────────────────────── */}
-                <div className="flex flex-wrap gap-3 md:gap-4">
-                    {[
-                        { label: "Souls exploring", value: stats.totalSouls, color: "#E8A33D" },
-                        { label: "Bottles drifting", value: stats.driftingBottles, color: "#7C3AED" },
-                        { label: "Replies sent today", value: stats.repliesToday, color: "#A8DADC" },
-                    ].map((stat) => (
-                        <div
-                            key={stat.label}
-                            className="bg-white rounded-2xl px-5 py-3 border border-stone-100 shadow-sm text-center min-w-[100px]"
-                        >
-                            <p
-                                className="font-serif text-3xl font-medium"
-                                style={{ color: stat.color }}
-                            >
-                                {stat.value}
-                            </p>
-                            <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-stone-400 mt-0.5">
-                                {stat.label}
-                            </p>
-                        </div>
-                    ))}
-                </div>
+
             </div>
 
             {/* ── Globe ──────────────────────────────────────────────────── */}
@@ -200,22 +195,63 @@ export default function GlobePage() {
                     )}
                 </div>
             </div>
+            {/* ── Live stats panel ───────────────────────────────────── */}
+            <div className="w-full max-w-6xl mx-auto px-6 md:px-12 pt-28 pb-6 flex flex-col md:flex-row md:items-end justify-between gap-6">
+                <div className="flex flex-wrap gap-4">
+                    {[
+                        { label: "Souls exploring", value: stats.totalSouls, color: "#E8A33D", desc: "Active wanderers currently in the sphere." },
+                        { label: "Bottles drifting", value: stats.driftingBottles, color: "#7C3AED", desc: "Unopened messages awaiting a kind heart." },
+                        { label: "Replies sent", value: stats.repliesToday, color: "#10B981", desc: "Acts of kindness shared in the last 24h." },
+                    ].map((stat) => (
+                        <div
+                            key={stat.label}
+                            className="group relative bg-white rounded-2xl p-5 border border-stone-100 shadow-sm min-w-[240px] flex-1 transition-all duration-300 hover:shadow-lg hover:-translate-y-1 overflow-hidden"
+                        >
+                            {/* Subtle hover gradient background */}
+                            <div className="absolute inset-0 opacity-0 group-hover:opacity-[0.03] transition-opacity duration-500"
+                                style={{ background: `linear-gradient(135deg, ${stat.color}, transparent)` }} />
 
-            {/* ── Currently on this page (Presence) ─────────────────────── */}
+                            <p className="text-[10px] font-bold uppercase tracking-[0.14em] text-stone-400 mb-1 relative z-10">
+                                {stat.label}
+                            </p>
+                            <p className="font-serif text-3xl font-medium mb-1 relative z-10" style={{ color: stat.color }}>
+                                {stat.value}
+                            </p>
+                            <p className="text-xs text-stone-500 leading-relaxed relative z-10">
+                                {stat.desc}
+                            </p>
+                        </div>
+                    ))}
+                </div>
+            </div>
+
+            {/* ── users here ───────────────────────────────────── */}
             {presenceHandles.size > 0 && (
-                <div className="w-full max-w-6xl mx-auto px-6 md:px-12 pb-16 space-y-4">
-                    <p className="text-xs font-semibold uppercase tracking-[0.18em]" style={{ color: "#E8A33D" }}>
-                        Here right now
-                    </p>
-                    <div className="flex flex-wrap gap-2">
+                <div className="w-full max-w-6xl mx-auto px-6 md:px-12 pt-28 pb-6 md:flex-row md:items-end justify-between gap-2">
+                    <div className="flex items-center gap-3">
+                        <div className="w-2 h-2 rounded-full bg-[#E8A33D] animate-pulse" />
+                        <p className="text-3xl] font-bold uppercase tracking-[0.2em] text-[#E8A33D]">
+                            Here right now
+                        </p>
+                    </div>
+
+                    <div className="flex flex-wrap gap-3 mt-4">
                         {[...presenceHandles].map((handle) => (
                             <span
                                 key={handle}
-                                className="px-3 py-1.5 rounded-full text-xs font-medium border"
+                                className="px-4 py-2.5 rounded-full mt-4 text-xs font-medium border transition-all duration-300 hover:scale-105 cursor-default"
                                 style={{
-                                    background: "rgba(129,178,154,0.08)",
-                                    borderColor: "rgba(129,178,154,0.25)",
-                                    color: "#4A7C59",
+                                    backgroundColor: "rgba(124, 58, 237, 0.08)", // Light Purple background
+                                    borderColor: "rgba(124, 58, 237, 0.3)",      // Purple border
+                                    color: "#7C3AED",
+                                }}
+                                onMouseEnter={(e) => {
+                                    e.currentTarget.style.backgroundColor = "rgba(129,178,154,0.15)";
+                                    e.currentTarget.style.borderColor = "rgba(129,178,154,0.4)";
+                                }}
+                                onMouseLeave={(e) => {
+                                    e.currentTarget.style.backgroundColor = "rgba(129,178,154,0.05)";
+                                    e.currentTarget.style.borderColor = "rgba(129,178,154,0.2)";
                                 }}
                             >
                                 @{handle}
@@ -224,6 +260,40 @@ export default function GlobePage() {
                     </div>
                 </div>
             )}
+
+            {/* ── Quote Sphere ───────────────────────────────────── */}
+            <div className="w-full max-w-6xl mx-auto px-6 md:px-12 pt-28 pb-6 flex flex-col md:flex-row md:items-end justify-between gap-6">
+                {[0, 1, 2].map((i) => {
+                    const quoteIndex = (Math.floor(Date.now() / 3600000) + i) % quotes.length;
+                    const { text, author } = quotes[quoteIndex];
+
+                    return (
+                        <div
+                            key={i}
+                            className="animate-float group relative w-full md:w-1/3 aspect-square rounded-full flex flex-col items-center justify-center p-8 text-center transition-all duration-700 hover:scale-105"
+                            style={{
+                                backgroundImage: "url('/assets/imagery/background.png')",
+                                backgroundSize: "cover",
+                                backgroundPosition: "center",
+                                animationDelay: `${i * 0.3}s`
+                            }}
+                        >
+                            {/* Semi-transparent overlay for readability */}
+                            <div className="absolute inset-0 bg-white/60 rounded-full" />
+
+                            <div className="relative z-10 flex flex-col items-center gap-4">
+                                <p className="font-serif text-lg italic text-stone-800 leading-relaxed px-4">
+                                    "{text}"
+                                </p>
+                                <p className="text-xs font-bold uppercase tracking-widest text-violet-600">
+                                    — {author}
+                                </p>
+                            </div>
+                        </div>
+                    );
+                })}
+            </div>
+
         </div>
     );
 }

@@ -68,7 +68,8 @@ export default function DashboardPage() {
   const [userHandle, setUserHandle] = useState<string | null>(null);
   const [currentUserId, setCurrentUserId] = useState<string | null>(null);
   const [liveBottles, setLiveBottles] = useState<any[]>([]);
-
+  const [showNotification, setShowNotification] = useState(false);
+  const [notificationMsg, setNotificationMsg] = useState("");
   // New state for dynamic greeting and date
   const [greeting, setGreeting] = useState("");
   const [currentDate, setCurrentDate] = useState("");
@@ -206,7 +207,7 @@ export default function DashboardPage() {
           </div>
 
           <h3 className="font-serif text-3xl font-medium text-[#1C2541]">
-            See Who Needs Kindness
+            See Who <span className="text-[#7C3AED] italic">Needs Kindness</span>
           </h3>
 
           <Suspense fallback={<div className="h-64 bg-stone-100 rounded-2xl" />}>
