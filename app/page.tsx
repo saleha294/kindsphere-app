@@ -89,12 +89,30 @@ const DiscoverKindSphereData = [
 
 
 const GUIDELINES = [
-  "Racism & Hate Speech",
-  "Bullying & Harassment",
-  "Personal Attacks or Nudity",
-  "Passive-Aggressive Tone",
-  "Spam & Self-Promotion",
-  "Explicit or Offensive Content",
+  {
+    title: "Racism & Hate Speech",
+    description: "Content that targets or demeans individuals or communities.",
+  },
+  {
+    title: "Bullying & Harassment",
+    description: "Messages intended to intimidate, shame, or repeatedly harm others.",
+  },
+  {
+    title: "Personal Attacks or Nudity",
+    description: "Insults, abusive language, or sexually explicit imagery and content.",
+  },
+  {
+    title: "Passive-Aggressive Tone",
+    description: "Indirect hostility, sarcasm, or intentionally hurtful remarks.",
+  },
+  {
+    title: "Spam & Self-Promotion",
+    description: "Advertisements, repetitive messages, or promotional content.",
+  },
+  {
+    title: "Explicit or Offensive Content",
+    description: "Profanity, graphic material, or inappropriate language.",
+  },
 ];
 
 /* ─────────────────────────────────────────────
@@ -179,7 +197,7 @@ export default function LandingPage() {
           transform: translate3d(0, 0, 0);
         }
 
-        /* Testimonials Reveal ("STORIES FROM OUR COMMUNITY") */
+        /* Values Reveal ("OUR VALUES") */
         .reveal-testimonials {
           transform: translate3d(30px, 0, 0);
           transition: opacity 0.8s cubic-bezier(0.25, 1, 0.5, 1),
@@ -497,7 +515,7 @@ export default function LandingPage() {
         </section>
 
         {/* ── Discover KindSphere ─────────────────────── */}
-        <section className="homepage-section w-full py-24 bg-slate-50 py-2">
+        <section className="homepage-section w-full py-20 bg-slate-50 py-2">
           <Reveal className="reveal-kindness-feed w-full max-w-7xl mx-auto px-6">
 
             {/* Section Header */}
@@ -528,14 +546,14 @@ export default function LandingPage() {
               </div>
 
               {/* Card 2: Gold Tint */}
-              <div className="flex-none w-[280px] md:w-auto snap-center bg-[#FEF9EC] border border-[#FDEFC8] rounded-[2rem] p-8 flex flex-col gap-6 transition-all hover:-translate-y-2 hover:shadow-xl">
+              <div className="flex-none w-[280px] md:w-auto snap-center bg-[#faf4e5ff] border border-[#FDEFC8] rounded-[2rem] p-8 flex flex-col gap-6 transition-all hover:-translate-y-2 hover:shadow-xl">
                 <div className="w-12 h-12 rounded-xl bg-white flex items-center justify-center text-amber-600 shadow-sm">
                   <span className="text-xl">🏆</span>
                 </div>
                 <div className="space-y-2">
                   <p className="text-[11px] font-bold uppercase tracking-widest text-amber-800">Daily Missions</p>
-                  <h3 className="font-serif text-2xl text-slate-950">Kindness Challenges</h3>
-                  <p className="text-slate-600 leading-relaxed">Daily micro-challenges that inspire small acts of kindness — from writing a gratitude note to complimenting a stranger.</p>
+                  <h3 className="font-serif text-2xl text-slate-950">Connections and Chatting</h3>
+                  <p className="text-slate-600 leading-relaxed">Have meaningful conversations with people from different walks of life, all united by the desire to spread positivity.</p>
                 </div>
               </div>
 
@@ -574,64 +592,58 @@ export default function LandingPage() {
 
         <hr className="hairline mx-6 md:mx-12 lg:mx-auto lg:max-w-5xl" />
 
-        {/* ── testimonials ─────────────────────────── */}
+        {/* ── values ─────────────────────────── */}
         <section className="homepage-section w-full py-24 bg-white">
           <Reveal className="reveal-testimonials w-full max-w-7xl mx-auto px-6">
             {/* Header */}
             <div className="text-left md:text-center mb-16 space-y-4">
-              <p className="text-[11px] font-bold uppercase tracking-widest text-violet-600">STORIES FROM OUR COMMUNITY</p>
+              <p className="text-[11px] font-bold uppercase tracking-widest text-violet-600">OUR VALUES</p>
               <h2 className="font-serif text-4xl md:text-6xl text-slate-950 leading-[1.1] tracking-tight">
-                Real people,<br />
-                <span className="text-violet-600 italic">real moments</span>
+                One Small Action.<br />
+                <span className="text-violet-600 italic">A Lasting Ripple.</span>
               </h2>
             </div>
 
-            {/* Testimonials Grid */}
+            {/* Values Grid */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               {[
                 {
-                  quote: "I was having the worst week of my life. Then a stranger's message appeared: 'Your storm will pass, and the sun is already waiting.' I cried for 20 minutes straight — but they were good tears.",
-                  name: "Maria T.",
-                  role: "Teacher, Portugal",
-                  initials: "MT"
+                  icon: "💜",
+                  title: "Anonymous by Design",
+                  description:
+                    "Kindness is shared without profiles, followers, or expectations.",
                 },
                 {
-                  quote: "KindSphere gave me a way to act on my values quietly. I write a message every morning before work. It's become a meditation. The anonymity makes it feel pure — no likes, no followers, just kindness.",
-                  name: "James O.",
-                  role: "Designer, Toronto",
-                  initials: "JO"
+                  icon: "🌍",
+                  title: "Built for Everyone",
+                  description:
+                    "Send and receive messages from people anywhere in the world.",
                 },
                 {
-                  quote: "I've never seen anything like it. My students started sharing it with each other during lunch. A whole cafeteria of teenagers quietly sending kind messages to strangers. It brought me to tears.",
-                  name: "Dr. Sarah L.",
-                  role: "School Counselor, Melbourne",
-                  initials: "SL"
-                }
+                  icon: "🕊️",
+                  title: "A Safe Space",
+                  description:
+                    "Every interaction is designed to encourage empathy and respect.",
+                },
               ].map((item, index) => (
-                <div key={index} className="bg-white border border-slate-100 rounded-[2rem] p-8 shadow-sm flex flex-col justify-between transition-all hover:shadow-lg hover:border-violet-100">
-                  <div className="space-y-6">
-                    {/* Stars */}
-                    <div className="flex gap-1 text-amber-400">
-                      {[...Array(5)].map((_, i) => (
-                        <span key={i}>★</span>
-                      ))}
-                    </div>
-                    {/* Quote */}
-                    <p className="text-slate-700 leading-relaxed text-lg italic">
-                      "{item.quote}"
-                    </p>
+                <div
+                  key={index}
+                  className="bg-white border border-slate-100 rounded-[2rem] p-8 shadow-sm flex flex-col transition-all duration-300 hover:shadow-lg hover:border-violet-100 hover:-translate-y-1"
+                >
+                  {/* Icon */}
+                  <div className="w-16 h-16 rounded-2xl bg-violet-50 flex items-center justify-center text-3xl mb-6 transition-transform duration-300 group-hover:scale-110">
+                    {item.icon}
                   </div>
 
-                  {/* Author */}
-                  <div className="flex items-center gap-4 mt-8 pt-6 border-t border-slate-100">
-                    <div className="w-12 h-12 rounded-full bg-violet-100 flex items-center justify-center text-violet-700 font-semibold">
-                      {item.initials}
-                    </div>
-                    <div>
-                      <p className="font-semibold text-slate-950">{item.name}</p>
-                      <p className="text-sm text-slate-500">{item.role}</p>
-                    </div>
-                  </div>
+                  {/* Title */}
+                  <h3 className="text-2xl font-semibold text-slate-950 mb-4">
+                    {item.title}
+                  </h3>
+
+                  {/* Description */}
+                  <p className="text-slate-600 leading-relaxed text-lg">
+                    {item.description}
+                  </p>
                 </div>
               ))}
             </div>
@@ -654,22 +666,34 @@ export default function LandingPage() {
               </p>
             </div>
 
-            {/* Guidelines Container - Flexbox with horizontal scrolling on mobile */}
-            <div className="flex md:grid md:grid-cols-3 gap-6 overflow-x-auto pb-6 md:pb-0 snap-x scrollbar-hide -mx-6 px-6 md:mx-0 md:px-0">
-              {GUIDELINES.map((item, index) => (
-                <div
-                  key={index}
-                  className="flex-none w-[280px] md:w-auto snap-center bg-slate-50 border border-slate-100 rounded-2xl p-6 flex items-start gap-4 transition-all hover:border-violet-200 hover:bg-white hover:shadow-md"
-                >
-                  {/* Bullet Indicator */}
-                  <span className="w-2 h-2 rounded-full bg-violet-600 shrink-0 mt-2" />
+            {/* Guidelines Container */}
+            <div className="overflow-x-auto scrollbar-hide -mx-6 px-6 md:mx-0 md:px-0">
+              <div className="flex md:grid md:grid-cols-3 min-w-max md:min-w-0 border-y border-slate-200">
+                {GUIDELINES.map((item, index) => (
+                  <div
+                    key={index}
+                    className={`
+          flex-none w-[260px] md:w-auto
+          px-8 py-8
+          border-r border-slate-200
+          ${index === 0
+                        ? "border-l border-slate-200"
+                        : ""
+                      }
+          transition-all duration-300
+          hover:bg-slate-50
+        `}
+                  >
+                    <h3 className="text-lg font-semibold text-slate-900 mb-2">
+                      {item.title}
+                    </h3>
 
-                  {/* Guideline Text */}
-                  <span className="text-slate-800 text-sm md:text-base leading-relaxed font-medium">
-                    {item}
-                  </span>
-                </div>
-              ))}
+                    <p className="text-sm text-slate-500 leading-relaxed">
+                      {item.description}
+                    </p>
+                  </div>
+                ))}
+              </div>
             </div>
           </Reveal>
         </section>
@@ -678,22 +702,33 @@ export default function LandingPage() {
         <section
           className="w-full relative overflow-hidden border-t border-black/10 rounded-t-[40px] pt-10 pb-6"
           style={{
-            background:
-              "radial-gradient(circle at 50% 50%, #e0e7ff66 0%, transparent 70%)",
+            background: 'radial-gradient(circle at 50% 50%, #e0e7ff66 0%, transparent 70%)'
           }}
         >
           <Reveal className="reveal-footer w-full max-w-5xl mx-auto px-6 md:px-12 relative z-10">
 
             {/* Footer Links */}
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8 items-start">
+            <div className="grid grid-cols-1 md:grid-cols-4 mb-10">
+
+              {/* About */}
+              <div className="w-full px-6 py-8 border-b md:border-b-0 md:border-r border-violet-100/70 hover:bg-violet-900/30 transition-colors duration-300">
+                <h4 className="text-[15px] font-bold text-black uppercase tracking-widest mb-3">
+                  About
+                </h4>
+
+                <p className="text-[14px] text-black/70 leading-relaxed max-w-[220px]">
+                  KindSphere is a safe haven built to inspire daily kindness, one anonymous
+                  drop at a time.
+                </p>
+              </div>
 
               {/* Mission */}
-              <div className="space-y-3">
-                <h4 className="text-[11px] font-bold text-black uppercase tracking-widest">
+              <div className="w-full px-6 py-8 border-b md:border-b-0 md:border-r border-violet-100/70 hover:bg-violet-900/30 transition-colors duration-300">
+                <h4 className="text-[15px] font-bold text-black uppercase tracking-widest mb-3">
                   Our Mission
                 </h4>
 
-                <ul className="space-y-1.5">
+                <ul className="space-y-2">
                   {[
                     "Anonymous by Design",
                     "Built on Kindness",
@@ -701,9 +736,10 @@ export default function LandingPage() {
                     "Safe & Respectful Community",
                     "Honest Conversations",
                   ].map((item) => (
-                    <li key={item} className="flex items-center gap-2">
-                      <span className="text-purple-500 text-[9px]">◆</span>
-                      <span className="text-[12px] text-black/80">
+                    <li key={item} className="flex items-start gap-2">
+                      <span className="text-purple-500 text-[9px] mt-[7px]">◆</span>
+
+                      <span className="text-[14px] text-black/80">
                         {item}
                       </span>
                     </li>
@@ -711,37 +747,13 @@ export default function LandingPage() {
                 </ul>
               </div>
 
-              {/* Creator */}
-              <div className="space-y-3">
-                <h4 className="text-[11px] font-bold text-black uppercase tracking-widest">
-                  Creator
-                </h4>
-
-                <div className="flex flex-col gap-1.5">
-                  <p className="text-[12px] text-black/80 font-medium">Saleha Zeeshan</p>
-                  <a
-                    href="https://github.com/saleha294"
-                    target="_blank"
-                    className="text-[12px] text-black hover:text-purple-600 transition"
-                  >
-                    GitHub
-                  </a>
-                  <a
-                    href="mailto:salehacorner@gmail.com"
-                    className="text-[12px] text-black hover:text-purple-600 transition"
-                  >
-                    Gmail
-                  </a>
-                </div>
-              </div>
-
               {/* Explore */}
-              <div className="space-y-3">
-                <h4 className="text-[11px] font-bold text-black uppercase tracking-widest">
+              <div className="w-full px-6 py-8 border-b md:border-b-0 md:border-r border-violet-100/70 hover:bg-violet-900/30 transition-colors duration-300">
+                <h4 className="text-[15px] font-bold text-black uppercase tracking-widest mb-3">
                   Explore
                 </h4>
 
-                <div className="flex flex-col gap-1.5">
+                <div className="flex flex-col gap-2">
                   {[
                     "Home",
                     "Shore",
@@ -752,7 +764,7 @@ export default function LandingPage() {
                     <a
                       key={item}
                       href="#"
-                      className="text-[12px] text-black hover:text-purple-600 transition"
+                      className="text-[14px] text-black hover:text-purple-600 transition"
                     >
                       {item}
                     </a>
@@ -760,30 +772,43 @@ export default function LandingPage() {
                 </div>
               </div>
 
-              {/* About Column */}
-              <div className="space-y-3">
-                <h4 className="text-[11px] font-bold text-black uppercase tracking-widest">
-                  About
+              {/* Creator */}
+              <div className="w-full px-6 py-8 hover:bg-violet-900/30 transition-colors duration-300">
+                <h4 className="text-[15px] font-bold text-black uppercase tracking-widest mb-3">
+                  Creator
                 </h4>
-                <p className="text-[12px] text-black/70 leading-relaxed max-w-[200px]">
-                  KindSphere is a safe haven built to inspire daily kindness, one anonymous drop at a time.
-                </p>
+
+                <div className="flex flex-col gap-2">
+                  <p className="text-[14px] text-black/80 font-medium">
+                    Saleha Zeeshan
+                  </p>
+
+                  <a
+                    href="https://github.com/saleha294"
+                    target="_blank"
+                    className="text-[14px] text-black hover:text-purple-600 transition"
+                  >
+                    GitHub
+                  </a>
+
+                  <a
+                    href="mailto:salehacorner@gmail.com"
+                    className="text-[14px] text-black hover:text-purple-600 transition"
+                  >
+                    Gmail
+                  </a>
+                </div>
               </div>
 
             </div>
 
-            {/* Brand */}
-            <div className="flex flex-col items-start md:items-center mb-6 text-left md:text-center">
+            <div className="flex flex-col items-start md:items-center text-left md:text-center -mt-4 mb-2">
 
-              <img
-                src="/favicon.ico"
-                alt="KindSphere Logo"
-                className="w-12 h-12 md:w-16 md:h-16 mb-2 mx-0 md:mx-auto"
-              />
+
 
               <h2 className="font-serif text-4xl md:text-5xl tracking-wide">
                 <span className="text-black">Kind</span>
-                <span className="text-purple-600">Sphere</span>
+                <span className="text-purple-600 italic">Sphere</span>
               </h2>
 
               <p className="mt-1 text-sm text-black/70">
@@ -792,15 +817,14 @@ export default function LandingPage() {
 
             </div>
 
-            {/* Bottom */}
             <div className="pt-4 border-t border-black/10 flex flex-col items-start md:items-center gap-2 text-left md:text-center">
 
               <p className="text-[10px] text-black/60 uppercase tracking-widest">
                 © {new Date().getFullYear()} KindSphere. All rights reserved.
               </p>
 
-              <div className="flex items-center gap-2 text-[11px] uppercase tracking-widest text-black">
-                <span>Stay Kind. Stay Hopeful.</span>
+              <div className="flex items-center gap-1 text-[11px] uppercase tracking-widest">
+
                 <span className="text-purple-600">♥</span>
               </div>
 
