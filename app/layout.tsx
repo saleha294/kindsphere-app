@@ -3,8 +3,9 @@ import type { Metadata } from "next";
 import { DM_Sans, DM_Serif_Display } from "next/font/google";
 import "./globals.css";
 import { Navbar } from "@/components/Navbar";
-import WelcomeSplash from "@/components/WelcomeSplash";
+import Welcome from "@/components/WelcomeSplash";
 import Script from "next/script";
+import WelcomeSplash from "@/components/WelcomeSplash";
 
 /* ─── Fonts ─── */
 const dmSans = DM_Sans({
@@ -41,7 +42,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${dmSans.variable} ${dmSerif.variable}`}>
+    <html
+  lang="en"
+  className={`${dmSans.variable} ${dmSerif.variable}`}
+  suppressHydrationWarning
+>
       <head>
         {/*
           Blocking inline script — runs before React hydrates.
@@ -53,7 +58,12 @@ export default function RootLayout({
             __html: `
               (function(){
                 try {
-                  document.documentElement.classList.add('ks-splash');
+                  // Only show the splash on the very first visit this session.
+                  // If the user has already dismissed it, skip adding the class
+                  // so page content is never hidden on subsequent navigations.
+                  if (!sessionStorage.getItem('ks-splash-seen')) {
+                    document.documentElement.classList.add('ks-splash');
+                  }
                 } catch(e){}
               })();
             `,
