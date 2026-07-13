@@ -149,7 +149,7 @@ export default function DropPage() {
   }
 
   return (
-    <div className="w-full min-h-screen bg-[#FAF9F6] pt-32 pb-20">
+    <div className="w-full min-h-screen bg-[#FAF9F6] pt-28 md:pt-32 pb-20">
       {/* Primary alignment container matching navbar values */}
       <div className="max-w-6xl mx-auto px-6 md:px-8">
 

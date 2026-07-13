@@ -5,6 +5,7 @@ import { getMyReplies } from "@/lib/db-queries";
 import { MessageCircle, ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import { getCurrentUserId } from "@/lib/auth";
+import RepliesIcon from "@/components/icons/RepliesIcon";
 
 
 export default function RepliesPage() {
@@ -26,39 +27,41 @@ export default function RepliesPage() {
     const displayReplies = replies;
 
     return (
-        <div className="w-full min-h-screen pb-20 bg-stone-50">
-            <div className="w-full max-w-6xl mx-auto px-6 md:px-12 pt-28 pb-10 space-y-8">
+        <div className="w-full pb-20 space-y-8">
 
-                <Link
-                    href="/digest"
-                    className="inline-flex items-center gap-1.5 text-sm text-[#7C3AED] hover:text-[#6D28D9] transition-colors w-max"
-                >
-                    <ArrowLeft size={16} />
-                    Back to Drift
-                </Link>
+            <Link
+                href="/digest"
+                className="inline-flex items-center gap-1.5 text-sm text-[#7C3AED] hover:text-[#6D28D9] transition-colors w-max"
+            >
+                <ArrowLeft size={16} />
+                Back to Drift
+            </Link>
 
-                {displayReplies.length === 0 ? (
-                    <div className="text-center py-20 text-stone-500">
-                        No replies yet.
-                    </div>
-                ) : (
-                    <>
-                        {/* Redesigned Header Section */}
-                        <div className="bg-gradient-to-br from-violet-50 to-white p-8 rounded-[2rem] border border-violet-100 shadow-sm relative overflow-hidden animate-fade-in">
-                            <div className="absolute inset-0 opacity-50 bg-[radial-gradient(circle_at_top_right,_var(--tw-gradient-stops))] from-violet-100 via-transparent to-transparent pointer-events-none" />
-                            <div className="relative z-10 space-y-3">
-                                <h1 className="font-serif text-3xl font-medium text-[#1C2541]">
-                                    Your Replies
-                                </h1>
-                                <p className="text-stone-600 text-[15px] leading-relaxed max-w-2xl">
-                                    These are the answers and thoughts people have returned to your drifting bottles.
-                                </p>
-                            </div>
+            {displayReplies.length === 0 ? (
+                <div className="bg-gradient-to-br from-violet-50 to-white rounded-[2rem] p-12 border border-violet-100 shadow-sm text-center space-y-4">
+                    <div className="flex justify-center">
+                        <div className="w-20 h-20 rounded-full bg-white border border-violet-100 shadow-sm flex items-center justify-center">
+                            <RepliesIcon className="w-10 h-10" />
                         </div>
-
-                        {/* List Section */}
-                        <div className="space-y-5">
-                            {displayReplies.map((reply) => (
+                    </div>
+                    <div className="space-y-2">
+                        <p className="text-[#1C2541] font-serif text-xl">No replies yet</p>
+                        <p className="text-stone-500 text-sm max-w-sm mx-auto leading-relaxed">
+                            When someone responds to one of your bottles, their reply will drift back to you here.
+                        </p>
+                    </div>
+                    <Link
+                        href="/drop"
+                        className="inline-block bg-[#7C3AED] text-white px-6 py-3 rounded-full text-sm font-semibold hover:bg-[#6D28D9] transition-all"
+                    >
+                        Drop a Bottle
+                    </Link>
+                </div>
+            ) : (
+                <>
+                    {/* List Section */}
+                    <div className="space-y-5">
+                        {displayReplies.map((reply) => (
                                 <div
                                     key={reply.id}
                                     className="bg-white rounded-[2rem] p-8 border border-stone-100 shadow-[0_2px_12px_rgba(0,0,0,0.02)] space-y-5 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl cursor-default"
@@ -81,7 +84,6 @@ export default function RepliesPage() {
                         </div>
                     </>
                 )}
-            </div>
         </div>
     );
 }

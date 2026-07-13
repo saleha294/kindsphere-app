@@ -56,28 +56,60 @@ interface SphereStats {
     totalSouls: number;
 }
 
-// Deterministic but jittered status — makes the globe feel alive without
-// a real-time subscription for every user.  Status randomly flips every
-// ~8 s per user using their id as a seed so rerenders are stable.
+// ─── Land-only fallback coordinates (mirrors ActiveGlobe's LAND_COORDS) ──────
+const LAND_COORDS_PAGE: [number, number][] = [
+    [-74.006, 40.712], [-0.128, 51.507],  [2.349, 48.864],   [13.405, 52.52],
+    [37.617, 55.756],  [116.407, 39.904], [139.692, 35.690], [72.878, 19.076],
+    [-43.173, -22.907],[18.423, -33.925], [151.209, -33.868],[-99.133, 19.432],
+    [-58.381, -34.603],[28.047, -26.204], [103.820, 1.352],  [31.235, 30.044],
+    [-87.629, 41.878], [-46.633, -23.548],[77.209, 28.614],  [106.845, -6.208],
+    [23.727, 37.983],  [4.900, 52.369],   [-3.703, 40.417],  [12.483, 41.895],
+    [49.558, 24.688],  [67.082, 24.861],  [90.407, 23.723],  [126.978, 37.566],
+    [-79.383, 43.653], [-122.419, 37.775],[30.523, 50.450],  [55.270, 25.204],
+    [174.763, -36.848],[-70.669, -33.448],[-66.879, 10.480], [3.379, 6.524],
+    [36.817, -1.286],  [32.582, 0.347],   [47.498, 8.998],   [-17.443, 14.693],
+];
+
+function pinCoord(id: string): [number, number] {
+    const num = id.split("").reduce((acc, ch) => acc + ch.charCodeAt(0), 0);
+    return LAND_COORDS_PAGE[Math.abs(num) % LAND_COORDS_PAGE.length];
+}
+
+// ─── Stable-coordinate live-status hook ──────────────────────────────────────
+// Coordinates are assigned ONCE when baseUsers first arrives and never change.
+// Only `status` is toggled on each tick so markers never jump.
 function useLiveUsers(baseUsers: SphereUser[]): SphereUser[] {
     const [liveUsers, setLiveUsers] = useState<SphereUser[]>([]);
+    // Stable coords keyed by user id — assigned once, reused forever.
+    const coordMapRef = useRef<Map<string, [number, number]>>(new Map());
     const tickRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
     useEffect(() => {
         if (baseUsers.length === 0) return;
 
-        const randomise = () => {
+        // Assign coordinates once; skip any id that already has one.
+        baseUsers.forEach((u) => {
+            if (!coordMapRef.current.has(u.id)) {
+                coordMapRef.current.set(
+                    u.id,
+                    u.coordinates ?? pinCoord(u.id)
+                );
+            }
+        });
+
+        const tick = () => {
             setLiveUsers(
                 baseUsers.map((u) => ({
                     ...u,
-                    // ~40 % chance to be active at any given tick
+                    coordinates: coordMapRef.current.get(u.id),
+                    // ~40% chance to be active at any given tick
                     status: Math.random() < 0.4 ? "active" : "idle",
                 }))
             );
         };
 
-        randomise(); // initial render
-        tickRef.current = setInterval(randomise, 7000);
+        tick(); // initial render
+        tickRef.current = setInterval(tick, 7000);
         return () => { if (tickRef.current) clearInterval(tickRef.current); };
     }, [baseUsers]);
 

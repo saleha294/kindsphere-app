@@ -24,26 +24,15 @@ export default function PendingDigestPage() {
         load();
     }, []);
     return (
-        <div className="w-full min-h-screen pb-20 bg-stone-50">
-            <div className="w-full max-w-6xl mx-auto px-6 md:px-12 pt-28 pb-10 space-y-8">
+        <div className="w-full pb-20 space-y-8">
 
-                <Link
-                    href="/digest"
-                    className="inline-flex items-center gap-1.5 text-sm text-[#7C3AED] hover:text-[#6D28D9] transition-colors w-max"
-                >
-                    <ArrowLeft size={16} />
-                    Back to Drift
-                </Link>
-
-                {/* Header Section */}
-                <div className="bg-white p-8 rounded-3xl border border-stone-100 shadow-sm space-y-3">
-                    <h1 className="font-serif text-3xl font-medium text-[#1C2541]">
-                        Bottles waiting for your perspective.
-                    </h1>
-                    <p className="text-stone-500 text-[15px] leading-relaxed max-w-2xl">
-                        These are the thoughts that specifically resonated with your journey.
-                    </p>
-                </div>
+            <Link
+                href="/digest"
+                className="inline-flex items-center gap-1.5 text-sm text-[#7C3AED] hover:text-[#6D28D9] transition-colors w-max"
+            >
+                <ArrowLeft size={16} />
+                Back to Drift
+            </Link>
 
                 {/* List Section */}
                 <div className="grid grid-cols-1 gap-5">
@@ -71,7 +60,6 @@ export default function PendingDigestPage() {
                         </div>
                     ))}
                 </div>
-            </div>
         </div>
     );
 }

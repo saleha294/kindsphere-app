@@ -50,7 +50,7 @@ export default function DigestLayout({ children }: { children: React.ReactNode }
             )}
 
             {/* ── Render Target for Sub-Pages (Navbar removed) ── */}
-            <div className="flex-1 w-full max-w-6xl mx-auto px-6 md:px-12 py-10">
+            <div className="flex-1 w-full max-w-6xl mx-auto px-6 md:px-12 pt-28 pb-10">
                 {children}
             </div>
         </div>

@@ -21,36 +21,15 @@ export default function SentDigestPage() {
     }, []);
 
     return (
-        <div className="w-full min-h-screen pb-20 bg-stone-50">
-            <div className="w-full max-w-6xl mx-auto px-6 md:px-12 pt-28 pb-10 space-y-8">
+        <div className="w-full pb-20 space-y-8">
 
-                <Link
-                    href="/digest"
-                    className="inline-flex items-center gap-1.5 text-sm text-[#7C3AED] hover:text-[#6D28D9] transition-colors w-max"
-                >
-                    <ArrowLeft size={16} />
-                    Back to Drift
-                </Link>
-                {/* Header Section */}
-                <div className="bg-gradient-to-br from-violet-50 to-white p-8 rounded-[2rem] border border-violet-100 shadow-sm flex flex-col md:flex-row gap-8 justify-between items-start md:items-center">
-                    <div className="max-w-lg space-y-3">
-                        <h1 className="font-serif text-3xl font-medium text-[#1C2541]">
-                            Welcome to your sent bottles.
-                        </h1>
-                        <p className="text-stone-500 text-[15px] leading-relaxed">
-                            This is the space where all your bottles sent and the journey of what you felt each day is recorded. Navigate and look back to see what you were feeling.
-                        </p>
-                    </div>
-
-                    {/* Modern Horizontal CTA */}
-                    <Link
-                        href="/drop"
-                        className="shrink-0 flex items-center gap-2.5 bg-[#7C3AED] hover:bg-[#6D28D9] text-white px-8 py-4 rounded-full font-semibold shadow-md transition-all hover:shadow-lg hover:-translate-y-0.5 active:scale-95"
-                    >
-                        <Send size={20} />
-                        <span>Drop a Bottle</span>
-                    </Link>
-                </div>
+            <Link
+                href="/digest"
+                className="inline-flex items-center gap-1.5 text-sm text-[#7C3AED] hover:text-[#6D28D9] transition-colors w-max"
+            >
+                <ArrowLeft size={16} />
+                Back to Drift
+            </Link>
 
                 {/* List Section */}
                 <div className="space-y-5">
@@ -94,8 +73,8 @@ export default function SentDigestPage() {
                                     </span>
                                 </div>
 
-                                <p className="text-[#1C2541] leading-relaxed font-serif text-xl">
-                                    &ldquo;{bottle.content}&rdquo;
+                                <p className="text-[#1C2541] leading-relaxed text-[15px]">
+                                    {bottle.content}
                                 </p>
 
                                 <div className="flex items-center gap-6 pt-4 text-xs font-medium text-stone-400 border-t border-stone-50 group-hover:text-stone-500 transition-colors">
@@ -103,16 +82,12 @@ export default function SentDigestPage() {
                                         <Eye className="h-4 w-4" />
                                         Drifting through KindSphere
                                     </span>
-                                    <span className="flex items-center gap-1.5">
-                                        <MessageCircle className="h-4 w-4 group-hover:text-[#7C3AED] transition-colors" style={{ color: "#A78BFA" }} />
-                                        <span className="text-stone-600">This is how you were feeling back then.. we hope you are doing better now</span>
-                                    </span>
+                                    
                                 </div>
                             </div>
                         ))
                     )}
                 </div>
-            </div>
         </div>
     );
 }

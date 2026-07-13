@@ -103,7 +103,7 @@ export default function DigestPage() {
   }, []);
 
   return (
-    <div className="w-full space-y-12 pt-8 md:pt-14">
+    <div className="w-full space-y-12">
 
       {/* --- Premium Header --- */}
       <header className="relative w-full rounded-[2rem] p-8 md:p-12 overflow-hidden bg-gradient-to-br from-violet-50 to-white border border-violet-100 shadow-sm">
@@ -120,7 +120,7 @@ export default function DigestPage() {
 
       {/* Navigation */}
       <div className="border-b border-stone-200 overflow-x-auto -mx-6 px-6 md:mx-0 md:px-0">
-        <nav className="flex justify-center gap-1 sm:gap-2">
+        <nav className="grid grid-cols-2 sm:flex sm:justify-center gap-1 sm:gap-2">
           {NAV_ITEMS.map((link) => {
             const isActive = pathname === link.href;
             return (

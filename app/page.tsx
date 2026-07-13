@@ -416,7 +416,7 @@ export default function LandingPage() {
               {/*floating cards*/}
               <div className="lg:col-span-6 relative h-[450px] md:h-[600px] w-full mt-10 lg:mt-0 flex items-center justify-center lg:justify-end">
                 <div className="absolute -top-0 lg:top-8 -top-8 lg:top-0 right-0 md:right-10 lg:-right-5 z-20 w-[300px] md:w-[350px] animate-float-slow">
-                  <div className="relative bg-white p-7 rounded-3xl shadow-xl border border-slate-100 space-y-5 hover-card-trigger">
+                  <div className="relative bg-white p-7 rounded-3xl shadow-xl border border-slate-100 space-y-8 hover-card-trigger">
                     <div className="flex items-center justify-between gap-4">
                       <div className="flex items-center gap-3">
                         <div className="w-10 h-10 rounded-full bg-slate-200 border-2 border-violet-100" />
@@ -433,10 +433,7 @@ export default function LandingPage() {
                     <p className="text-base text-slate-700 leading-relaxed">
                       "You are exactly where you need to be. This moment is temporary, but your light is permanent."
                     </p>
-                    <div className="flex items-center justify-between text-xs pt-2 border-t border-slate-100">
-                      <button className="text-slate-600 font-medium hover:text-violet-600">Share kindness →</button>
-                      <span className="text-slate-400">•••</span>
-                    </div>
+                    
                   </div>
                 </div>
 
@@ -449,10 +446,7 @@ export default function LandingPage() {
                     <p className="text-sm text-slate-800 leading-snug font-medium">
                       Respond to someone who wants to connect with you.
                     </p>
-                    <button className="text-sm font-semibold text-violet-700 hover:text-violet-800 pt-1.5">Accept request?</button>
-                    <div className="absolute -bottom-6 -left-6 w-12 h-12 rounded-full bg-white shadow-md flex items-center justify-center border border-slate-50 text-violet-400/60 text-xl rotate-12">
-                      ✦
-                    </div>
+                    
                   </div>
                 </div>
 

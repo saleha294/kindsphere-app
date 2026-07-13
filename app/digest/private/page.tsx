@@ -47,33 +47,15 @@ export default function PrivateBottlesPage() {
     };
 
     return (
-        <div className="w-full min-h-screen bg-stone-50 pb-20">
-            <div className="max-w-6xl mx-auto px-6 md:px-12 pt-28 pb-10 space-y-8">
-                {/* Back Button */}
-                <Link
-                    href="/digest"
-                    className="inline-flex items-center gap-2 text-[#7C3AED] hover:text-[#6D28D9] transition-colors px-4 py-2 rounded-full text-sm font-medium w-max"
-                >
-                    <ArrowLeft size={16} />
-                    Back to Drift
-                </Link>
-
-                {/* Header */}
-                <div className="bg-gradient-to-br from-violet-50 to-white p-8 rounded-[2rem] border border-violet-100 shadow-sm relative overflow-hidden">
-                    <div className="relative z-10 max-w-2xl space-y-3">
-                        <h1 className="font-serif text-3xl font-medium text-[#1C2541]">
-                            Private Bottles
-                        </h1>
-                        <p className="text-stone-500 text-[15px] leading-relaxed">
-                            Someone dropped a bottle and it found its way to you, anonymously.
-                            Only you can see these. Reply kindly, then they drift on.
-                        </p>
-                    </div>
-                    {/* Decorative Lock */}
-                    <div className="absolute right-10 top-1/2 -translate-y-1/2 text-violet-200/50 pointer-events-none">
-                        <Lock size={80} strokeWidth={1} />
-                    </div>
-                </div>
+        <div className="w-full pb-20 space-y-8">
+            {/* Back Button */}
+            <Link
+                href="/digest"
+                className="inline-flex items-center gap-2 text-[#7C3AED] hover:text-[#6D28D9] transition-colors px-4 py-2 rounded-full text-sm font-medium w-max"
+            >
+                <ArrowLeft size={16} />
+                Back to Drift
+            </Link>
 
                 {/* Kindness Reminder Section */}
                 <div className="bg-white p-8 rounded-[2rem] border border-violet-100 shadow-sm space-y-6">
@@ -185,7 +167,6 @@ export default function PrivateBottlesPage() {
                         Send a Private Bottle →
                     </Link>
                 </div>
-            </div>
         </div>
     );
 }
