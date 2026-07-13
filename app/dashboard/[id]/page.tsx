@@ -99,7 +99,7 @@ export default function ResponseDetailPage() {
 
 
         <div className="mt-8 space-y-1">
-          <h1 className="font-serif text-3xl md:text-4xl font-medium text-[#1C2541] leading-[1.1] tracking-tight">
+          <h1 className="font-serif text-4xl md:text-5xl font-medium text-[#1C2541] leading-[1.1] tracking-tight">
             <span className="text-[#7C3AED] italic">Reply</span> to a bottle
           </h1>
           <p className="text-[18px] text-stone-600 max-w-lg pt-2 leading-relaxed">
@@ -177,7 +177,7 @@ export default function ResponseDetailPage() {
             </div>
 
             {/* Buttons */}
-            <div className="flex gap-4">
+            <div className="flex flex-col md:flex-row gap-4">
               <button
                 type="submit"
                 className="flex-1 bg-[#7C3AED] hover:bg-[#6D28D9] text-white py-4 rounded-full font-semibold transition-all flex items-center justify-center gap-2"

@@ -81,8 +81,8 @@ export default function HowToUseSection() {
 
   return (
     <>
-      <section className="w-full bg-slate-50 ">
-        <div className="w-full max-w-7xl mx-auto px-6 py-20">
+      <section className="w-full bg-slate-50 pb-16 md:pb-28">
+        <div className="w-full max-w-7xl mx-auto px-6 pt-8 md:pt-22">
 
           {/* Header */}
           <div className="text-center mb-16 space-y-3">
@@ -127,7 +127,7 @@ export default function HowToUseSection() {
           </div>
 
           {/* CTA */}
-          <div className="mt-16 flex justify-center">
+          <div className="mt-16 flex w-full justify-center items-center">
             <button
               onClick={() => setShowRegister(true)}
               className="inline-flex items-center gap-2 text-base font-semibold text-white px-10 py-4 rounded-full shadow-lg hover:opacity-90 active:scale-[0.97] transition-all"

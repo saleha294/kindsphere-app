@@ -5,6 +5,7 @@ import { useEffect, useRef, ReactNode, useState } from "react";
 import { useRouter } from "next/navigation";
 import RegisterUser from "@/components/RegisterUser";
 import HowToUseSection from "@/components/HowToUseSection";
+import DiscoverSection from "@/components/DiscoverSection";
 
 
 /* ─────────────────────────────────────────────
@@ -114,6 +115,8 @@ const GUIDELINES = [
     description: "Profanity, graphic material, or inappropriate language.",
   },
 ];
+
+
 
 /* ─────────────────────────────────────────────
    Sub-components
@@ -256,9 +259,9 @@ export default function LandingPage() {
             margin-right: auto !important;
           }
           
-          .homepage-section .mt-16.flex.justify-center {
-            justify-content: flex-start !important;
-          }
+          .homepage-section:not(.how-it-works) .mt-16.flex.justify-center {
+  justify-content: flex-start !important;
+}
         }
 
         /* Sweeping gradient border on Kindness cards */
@@ -375,11 +378,11 @@ export default function LandingPage() {
           <Reveal className="reveal-hero relative w-full max-w-7xl mx-auto px-6 md:px-10 lg:px-20">
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
 
-              <div className="lg:col-span-6 text-left z-10 space-y-8 md:space-y-10">
+              <div className="lg:col-span-6 text-left z-10 space-y-8 md:space-y-10 mt-10">
                 <div className="inline-flex items-center gap-2.5 text-violet-800 bg-violet-100/80 border border-violet-200 px-5 py-2 rounded-full shadow-sm">
                   <span className="text-yellow-500 text-lg">★</span>
                   <span className="text-xs font-medium tracking-wide uppercase">
-                    Join 50+ kind souls making a difference
+                    Join 10+ kind souls making a difference
                   </span>
                 </div>
 
@@ -410,8 +413,9 @@ export default function LandingPage() {
                 </div>
               </div>
 
+              {/*floating cards*/}
               <div className="lg:col-span-6 relative h-[450px] md:h-[600px] w-full mt-10 lg:mt-0 flex items-center justify-center lg:justify-end">
-                <div className="absolute top-0 right-0 md:right-10 lg:-right-5 z-20 w-[300px] md:w-[350px] animate-float-slow">
+                <div className="absolute -top-0 lg:top-8 -top-8 lg:top-0 right-0 md:right-10 lg:-right-5 z-20 w-[300px] md:w-[350px] animate-float-slow">
                   <div className="relative bg-white p-7 rounded-3xl shadow-xl border border-slate-100 space-y-5 hover-card-trigger">
                     <div className="flex items-center justify-between gap-4">
                       <div className="flex items-center gap-3">
@@ -452,12 +456,15 @@ export default function LandingPage() {
                   </div>
                 </div>
 
+
                 <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[500px] h-[300px] bg-violet-100/60 rounded-full blur-[100px] opacity-50 z-0"></div>
 
                 <div className="absolute -bottom-8 right-0 z-40 flex items-center gap-3 bg-violet-700 text-white px-4 py-3 rounded-full shadow-lg shadow-violet-300/60">
                   <span className="text-sm font-medium">5+ bottles dropped today</span>
                 </div>
+
               </div>
+              {/*floating cards end*/}
             </div>
           </Reveal>
         </section>
@@ -514,76 +521,9 @@ export default function LandingPage() {
 
         </section>
 
-        {/* ── Discover KindSphere ─────────────────────── */}
-        <section className="homepage-section w-full py-20 bg-slate-50 py-2">
-          <Reveal className="reveal-kindness-feed w-full max-w-7xl mx-auto px-6">
 
-            {/* Section Header */}
-            <div className="text-left md:text-center mb-8 space-y-4">
-              <h2 className="font-serif text-4xl md:text-6xl text-slate-950 leading-[1.1] tracking-tight">
-                Everything you need to<br />
-                <span className="text-violet-600 italic">spread kindness</span>
-              </h2>
-              <p className="text-lg md:text-xl text-slate-600 max-w-2xl ml-0 mr-auto md:mx-auto leading-relaxed">
-                Built for people who believe small acts of kindness create enormous waves of positive change.
-              </p>
-            </div>
+        <DiscoverSection />
 
-            {/* Cards Container */}
-            {/* flex (horizontal scroll) on mobile, grid on desktop */}
-            <div className="flex md:grid md:grid-cols-4 gap-6 overflow-x-auto pb-6 md:pb-0 snap-x snap-mandatory scrollbar-hide -mx-6 px-6 md:mx-0 md:px-0">
-
-              {/* Card 1: Purple Tint */}
-              <div className="flex-none w-[280px] md:w-auto snap-center bg-[#F5F3FF] border border-[#E0D7FF] rounded-[2rem] p-8 flex flex-col gap-6 transition-all hover:-translate-y-2 hover:shadow-xl">
-                <div className="w-12 h-12 rounded-xl bg-white flex items-center justify-center text-violet-600 shadow-sm">
-                  <span className="text-xl">🔒</span>
-                </div>
-                <div className="space-y-2">
-                  <p className="text-[11px] font-bold uppercase tracking-widest text-violet-800">Private & Safe</p>
-                  <h3 className="font-serif text-2xl text-slate-950">Anonymous Kindness</h3>
-                  <p className="text-slate-600 leading-relaxed">Share kind messages, encouragement, and warmth without revealing who you are. Pure kindness, no strings attached.</p>
-                </div>
-              </div>
-
-              {/* Card 2: Gold Tint */}
-              <div className="flex-none w-[280px] md:w-auto snap-center bg-[#faf4e5ff] border border-[#FDEFC8] rounded-[2rem] p-8 flex flex-col gap-6 transition-all hover:-translate-y-2 hover:shadow-xl">
-                <div className="w-12 h-12 rounded-xl bg-white flex items-center justify-center text-amber-600 shadow-sm">
-                  <span className="text-xl">🏆</span>
-                </div>
-                <div className="space-y-2">
-                  <p className="text-[11px] font-bold uppercase tracking-widest text-amber-800">Daily Missions</p>
-                  <h3 className="font-serif text-2xl text-slate-950">Connections and Chatting</h3>
-                  <p className="text-slate-600 leading-relaxed">Have meaningful conversations with people from different walks of life, all united by the desire to spread positivity.</p>
-                </div>
-              </div>
-
-              {/* Card 3: Pink Tint */}
-              <div className="flex-none w-[280px] md:w-auto snap-center bg-[#FDF2F4] border border-[#F9E1E5] rounded-[2rem] p-8 flex flex-col gap-6 transition-all hover:-translate-y-2 hover:shadow-xl">
-                <div className="w-12 h-12 rounded-xl bg-white flex items-center justify-center text-rose-500 shadow-sm">
-                  <span className="text-xl">💬</span>
-                </div>
-                <div className="space-y-2">
-                  <p className="text-[11px] font-bold uppercase tracking-widest text-rose-800">Real Moments</p>
-                  <h3 className="font-serif text-2xl text-slate-950">Community Stories</h3>
-                  <p className="text-slate-600 leading-relaxed">Read uplifting stories from people around the world who chose kindness and changed someone's day forever.</p>
-                </div>
-              </div>
-
-              {/* Card 4: White/Neutral Tint */}
-              <div className="flex-none w-[280px] md:w-auto snap-center bg-white border border-slate-100 rounded-[2rem] p-8 flex flex-col gap-6 transition-all hover:-translate-y-2 hover:shadow-xl">
-                <div className="w-12 h-12 rounded-xl bg-slate-50 flex items-center justify-center text-indigo-600 shadow-sm">
-                  <span className="text-xl">🌐</span>
-                </div>
-                <div className="space-y-2">
-                  <p className="text-[11px] font-bold uppercase tracking-widest text-indigo-800">Measured Warmth</p>
-                  <h3 className="font-serif text-2xl text-slate-950">Positive Impact</h3>
-                  <p className="text-slate-600 leading-relaxed">Track how your anonymous kindness ripples outward. See the collective impact of a global community choosing love.</p>
-                </div>
-              </div>
-
-            </div>
-          </Reveal>
-        </section>
 
         {/* ── HOW TO USE ─────────────────────────── */}
         <div className="homepage-section">
@@ -708,7 +648,7 @@ export default function LandingPage() {
           <Reveal className="reveal-footer w-full max-w-5xl mx-auto px-6 md:px-12 relative z-10">
 
             {/* Footer Links */}
-            <div className="grid grid-cols-1 md:grid-cols-4 mb-10">
+            <div className="grid grid-cols-1 md:grid-cols-4 mb-10 -ml-5">
 
               {/* About */}
               <div className="w-full px-6 py-8 border-b md:border-b-0 md:border-r border-violet-100/70 hover:bg-violet-900/30 transition-colors duration-300">
@@ -801,10 +741,8 @@ export default function LandingPage() {
               </div>
 
             </div>
-
+            {/*branding*/}
             <div className="flex flex-col items-start md:items-center text-left md:text-center -mt-4 mb-2">
-
-
 
               <h2 className="font-serif text-4xl md:text-5xl tracking-wide">
                 <span className="text-black">Kind</span>

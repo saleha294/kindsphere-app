@@ -31,6 +31,8 @@ export default function DropPage() {
   const [showPrivatePrompt, setShowPrivatePrompt] = useState(false);
   const [sendPrivately, setSendPrivately] = useState(false);
   const [currentBottleId, setCurrentBottleId] = useState<string | null>(null);
+  const [userHandle, setUserHandle] = useState<string | null>(null);
+  const [greeting, setGreeting] = useState("");
 
   useEffect(() => {
     setIsClient(true);
@@ -153,7 +155,14 @@ export default function DropPage() {
 
         {/* Inner reading-width container */}
         <div className="max-w-2xl space-y-16">
-
+          <div className="mb-8">
+            <p className="text-sm font-medium text-stone-500">
+              {greeting},
+            </p>
+            <h2 className="font-serif text-4xl md:text-5xl text-[#1C2541] leading-tight">
+              Hey, <span className="text-[#7C3AED] italic">{userHandle}</span> 👋
+            </h2>
+          </div>
           {/* Header Section */}
           <div className="space-y-2">
             <h1 className="font-serif text-4xl text-stone-900"><span className="text-[#7C3AED] italic">Drop</span> a Bottle</h1>

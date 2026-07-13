@@ -93,7 +93,7 @@ export function Navbar() {
         <div className="max-w-6xl mx-auto md:bg-white/70 md:backdrop-blur-xl md:border md:border-stone-200/50 rounded-none md:rounded-full md:shadow-[0_8px_30px_rgb(0,0,0,0.04)] px-6 md:px-8 h-16 flex items-center justify-between">
 
           {/* Logo */}
-          <Link href="/" onClick={() => setOpen(false)} className="flex items-center gap--7.5 shrink-0 pl-2">
+          <Link href="/" onClick={() => setOpen(false)} className="flex items-center gap--7.5 shrink-0 -ml-5">
             <img src="/favicon.ico" alt="KindSphere" className="w-20 h-20 object-contain rounded-full" />
             <div className="flex flex-col leading-none">
               <span className="-ml-3 font-serif text-[18px] tracking-tight text-foreground">KindSphere</span>
