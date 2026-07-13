@@ -113,8 +113,8 @@ export default function PrivateBottlesPage() {
                                         </span>
                                     </div>
 
-                                    <p className="text-[#1C2541] font-serif text-lg leading-relaxed">
-                                        &ldquo;{bottle?.content}&rdquo;
+                                    <p className="text-[#1C2541] text-[15px] leading-relaxed">
+                                        {bottle?.content}
                                     </p>
 
                                     {isSent ? (

@@ -75,7 +75,7 @@ export default function RepliesPage() {
                                             <MessageCircle size={16} />
                                             <span>@{reply.sender?.anonymous_handle || 'Anonymous'}</span>
                                         </div>
-                                        <p className="text-[#1C2541] font-serif text-lg leading-relaxed">
+                                        <p className="text-[#1C2541] text-[15px] leading-relaxed">
                                             {reply.content}
                                         </p>
                                     </div>

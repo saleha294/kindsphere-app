@@ -65,7 +65,7 @@ export default function DiscoverSection() {
     ];
 
     return (
-        <section className="homepage-section w-full py-20 bg-slate-50">
+        <section className="homepage-section discover-section w-full pt-20 pb-8 bg-slate-50">
             <Reveal className="w-full max-w-7xl mx-auto px-6">
                 <div className="text-left md:text-center mb-8 space-y-4">
                     <p className="text-[11px] font-bold uppercase tracking-widest text-violet-600">YOUR GUIDE</p>

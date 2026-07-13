@@ -37,6 +37,23 @@ export default function DropPage() {
   useEffect(() => {
     setIsClient(true);
 
+    // Load handle from localStorage (same pattern as dashboard/digest)
+    const savedHandle = localStorage.getItem("kindsphere_handle");
+    setUserHandle(savedHandle);
+
+    // Set time-based greeting
+    const hour = new Date().getHours();
+    if (hour < 12) setGreeting("Good morning");
+    else if (hour < 18) setGreeting("Good afternoon");
+    else setGreeting("Good evening");
+
+    // Keep auth listeners in sync
+    const syncHandle = () => {
+      const h = localStorage.getItem("kindsphere_handle");
+      setUserHandle(h);
+    };
+    window.addEventListener("auth-changed", syncHandle);
+
     supabase.auth.getSession().then(({ data }) => {
       console.log("DROP SESSION:", data.session);
     });
@@ -45,6 +62,8 @@ export default function DropPage() {
       console.log("AUTH EVENT:", event);
       console.log("AUTH SESSION:", session);
     });
+
+    return () => window.removeEventListener("auth-changed", syncHandle);
   }, []);
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
@@ -149,12 +168,12 @@ export default function DropPage() {
   }
 
   return (
-    <div className="w-full min-h-screen bg-[#FAF9F6] pt-28 md:pt-32 pb-20">
+    <div className="w-full min-h-screen bg-[#FAF9F6] pt-28 pb-20">
       {/* Primary alignment container matching navbar values */}
       <div className="max-w-6xl mx-auto px-6 md:px-8">
 
         {/* Inner reading-width container */}
-        <div className="max-w-2xl space-y-16">
+        <div className="max-w-2xl space-y-16 animate-fade-in">
           <div className="mb-8">
             <p className="text-sm font-medium text-stone-500">
               {greeting},

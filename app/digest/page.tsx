@@ -103,7 +103,7 @@ export default function DigestPage() {
   }, []);
 
   return (
-    <div className="w-full space-y-12">
+    <div className="w-full space-y-12 animate-fade-in">
 
       {/* --- Premium Header --- */}
       <header className="relative w-full rounded-[2rem] p-8 md:p-12 overflow-hidden bg-gradient-to-br from-violet-50 to-white border border-violet-100 shadow-sm">
@@ -120,14 +120,14 @@ export default function DigestPage() {
 
       {/* Navigation */}
       <div className="border-b border-stone-200 overflow-x-auto -mx-6 px-6 md:mx-0 md:px-0">
-        <nav className="grid grid-cols-2 sm:flex sm:justify-center gap-1 sm:gap-2">
+        <nav className="grid grid-cols-2 sm:flex sm:justify-center gap-1 sm:gap-2 place-items-center sm:place-items-auto">
           {NAV_ITEMS.map((link) => {
             const isActive = pathname === link.href;
             return (
               <Link
                 key={link.href}
                 href={link.href}
-                className={`py-3 px-3 sm:px-5 capitalize font-medium text-xs sm:text-sm transition-all border-b-2 rounded-t-lg whitespace-nowrap ${link.hoverBg} ${isActive
+                className={`py-3 px-3 sm:px-5 text-center capitalize font-medium text-xs sm:text-sm transition-all border-b-2 rounded-t-lg whitespace-nowrap ${link.hoverBg} ${isActive
                   ? "border-current"
                   : "border-transparent text-stone-500"
                   }`}

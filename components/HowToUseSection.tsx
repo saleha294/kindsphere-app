@@ -82,18 +82,20 @@ export default function HowToUseSection() {
   return (
     <>
       <section className="w-full bg-slate-50 pb-16 md:pb-28">
-        <div className="w-full max-w-7xl mx-auto px-6 pt-8 md:pt-22">
+        <div className="w-full max-w-7xl mx-auto px-6 pt-16 md:pt-20">
 
           {/* Header */}
-          <div className="text-center mb-16 space-y-3">
-            <p className="text-[11px] font-bold uppercase tracking-widest text-violet-600">SIMPLE BY DESIGN</p>
-            <h2 className="font-serif text-4xl md:text-6xl text-slate-950 leading-[1.1] tracking-tight">
-              How it <span className="text-violet-600 italic">works</span>
-            </h2>
-            <p className="text-lg md:text-xl text-slate-600 max-w-xl mx-auto leading-relaxed">
-              Three simple steps between you and someone whose day you'll change forever.
-            </p>
-          </div>
+          <Reveal className="reveal-how-it-works-card">
+            <div className="text-center mb-16 space-y-3">
+              <p className="text-[11px] font-bold uppercase tracking-widest text-violet-600">SIMPLE BY DESIGN</p>
+              <h2 className="font-serif text-4xl md:text-6xl text-slate-950 leading-[1.1] tracking-tight">
+                How it <span className="text-violet-600 italic">works</span>
+              </h2>
+              <p className="text-lg md:text-xl text-slate-600 max-w-xl mx-auto leading-relaxed">
+                Three simple steps between you and someone whose day you'll change forever.
+              </p>
+            </div>
+          </Reveal>
 
           {/* Cards Carousel/Grid */}
           <div className="grid grid-cols-1 md:grid-cols-4 gap-6 overflow-x-auto pb-6 md:pb-0 snap-x scrollbar-hide">

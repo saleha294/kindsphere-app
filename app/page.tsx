@@ -210,7 +210,7 @@ export default function LandingPage() {
           transform: translate3d(0, 0, 0);
         }
 
-        /* Guidelines Reveal ("A safe space, held gently...") */
+        /* Guidelines Reveal ("OUR GUIDELINES. A safe space, held gently...") */
         .reveal-guidelines {
           transform: scale3d(0.98, 0.98, 1);
           transition: opacity 0.8s cubic-bezier(0.25, 1, 0.5, 1),
@@ -223,6 +223,29 @@ export default function LandingPage() {
         /* Footer Reveal */
         .reveal-footer {
           transition: opacity 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        /* Hero entrance animation */
+        @keyframes hero-entrance {
+          from {
+            opacity: 0;
+            transform: translate3d(0, 28px, 0);
+          }
+          to {
+            opacity: 1;
+            transform: translate3d(0, 0, 0);
+          }
+        }
+        .hero-animate {
+          animation: hero-entrance 0.9s cubic-bezier(0.25, 1, 0.5, 1) both;
+        }
+        .hero-animate-delay-1 { animation-delay: 0.1s; }
+        .hero-animate-delay-2 { animation-delay: 0.22s; }
+        .hero-animate-delay-3 { animation-delay: 0.34s; }
+        .hero-animate-delay-4 { animation-delay: 0.46s; }
+        .hero-animate-delay-5 { animation-delay: 0.58s; }
+        @media (prefers-reduced-motion: reduce) {
+          .hero-animate { animation: none !important; opacity: 1 !important; transform: none !important; }
         }
 
         @media (prefers-reduced-motion: reduce) {
@@ -246,6 +269,11 @@ export default function LandingPage() {
             text-align: left !important;
             padding-top: 4rem !important;
             padding-bottom: 4rem !important;
+          }
+          
+          /* Override for DiscoverSection — tighter bottom on mobile only */
+          .homepage-section.discover-section {
+            padding-bottom: 1rem !important;
           }
           
           .homepage-section .text-center,
@@ -379,24 +407,24 @@ export default function LandingPage() {
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
 
               <div className="lg:col-span-6 text-left z-10 space-y-8 md:space-y-10 mt-10">
-                <div className="inline-flex items-center gap-2.5 text-violet-800 bg-violet-100/80 border border-violet-200 px-5 py-2 rounded-full shadow-sm">
+                <div className="inline-flex items-center gap-2.5 text-violet-800 bg-violet-100/80 border border-violet-200 px-5 py-2 rounded-full shadow-sm hero-animate">
                   <span className="text-yellow-500 text-lg">★</span>
                   <span className="text-xs font-medium tracking-wide uppercase">
                     Join 10+ kind souls making a difference
                   </span>
                 </div>
 
-                <h1 className="font-serif text-5xl md:text-7xl xl:text-[80px] text-slate-950 leading-[0.95] tracking-tight">
+                <h1 className="font-serif text-5xl md:text-7xl xl:text-[80px] text-slate-950 leading-[0.95] tracking-tight hero-animate hero-animate-delay-1">
                   A kinder world<br />
                   <span className="text-violet-600 italic">starts with
                     a single message.</span><br />
                 </h1>
 
-                <p className="text-xl text-slate-600 max-w-xl leading-relaxed font-normal">
+                <p className="text-xl text-slate-600 max-w-xl leading-relaxed font-normal hero-animate hero-animate-delay-2">
                   Share anonymous kindness, connect with others, and brighten someone's day — no judgment, just warmth.
                 </p>
 
-                <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 pt-2">
+                <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 pt-2 hero-animate hero-animate-delay-3">
                   <button
                     onClick={() => window.dispatchEvent(new Event("open-register-modal"))}
                     className="group inline-flex items-center justify-center gap-2.5 text-base font-semibold text-white px-6 py-4 rounded-full bg-violet-600 hover:bg-violet-700 transition-all duration-300 shadow-lg shadow-violet-200 active:scale-[0.98]"
@@ -415,7 +443,7 @@ export default function LandingPage() {
 
               {/*floating cards*/}
               <div className="lg:col-span-6 relative h-[450px] md:h-[600px] w-full mt-10 lg:mt-0 flex items-center justify-center lg:justify-end">
-                <div className="absolute -top-0 lg:top-8 -top-8 lg:top-0 right-0 md:right-10 lg:-right-5 z-20 w-[300px] md:w-[350px] animate-float-slow">
+                <div className="absolute -top-0 lg:top-28 -top-8 right-0 md:right-10 lg:-right-5 z-20 w-[300px] md:w-[350px] animate-float-slow hero-animate hero-animate-delay-4">
                   <div className="relative bg-white p-7 rounded-3xl shadow-xl border border-slate-100 space-y-8 hover-card-trigger">
                     <div className="flex items-center justify-between gap-4">
                       <div className="flex items-center gap-3">
@@ -437,7 +465,7 @@ export default function LandingPage() {
                   </div>
                 </div>
 
-                <div className="absolute bottom-20 md:bottom-32 left-0 md:left-10 z-30 w-[260px] md:w-[290px] animate-float-delayed">
+                <div className="absolute bottom-20 md:bottom-32 left-0 md:left-10 z-30 w-[260px] md:w-[290px] animate-float-delayed hero-animate hero-animate-delay-5">
                   <div className="relative bg-white p-6 rounded-2xl shadow-lg border border-slate-100 space-y-3 hover-card-trigger">
                     <div className="flex items-center gap-2.5 text-amber-600">
                       <span className="text-sm">★</span>
@@ -592,7 +620,9 @@ export default function LandingPage() {
 
             {/* Heading Section */}
             <div className="mb-16 space-y-4 text-left md:text-center">
+              <p className="text-[11px] font-bold uppercase tracking-widest text-violet-600">OUR GUIDELINES</p>
               <h2 className="font-serif text-4xl md:text-6xl text-slate-950 leading-[1.1] tracking-tight">
+                
                 A safe space, <span className="text-violet-600 italic">held gently by all of us.</span>
               </h2>
               <p className="text-lg md:text-xl text-slate-600 max-w-xl ml-0 mr-auto md:mx-auto leading-relaxed">

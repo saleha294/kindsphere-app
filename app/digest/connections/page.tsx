@@ -115,9 +115,9 @@ export default function ConnectionsPage() {
     // ── Chat view ─────────────────────────────────────────────────────────
     if (activeChat) {
         return (
-            /* Outer page shell — matches dashboard pt-28 on mobile, pt-16 on desktop */
+            /* Layout already provides pt-28 — just add bottom padding */
             <div
-                className="w-full max-w-7xl mx-auto px-6 md:px-12 pt-28 md:pt-16 pb-20"
+                className="w-full pb-20"
                 style={{
                     transform: chatVisible ? "translateX(0)" : "translateX(40px)",
                     opacity: chatVisible ? 1 : 0,
@@ -128,7 +128,7 @@ export default function ConnectionsPage() {
 
                     {/* ── Conversation panel ─────────────────────────────────── */}
                     <div className="lg:col-span-8">
-                        <div className="rounded-[2rem] border border-violet-200/70 bg-[#FAF9F6] p-6 md:p-8 flex flex-col gap-6 shadow-sm">
+                        <div className="rounded-[2rem] border border-violet-200/70 bg-[#FAF9F6] p-6 md:p-10 flex flex-col gap-7 shadow-sm">
 
                             {/* Back + header */}
                             <div className="space-y-3">
@@ -139,7 +139,7 @@ export default function ConnectionsPage() {
                                     <ArrowLeft size={15} />
                                     Back to connections
                                 </button>
-                                <h1 className="font-serif text-4xl md:text-5xl text-stone-900 tracking-tight">
+                                <h1 className="font-serif text-3xl md:text-5xl text-stone-900 tracking-tight">
                                     @{activeChat.partner}
                                 </h1>
                                 {activeChat.hasConsent && (
@@ -196,10 +196,15 @@ export default function ConnectionsPage() {
                                     <div className="h-px bg-violet-100" />
 
                                     {/* Message bubbles */}
-                                    <div className="flex flex-col gap-4 min-h-[320px]">
+                                    <div className="flex flex-col gap-5 min-h-[360px]">
+                                        {activeChat.messages.length === 0 && (
+                                            <p className="text-stone-400 text-sm italic text-center mt-8">
+                                                No messages yet. Say something kind ✨
+                                            </p>
+                                        )}
                                         {activeChat.messages.map((m, i) => (
                                             <div key={i} className={`flex ${m.sender === "me" ? "justify-end" : "justify-start"}`}>
-                                                <div className={`max-w-[75%] md:max-w-[70%] px-5 py-3.5 rounded-[1.5rem] text-sm leading-relaxed ${
+                                                <div className={`max-w-[80%] md:max-w-[72%] px-5 py-4 rounded-[1.5rem] text-[15px] leading-relaxed ${
                                                     m.sender === "me"
                                                         ? "bg-gradient-to-r from-violet-500 to-violet-600 text-white rounded-br-md shadow-sm shadow-violet-200"
                                                         : "bg-white border border-stone-100 text-stone-800 rounded-bl-md shadow-sm"
@@ -210,7 +215,7 @@ export default function ConnectionsPage() {
                                         ))}
                                     </div>
 
-                                    {/* Input */}
+                                    {/* Input — send button contained inside, no overflow */}
                                     <form
                                         onSubmit={async (e) => {
                                             e.preventDefault();
@@ -236,18 +241,18 @@ export default function ConnectionsPage() {
                                             }
                                         }}
                                     >
-                                        <div className="flex items-center gap-3 bg-white border border-violet-200 rounded-full p-2 shadow-sm focus-within:ring-2 focus-within:ring-violet-100 transition-all">
+                                        <div className="flex items-center gap-2 bg-white border border-violet-200 rounded-full px-3 py-2 shadow-sm focus-within:ring-2 focus-within:ring-violet-100 transition-all overflow-hidden">
                                             <input
                                                 value={newMessage}
                                                 onChange={(e) => setNewMessage(e.target.value)}
-                                                className="flex-1 bg-transparent px-4 py-3 outline-none text-stone-700 placeholder:text-stone-400 text-sm"
+                                                className="flex-1 min-w-0 bg-transparent px-3 py-2.5 outline-none text-stone-700 placeholder:text-stone-400 text-sm"
                                                 placeholder="Write something kind..."
                                             />
                                             <button
                                                 type="submit"
-                                                className="bg-violet-600 text-white p-3 rounded-full hover:scale-105 hover:shadow-md transition-all"
+                                                className="shrink-0 bg-violet-600 text-white w-10 h-10 flex items-center justify-center rounded-full hover:bg-violet-700 transition-all"
                                             >
-                                                <Send size={20} />
+                                                <Send size={16} />
                                             </button>
                                         </div>
                                     </form>
@@ -256,22 +261,22 @@ export default function ConnectionsPage() {
                         </div>
                     </div>
 
-                    {/* Reminder card — desktop only */}
-                    <div className="hidden lg:block lg:col-span-4">
-                        <div className="bg-gradient-to-br from-violet-50/60 to-white p-8 rounded-[2rem] border border-violet-100/50 shadow-sm sticky top-8">
+                    {/* Reminder card — desktop sidebar, mobile stacked below */}
+                    <div className="lg:col-span-4 block">
+                        <div className="bg-gradient-to-br from-violet-50/60 to-white p-7 rounded-[2rem] border border-violet-100/50 shadow-sm lg:sticky lg:top-8">
                             <div className="text-2xl mb-4">🌿</div>
                             <h3 className="font-serif text-xl text-stone-900 mb-2">Kind Conversation</h3>
-                            <p className="text-sm text-stone-600 mb-6 leading-relaxed">
+                            <p className="text-sm text-stone-600 mb-5 leading-relaxed">
                                 Every conversation on KindSphere begins with kindness.
                             </p>
-                            <ul className="space-y-3.5 text-sm text-stone-700">
+                            <ul className="space-y-3 text-sm text-stone-700">
                                 <li className="flex gap-3"><span>🌿</span> Be respectful and compassionate.</li>
                                 <li className="flex gap-3"><span>🔒</span> Never share personal or financial information.</li>
                                 <li className="flex gap-3"><span>🚩</span> Leave if anything makes you uncomfortable.</li>
                                 <li className="flex gap-3"><span>💜</span> If you continue elsewhere, KindSphere can no longer keep it safe.</li>
                                 <li className="flex gap-3"><span>🤝</span> Respect boundaries and consent.</li>
                             </ul>
-                            <div className="mt-8 pt-5 border-t border-violet-100/50 text-center">
+                            <div className="mt-7 pt-5 border-t border-violet-100/50 text-center">
                                 <p className="text-[11px] text-stone-400 uppercase tracking-widest">
                                     Messages are private. Chat responsibly.
                                 </p>
