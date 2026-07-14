@@ -25,7 +25,7 @@ const dmSerif = DM_Serif_Display({
 
 /* ─── Metadata ─── */
 export const metadata: Metadata = {
-  title: "KindSphere — Be Heard. Be Kind. Anonymously.",
+  title: "KindSphere | Be Heard. Be Kind. Anonymously.",
   description:
     "A safe, warm, anonymous global response platform. Drop your thoughts into the digital ocean and receive honest perspectives from strangers around the world.",
   keywords: ["anonymous response", "kindness", "global", "safe space"],

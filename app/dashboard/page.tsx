@@ -7,6 +7,7 @@ import { getDriftingBottles } from "@/lib/db-queries";
 import { sendConnectionRequest } from "@/lib/db-queries";
 import { isUserOwner } from "@/lib/utils/authGuard";
 import { getCurrentUserId } from "@/lib/auth";
+import Footer from "@/components/Footer";
 
 /* ─────────────────────────────────────────────
    Subtle scroll-reveal hook
@@ -111,7 +112,7 @@ export default function DashboardPage() {
   const handleResponseClick = (e: React.MouseEvent) => { };
 
   return (
-    <div className="w-full flex flex-col min-h-screen pb-20 bg-stone-50">
+    <div className="w-full flex flex-col bg-stone-50">
       {/* Scroll Reveal Animation Styles */}
       <style>{`
         .reveal-wrap {
@@ -134,13 +135,13 @@ export default function DashboardPage() {
         }
       `}</style>
 
-      <div className="w-full max-w-7xl mx-auto px-6 md:px-10 lg:px-20 pt-28 pb-10 space-y-10">
+      <div className="w-full max-w-7xl mx-auto px-6 md:px-10 lg:px-20 pt-28 pb-16 space-y-10">
 
         {/* --- PREMIUM WELCOME HERO --- */}
         <div className="w-full mb-12">
           {userHandle ? (
             <div className="flex flex-col gap-8">
-              <div className="space-y-3">
+              <div className="space-y-3 enter">
                 <p className="text-sm font-medium text-stone-500 uppercase tracking-widest">
                   {currentDate} • {greeting}
                 </p>
@@ -155,7 +156,7 @@ export default function DashboardPage() {
                 </p>
               </div>
 
-              <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4">
+              <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 enter enter-d2">
                 <Link
                   href="/drop"
                   className="px-8 py-4 bg-[#7C3AED] hover:bg-[#6D28D9] text-white rounded-full font-semibold transition-all shadow-lg shadow-violet-200 text-center"
@@ -190,7 +191,7 @@ export default function DashboardPage() {
         </div>
 
         {/* --- CATEGORY FILTER BAR --- */}
-        <div className="space-y-6">
+        <div className="space-y-6 enter enter-d3">
           <div className="flex gap-2 overflow-x-auto pb-4 mb-6 md:mb-8">
             {CATEGORIES.map((cat) => (
               <button
@@ -216,10 +217,22 @@ export default function DashboardPage() {
               activeFilter={activeFilter}
               currentUserId={currentUserId}
               handleResponseClick={handleResponseClick}
+              onConnect={(msg) => {
+                setNotificationMsg(msg);
+                setShowNotification(true);
+                setTimeout(() => setShowNotification(false), 2500);
+              }}
             />
           </Suspense>
         </div>
       </div>
+      {showNotification && (
+        <div className="fixed bottom-8 right-8 bg-[#1C2541] text-white px-6 py-4 rounded-2xl shadow-xl z-50 animate-fade-in flex items-center gap-3">
+          <span>✨</span>
+          <p className="text-sm font-medium">{notificationMsg}</p>
+        </div>
+      )}
+      <Footer />
     </div>
   );
 }
@@ -230,11 +243,13 @@ function FeedGrid({
   activeFilter,
   currentUserId,
   handleResponseClick,
+  onConnect,
 }: {
   bottles: any[];
   activeFilter: string;
   currentUserId: string | null;
   handleResponseClick: (e: React.MouseEvent) => void;
+  onConnect: (msg: string) => void;
 }) {
   const visible = useMemo(
     () =>
@@ -303,9 +318,9 @@ function FeedGrid({
                       }
                       try {
                         await sendConnectionRequest(myId, req.sender_id);
-                        alert("Connect request sent!");
+                        onConnect("✨ Connection request sent successfully!");
                       } catch (err) {
-                        alert("Could not send request. Please try again.");
+                        onConnect("Could not send request. Please try again.");
                       }
                     }}
                     className="flex-1 border border-[#7C3AED] text-[#7C3AED] bg-white py-2.5 rounded-xl text-sm font-semibold group-hover:bg-[#7C3AED] group-hover:text-white transition-all duration-300"

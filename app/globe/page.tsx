@@ -4,6 +4,7 @@ import { useEffect, useState, useRef, Suspense } from "react";
 import dynamic from "next/dynamic";
 import { createClient } from "@/lib/utils/supabase/client";
 import { getSphereUsers, getSphereStats } from "@/lib/db-queries";
+import Footer from "@/components/Footer";
 
 // ── SSR-safe dynamic import ───────────────────────────────────────────────────
 const ActiveGlobe = dynamic(
@@ -198,10 +199,10 @@ export default function GlobePage() {
     const activeCount = liveUsers.filter((u) => u.status === "active").length;
 
     return (
-        <div className="w-full min-h-screen flex flex-col overflow-hidden" style={{ background: "#FAF9F6" }}>
+        <div className="w-full min-h-screen flex flex-col" style={{ background: "#FAF9F6" }}>
 
             {/* ── Header ─────────────────────────────────────────────────── */}
-            <div className="w-full max-w-6xl mx-auto px-6 md:px-12 pt-28 pb-6 flex flex-col md:flex-row md:items-end justify-between gap-6 animate-fade-in">
+            <div className="w-full max-w-7xl mx-auto px-6 md:px-10 lg:px-20 pt-28 pb-6 animate-fade-in">
                 <div className="space-y-2">
                     <p className="text-xs font-medium uppercase tracking-[0.18em]" style={{ color: "#E8A33D" }}>
                         The Sphere — Live
@@ -211,121 +212,87 @@ export default function GlobePage() {
                         <span style={{ color: "#7C3AED" }} className="italic">right now.</span>
                     </h1>
                 </div>
-
-
             </div>
 
-            {/* ── Globe ──────────────────────────────────────────────────── */}
-            <div className="flex-1 w-full max-w-6xl mx-auto px-6 md:px-12 pb-6" style={{ minHeight: 420 }}>
-                <div className="w-full h-full rounded-3xl overflow-hidden relative" style={{ minHeight: 420 }}>
-                    {loading ? (
-                        <div className="w-full h-full animate-pulse bg-stone-100 rounded-3xl" style={{ minHeight: 420 }} />
-                    ) : (
-                        <Suspense fallback={<div className="w-full h-full animate-pulse bg-stone-100 rounded-3xl" />}>
-                            <ActiveGlobe className="relative z-10" users={liveUsers} />
-                        </Suspense>
-                    )}
-                </div>
-            </div>
-            {/* ── Live stats panel ───────────────────────────────────── */}
-            <div className="w-full max-w-6xl mx-auto px-6 md:px-12 pt-28 pb-6 flex flex-col md:flex-row md:items-end justify-between gap-6">
-                <div className="flex flex-wrap gap-4">
-                    {[
-                        { label: "Souls exploring", value: stats.totalSouls, color: "#E8A33D", desc: "Active wanderers currently in the sphere." },
-                        { label: "Bottles drifting", value: stats.driftingBottles, color: "#7C3AED", desc: "Unopened messages awaiting a kind heart." },
-                        { label: "Replies sent", value: stats.repliesToday, color: "#10B981", desc: "Acts of kindness shared in the last 24h." },
-                    ].map((stat) => (
-                        <div
-                            key={stat.label}
-                            className="group relative bg-white rounded-2xl p-5 border border-stone-100 shadow-sm min-w-[240px] flex-1 transition-all duration-300 hover:shadow-lg hover:-translate-y-1 overflow-hidden"
-                        >
-                            {/* Subtle hover gradient background */}
-                            <div className="absolute inset-0 opacity-0 group-hover:opacity-[0.03] transition-opacity duration-500"
-                                style={{ background: `linear-gradient(135deg, ${stat.color}, transparent)` }} />
+            {/* ── Globe (left) + Stat cards (right) ──────────────────────── */}
+            <div className="w-full max-w-7xl mx-auto px-6 md:px-10 lg:px-20 pb-8">
+                <div className="flex flex-col md:flex-row gap-6 items-start">
 
-                            <p className="text-[10px] font-bold uppercase tracking-[0.14em] text-stone-400 mb-1 relative z-10">
-                                {stat.label}
-                            </p>
-                            <p className="font-serif text-3xl font-medium mb-1 relative z-10" style={{ color: stat.color }}>
-                                {stat.value}
-                            </p>
-                            <p className="text-xs text-stone-500 leading-relaxed relative z-10">
-                                {stat.desc}
-                            </p>
-                        </div>
-                    ))}
-                </div>
-            </div>
-
-            {/* ── users here ───────────────────────────────────── */}
-            {presenceHandles.size > 0 && (
-                <div className="w-full max-w-6xl mx-auto px-6 md:px-12 pt-28 pb-6 md:flex-row md:items-end justify-between gap-2">
-                    <div className="flex items-center gap-3">
-                        <div className="w-2 h-2 rounded-full bg-[#E8A33D] animate-pulse" />
-                        <p className="text-3xl] font-bold uppercase tracking-[0.2em] text-[#E8A33D]">
-                            Here right now
-                        </p>
+                    {/* Globe */}
+                    <div className="w-full md:w-[58%] shrink-0 rounded-3xl overflow-hidden" style={{ minHeight: 360 }}>
+                        {loading ? (
+                            <div className="w-full animate-pulse bg-stone-100 rounded-3xl" style={{ minHeight: 360 }} />
+                        ) : (
+                            <Suspense fallback={<div className="w-full animate-pulse bg-stone-100 rounded-3xl" />}>
+                                <ActiveGlobe className="relative z-10" users={liveUsers} />
+                            </Suspense>
+                        )}
                     </div>
 
-                    <div className="flex flex-wrap gap-3 mt-4">
-                        {[...presenceHandles].map((handle) => (
-                            <span
-                                key={handle}
-                                className="px-4 py-2.5 rounded-full mt-4 text-xs font-medium border transition-all duration-300 hover:scale-105 cursor-default"
-                                style={{
-                                    backgroundColor: "rgba(124, 58, 237, 0.08)", // Light Purple background
-                                    borderColor: "rgba(124, 58, 237, 0.3)",      // Purple border
-                                    color: "#7C3AED",
-                                }}
-                                onMouseEnter={(e) => {
-                                    e.currentTarget.style.backgroundColor = "rgba(129,178,154,0.15)";
-                                    e.currentTarget.style.borderColor = "rgba(129,178,154,0.4)";
-                                }}
-                                onMouseLeave={(e) => {
-                                    e.currentTarget.style.backgroundColor = "rgba(129,178,154,0.05)";
-                                    e.currentTarget.style.borderColor = "rgba(129,178,154,0.2)";
-                                }}
+                    {/* Stat cards stacked vertically */}
+                    <div className="w-full md:flex-1 flex flex-col gap-4">
+                        {[
+                            { label: "Souls exploring",  value: stats.totalSouls,      color: "#E8A33D", desc: "Active wanderers currently in the sphere." },
+                            { label: "Bottles drifting", value: stats.driftingBottles, color: "#7C3AED", desc: "Unopened messages awaiting a kind heart." },
+                            { label: "Replies sent",     value: stats.repliesToday,    color: "#10B981", desc: "Acts of kindness shared in the last 24h." },
+                        ].map((stat) => (
+                            <div
+                                key={stat.label}
+                                className="group relative bg-white rounded-2xl p-5 border border-stone-100 shadow-sm transition-all duration-300 hover:shadow-lg hover:-translate-y-1 overflow-hidden"
                             >
-                                @{handle}
-                            </span>
-                        ))}
-                    </div>
-                </div>
-            )}
-
-            {/* ── Quote Sphere ───────────────────────────────────── */}
-            <div className="w-full max-w-6xl mx-auto px-6 md:px-12 pt-28 pb-6 flex flex-col md:flex-row md:items-end justify-between gap-6">
-                {[0, 1, 2].map((i) => {
-                    const quoteIndex = (Math.floor(Date.now() / 3600000) + i) % quotes.length;
-                    const { text, author } = quotes[quoteIndex];
-
-                    return (
-                        <div
-                            key={i}
-                            className="animate-float group relative w-full md:w-1/3 aspect-square rounded-full flex flex-col items-center justify-center p-8 text-center transition-all duration-700 hover:scale-105"
-                            style={{
-                                backgroundImage: "url('/assets/imagery/background.png')",
-                                backgroundSize: "cover",
-                                backgroundPosition: "center",
-                                animationDelay: `${i * 0.3}s`
-                            }}
-                        >
-                            {/* Semi-transparent overlay for readability */}
-                            <div className="absolute inset-0 bg-white/60 rounded-full" />
-
-                            <div className="relative z-10 flex flex-col items-center gap-4">
-                                <p className="font-serif text-lg italic text-stone-800 leading-relaxed px-4">
-                                    "{text}"
+                                <div
+                                    className="absolute inset-0 opacity-0 group-hover:opacity-[0.03] transition-opacity duration-500"
+                                    style={{ background: `linear-gradient(135deg, ${stat.color}, transparent)` }}
+                                />
+                                <p className="text-[10px] font-bold uppercase tracking-[0.14em] text-stone-400 mb-1 relative z-10">
+                                    {stat.label}
                                 </p>
-                                <p className="text-xs font-bold uppercase tracking-widest text-violet-600">
-                                    — {author}
+                                <p className="font-serif text-3xl font-medium mb-1 relative z-10" style={{ color: stat.color }}>
+                                    {stat.value}
+                                </p>
+                                <p className="text-xs text-stone-500 leading-relaxed relative z-10">
+                                    {stat.desc}
                                 </p>
                             </div>
-                        </div>
-                    );
-                })}
+                        ))}
+                    </div>
+
+                </div>
             </div>
 
+            {/* ── Quote circles ───────────────────────────────────────────── */}
+            <div className="w-full max-w-7xl mx-auto px-6 md:px-10 lg:px-20 pb-10">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    {[0, 1, 2].map((i) => {
+                        const qIdx = (Math.floor(Date.now() / 3600000) + i) % quotes.length;
+                        const { text, author } = quotes[qIdx];
+                        return (
+                            <div
+                                key={i}
+                                className="animate-float group relative aspect-square rounded-full flex flex-col items-center justify-center p-8 text-center transition-all duration-700 hover:scale-105"
+                                style={{
+                                    backgroundImage: "url('/assets/imagery/background.png')",
+                                    backgroundSize: "cover",
+                                    backgroundPosition: "center",
+                                    animationDelay: `${i * 0.3}s`,
+                                }}
+                            >
+                                <div className="absolute inset-0 bg-white/60 rounded-full" />
+                                <div className="relative z-10 flex flex-col items-center gap-4">
+                                    <p className="font-serif text-lg italic text-stone-800 leading-relaxed px-4">
+                                        "{text}"
+                                    </p>
+                                    <p className="text-xs font-bold uppercase tracking-widest text-violet-600">
+                                        — {author}
+                                    </p>
+                                </div>
+                            </div>
+                        );
+                    })}
+                </div>
+            </div>
+
+            <Footer />
         </div>
     );
 }

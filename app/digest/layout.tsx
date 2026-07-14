@@ -2,6 +2,7 @@
 
 import { Sparkles } from "lucide-react";
 import { useState, useEffect } from "react";
+import Footer from "@/components/Footer";
 
 export default function DigestLayout({ children }: { children: React.ReactNode }) {
     const [userHandle, setUserHandle] = useState<string | null>(null);
@@ -53,6 +54,7 @@ export default function DigestLayout({ children }: { children: React.ReactNode }
             <div className="flex-1 w-full max-w-6xl mx-auto px-6 md:px-12 pt-28 pb-10">
                 {children}
             </div>
+            <Footer />
         </div>
     );
 }

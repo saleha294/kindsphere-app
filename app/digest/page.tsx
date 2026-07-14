@@ -103,10 +103,10 @@ export default function DigestPage() {
   }, []);
 
   return (
-    <div className="w-full space-y-12 animate-fade-in">
+    <div className="w-full space-y-12">
 
       {/* --- Premium Header --- */}
-      <header className="relative w-full rounded-[2rem] p-8 md:p-12 overflow-hidden bg-gradient-to-br from-violet-50 to-white border border-violet-100 shadow-sm">
+      <header className="relative w-full rounded-[2rem] p-8 md:p-12 overflow-hidden bg-gradient-to-br from-violet-50 to-white border border-violet-100 shadow-sm enter">
         <div className="absolute inset-0 opacity-50 bg-[radial-gradient(circle_at_top_right,_var(--tw-gradient-stops))] from-violet-100 via-transparent to-transparent pointer-events-none" />
         <div className="relative z-10 space-y-2 text-left">
           <h1 className="font-serif text-4xl md:text-5xl font-medium text-stone-900 leading-tight">
@@ -119,7 +119,7 @@ export default function DigestPage() {
       </header>
 
       {/* Navigation */}
-      <div className="border-b border-stone-200 overflow-x-auto -mx-6 px-6 md:mx-0 md:px-0">
+      <div className="border-b border-stone-200 overflow-x-auto -mx-6 px-6 md:mx-0 md:px-0 enter enter-d1">
         <nav className="grid grid-cols-2 sm:flex sm:justify-center gap-1 sm:gap-2 place-items-center sm:place-items-auto">
           {NAV_ITEMS.map((link) => {
             const isActive = pathname === link.href;
@@ -143,7 +143,7 @@ export default function DigestPage() {
       </div>
 
       {/* --- Dashboard Overview --- */}
-      <div className="animate-fade-in">
+      <div className="enter enter-d2">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
 
           {/* Bottles Drifted */}

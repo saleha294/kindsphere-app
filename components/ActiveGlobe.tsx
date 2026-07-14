@@ -46,7 +46,7 @@ const GRID_COLOR    = "rgba(255,255,255,0.18)";
 
 const SIZE      = 600;           // logical canvas resolution
 const SCALE     = SIZE * 0.44;
-const ROT_SPEED = 0.012;         // degrees per ms
+// Globe is stationary — rotation is fixed at initial position
 
 // ─── Land-only fallback coordinates ──────────────────────────────────────────
 // 40 verified city centroids — none over water.
@@ -129,16 +129,9 @@ export default function ActiveGlobe({ className, users = [] }: ActiveGlobeProps)
 
         const tick = (ts: number) => {
             if (lastTRef.current === 0) lastTRef.current = ts;
-            const dt = ts - lastTRef.current;
             lastTRef.current = ts;
 
-            if (!pausedRef.current) {
-                rotRef.current = [
-                    rotRef.current[0] + ROT_SPEED * dt,
-                    rotRef.current[1],
-                    rotRef.current[2],
-                ];
-            }
+            // Globe is stationary — rotRef.current never changes after mount
 
             // ── Build projection for THIS frame ──────────────────────────
             const proj = geoOrthographic()

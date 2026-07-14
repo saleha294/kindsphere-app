@@ -7,6 +7,7 @@ const supabase = createClient();
 
 import RepliesIcon from "@/components/icons/RepliesIcon";
 import { SpreadPositivityIcon } from "@/components/icons/SpreadPositivityIcon";
+import Footer from "@/components/Footer";
 
 import {
   castBottle,
@@ -115,8 +116,8 @@ export default function DropPage() {
   }
 
   return (
-    <div className="w-full min-h-screen bg-[#FAF9F6] pt-28 pb-20">
-      <div className="max-w-6xl mx-auto px-6 md:px-8">
+    <div className="w-full bg-stone-50 pt-28">
+      <div className="max-w-7xl mx-auto px-6 md:px-10 lg:px-20 pb-24 md:pb-32">
 
         {/* Two-column on md+, single column on mobile */}
         <div className="grid grid-cols-1 md:grid-cols-2 md:gap-16 lg:gap-24 items-start">
@@ -125,7 +126,7 @@ export default function DropPage() {
           <div className="space-y-10">
 
             {/* Greeting */}
-            <div>
+            <div className="enter">
               <p className="text-sm font-medium text-stone-500">{greeting},</p>
               <h2 className="font-serif text-4xl md:text-5xl text-[#1C2541] leading-tight">
                 Hey, <span className="text-[#7C3AED] italic">{userHandle}</span> 👋
@@ -133,7 +134,7 @@ export default function DropPage() {
             </div>
 
             {/* Page header */}
-            <div className="space-y-2">
+            <div className="space-y-2 enter enter-d1">
               <h1 className="font-serif text-4xl text-stone-900">
                 <span className="text-[#7C3AED] italic">Drop</span> a Bottle
               </h1>
@@ -144,7 +145,7 @@ export default function DropPage() {
             </div>
 
             {/* Form */}
-            <section className="space-y-6">
+            <section className="space-y-6 enter enter-d2">
               <h2 className="font-serif text-2xl text-stone-900 border-b border-stone-200 pb-2">
                 Your Bottle
               </h2>
@@ -197,7 +198,7 @@ export default function DropPage() {
           {/* On md+ it sits in the right column, top-aligned      */}
           {/* with extra top padding to visually align with the    */}
           {/* form section rather than the greeting.               */}
-          <div className="mt-12 md:mt-0 md:pt-44">
+          <div className="mt-12 md:mt-0 md:pt-40 enter enter-d3">
             <section className="space-y-8">
               <h2 className="font-serif text-2xl text-stone-900 border-b border-stone-200 pb-2">
                 What happens next?
@@ -262,6 +263,7 @@ export default function DropPage() {
           </div>
         </div>
       )}
+      <Footer />
     </div>
   );
 }

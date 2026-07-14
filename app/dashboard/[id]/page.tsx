@@ -7,6 +7,7 @@ import { sendReplyToBottle } from "@/lib/db-queries";
 import { isUserOwner } from "@/lib/utils/authGuard";
 import { getCurrentUserId } from "@/lib/auth";
 import Link from "next/link";
+import Footer from "@/components/Footer";
 
 export default function ResponseDetailPage() {
   const { id } = useParams();
@@ -92,13 +93,13 @@ export default function ResponseDetailPage() {
 
   return (
 
-    <div className="max-w-6xl mx-auto px-6 md:px-8 pt-28 pb-20" style={{ background: 'radial-gradient(circle at 50% 50%, #e0e7ff66 0%, transparent 70%)' }}>
+    <div className="w-full min-h-screen bg-stone-50 pt-28 pb-32">
+      <div className="max-w-7xl mx-auto px-6 md:px-10 lg:px-20">
       {/* Inner wrapper to keep the content width readable */}
       <div className="max-w-2xl">
-        <Link href="/dashboard" className="text-sm text-stone-500 hover:text-stone-800">← Back to Shore</Link>
+        <Link href="/dashboard" className="text-sm text-stone-500 hover:text-stone-800 enter">← Back to Shore</Link>
 
-
-        <div className="mt-8 space-y-1">
+        <div className="mt-8 space-y-1 enter enter-d1">
           <h1 className="font-serif text-4xl md:text-5xl font-medium text-[#1C2541] leading-[1.1] tracking-tight">
             <span className="text-[#7C3AED] italic">Reply</span> to a bottle
           </h1>
@@ -107,7 +108,7 @@ export default function ResponseDetailPage() {
           </p>
         </div>
 
-        <div className="mt-8 p-6 bg-[#eee7f9ff] border border-stone-200 rounded-2xl shadow-sm">
+        <div className="mt-8 p-6 bg-[#eee7f9ff] border border-stone-200 rounded-2xl shadow-sm enter enter-d2">
           <p className="text-lg text-stone-800 leading-relaxed">{bottle.content}</p>
         </div>
 
@@ -132,7 +133,7 @@ export default function ResponseDetailPage() {
           </div>
         ) : (
           // Authenticated and it's someone else's bottle — show reply form
-          <form onSubmit={handleSendReply} className="mt-8 bg-white p-8 rounded-3xl border border-stone-100 shadow-sm space-y-6">
+          <form onSubmit={handleSendReply} className="mt-8 bg-white p-8 rounded-3xl border border-stone-100 shadow-sm space-y-6 enter enter-d3">
             {/* Header */}
             <div className="flex items-start gap-4">
               <div className="w-10 h-10 rounded-full bg-violet-100 flex items-center justify-center text-violet-600">
@@ -200,6 +201,7 @@ export default function ResponseDetailPage() {
           <p className="text-sm font-medium">Your reply has been sent with love!</p>
         </div>
       )}
+      <Footer />
     </div>
   );
 }

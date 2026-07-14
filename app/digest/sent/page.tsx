@@ -25,14 +25,14 @@ export default function SentDigestPage() {
 
             <Link
                 href="/digest"
-                className="inline-flex items-center gap-1.5 text-sm text-[#7C3AED] hover:text-[#6D28D9] transition-colors w-max"
+                className="inline-flex items-center gap-1.5 text-sm text-[#7C3AED] hover:text-[#6D28D9] transition-colors w-max enter"
             >
                 <ArrowLeft size={16} />
                 Back to Drift
             </Link>
 
                 {/* List Section */}
-                <div className="space-y-5">
+                <div className="space-y-5 enter enter-d1">
                     {bottles.length === 0 ? (
                         <div className="bg-gradient-to-br from-violet-50 to-white rounded-[2rem] p-12 border border-violet-100 shadow-sm text-center space-y-4">
                             <div className="text-5xl">🍾</div>

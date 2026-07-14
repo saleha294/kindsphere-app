@@ -267,13 +267,20 @@ export default function LandingPage() {
           .homepage-section,
           .homepage-section section {
             text-align: left !important;
-            padding-top: 4rem !important;
-            padding-bottom: 4rem !important;
+            padding-top: 2rem !important;
+            padding-bottom: 2rem !important;
           }
           
-          /* Override for DiscoverSection — tighter bottom on mobile only */
+          /* DiscoverSection: no extra bottom — HowToUse provides its own top */
           .homepage-section.discover-section {
-            padding-bottom: 1rem !important;
+            padding-top: 2rem !important;
+            padding-bottom: 0 !important;
+          }
+
+          /* HowToUse outer wrapper: let the inner <section> handle its own spacing */
+          .homepage-section.how-to-use-wrapper {
+            padding-top: 0 !important;
+            padding-bottom: 0 !important;
           }
           
           .homepage-section .text-center,
@@ -548,7 +555,7 @@ export default function LandingPage() {
 
 
         {/* ── HOW TO USE ─────────────────────────── */}
-        <div className="homepage-section">
+        <div className="homepage-section how-to-use-wrapper">
           <HowToUseSection />
         </div>
 
@@ -661,6 +668,39 @@ export default function LandingPage() {
             </div>
           </Reveal>
         </section>
+
+<section className="relative overflow-hidden rounded-[2.5rem] border border-violet-100 bg-gradient-to-br from-[#fcfbff] via-[#f8f6ff] to-[#fffdfb] px-8 py-20 text-center">
+
+  {/* Soft Glow */}
+  <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(139,92,246,0.12),transparent_55%)]" />
+  <div className="absolute -top-20 left-1/2 h-80 w-80 -translate-x-1/2 rounded-full bg-violet-300/20 blur-3xl" />
+
+  <div className="relative z-10 mx-auto max-w-3xl">
+
+    <span className="inline-flex items-center rounded-full border border-orange-200 bg-orange-50 px-5 py-2 text-xs font-serif semibold uppercase tracking-[0.2em] text-orange-500">
+      ✨ Start Today — It's Free
+    </span>
+
+    <h2 className="mt-8 text-5xl font-serif bold leading-tight text-slate-900">
+      The world needs
+      <br />
+      <span className="bg-gradient-to-r from-violet-600 to-fuchsia-500 bg-clip-text italic text-transparent">
+        your kindness
+      </span>
+    </h2>
+
+    <p className="mx-auto mt-6 max-w-xl text-lg text-slate-600">
+      Join thousands of people choosing kindness every day.
+      No pressure, no expectations, just one small act that could
+      brighten someone's world.
+    </p>
+
+    <button className="mt-10 rounded-2xl bg-gradient-to-r from-violet-600 to-purple-600 px-10 py-4 text-lg font-semibold text-white shadow-[0_20px_40px_rgba(124,58,237,0.25)] transition hover:-translate-y-0.5 hover:shadow-[0_25px_50px_rgba(124,58,237,0.35)]">
+      Start Spreading Kindness
+    </button>
+
+  </div>
+</section>
 
         {/* ── FOOTER ───────────────────── */}
         <section
