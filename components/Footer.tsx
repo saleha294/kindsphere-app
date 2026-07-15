@@ -104,7 +104,7 @@ export default function Footer() {
         {/* ── Copyright ── */}
         <div className="pt-4 border-t border-black/10 flex flex-col items-start md:items-center gap-2 text-left md:text-center">
           <p className="text-[10px] text-black/60 uppercase tracking-widest">
-            © {new Date().getFullYear()} KindSphere. All rights reserved ♥
+            © {new Date().getFullYear()} KindSphere. All rights reserved ♥ For my lovely friend - Fatima
           </p>
         </div>
 
