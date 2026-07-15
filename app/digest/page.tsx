@@ -113,7 +113,7 @@ export default function DigestPage() {
             {userHandle ? `@${userHandle}'s Personal Drift` : "Your Personalized Drift"}
           </h1>
           <p className="text-lg text-stone-600 max-w-lg">
-            A quiet reflection on the empathy and clarity you have distributed.
+            A quiet reflection on the empathy and clarity you have distributed or received.
           </p>
         </div>
       </header>

@@ -92,11 +92,10 @@ export default function ResponseDetailPage() {
 
 
   return (
-
-    <div className="w-full min-h-screen bg-stone-50 pt-28 pb-32">
+    <div className="w-full min-h-screen bg-stone-50 pt-28">
       <div className="max-w-7xl mx-auto px-6 md:px-10 lg:px-20">
         {/* Inner wrapper to keep the content width readable */}
-        <div className="max-w-2xl">
+        <div className="max-w-2xl pb-24">
           <Link href="/dashboard" className="text-sm text-stone-500 hover:text-stone-800 enter">← Back to Shore</Link>
 
           <div className="mt-8 space-y-1 enter enter-d1">
@@ -196,7 +195,7 @@ export default function ResponseDetailPage() {
           )}
         </div>
         {showNotification && (
-          <div className="fixed bottom-8 right-8 bg-[#1C2541] text-white px-6 py-4 rounded-2xl shadow-xl z-50 animate-fade-in flex items-center gap-3">
+          <div className="fixed bottom-4 left-4 right-4 sm:left-auto sm:right-6 sm:bottom-6 sm:w-auto bg-[#1C2541] text-white px-6 py-4 rounded-2xl shadow-xl z-50 animate-fade-in flex items-center gap-3">
             <span>✨</span>
             <p className="text-sm font-medium">Your reply has been sent with love!</p>
           </div>

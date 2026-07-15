@@ -3,9 +3,10 @@ import type { Metadata } from "next";
 import { DM_Sans, DM_Serif_Display } from "next/font/google";
 import "./globals.css";
 import { Navbar } from "@/components/Navbar";
-import Welcome from "@/components/WelcomeSplash";
+
 import Script from "next/script";
-import WelcomeSplash from "@/components/WelcomeSplash";
+import kindSphereSplash from "@/components/WelcomeSplash";
+import KindSphereSplash from "@/components/WelcomeSplash";
 
 /* ─── Fonts ─── */
 const dmSans = DM_Sans({
@@ -71,7 +72,7 @@ export default function RootLayout({
         />
       </head>
       <body className="min-h-dvh flex flex-col bg-background text-foreground antialiased">
-        <WelcomeSplash />
+        <KindSphereSplash />
         <Navbar />
         <main className="flex-1">{children}</main>
       </body>

@@ -204,11 +204,10 @@ export default function ConnectionsPage() {
                                         )}
                                         {activeChat.messages.map((m, i) => (
                                             <div key={i} className={`flex ${m.sender === "me" ? "justify-end" : "justify-start"}`}>
-                                                <div className={`max-w-[80%] md:max-w-[72%] px-5 py-4 rounded-[1.5rem] text-[15px] leading-relaxed ${
-                                                    m.sender === "me"
-                                                        ? "bg-gradient-to-r from-violet-500 to-violet-600 text-white rounded-br-md shadow-sm shadow-violet-200"
-                                                        : "bg-white border border-stone-100 text-stone-800 rounded-bl-md shadow-sm"
-                                                }`}>
+                                                <div className={`max-w-[80%] md:max-w-[72%] px-5 py-4 rounded-[1.5rem] text-[15px] leading-relaxed ${m.sender === "me"
+                                                    ? "bg-gradient-to-r from-violet-500 to-violet-600 text-white rounded-br-md shadow-sm shadow-violet-200"
+                                                    : "bg-white border border-stone-100 text-stone-800 rounded-bl-md shadow-sm"
+                                                    }`}>
                                                     {m.text}
                                                 </div>
                                             </div>
@@ -290,7 +289,7 @@ export default function ConnectionsPage() {
     }
 
     // ── List view ─────────────────────────────────────────────────────────
-    const activeChats  = chats.filter(c =>  c.hasConsent);
+    const activeChats = chats.filter(c => c.hasConsent);
     const pendingChats = chats.filter(c => !c.hasConsent);
 
     return (
@@ -309,14 +308,14 @@ export default function ConnectionsPage() {
                 <div className="relative z-10 flex flex-col md:flex-row md:items-center md:justify-between gap-6">
                     <div className="space-y-3 max-w-2xl">
                         <h1 className="font-serif text-4xl font-medium text-stone-900">
-                            Mutual Connections
+                            Your Mutual Connections
                         </h1>
                         <p className="text-stone-600 text-lg leading-relaxed">
                             Every connection here began with a moment of kindness. Continue the conversation in a safe, private space.
                         </p>
                     </div>
                     <Link
-                        href="/shore"
+                        href="/dashboard"
                         className="shrink-0 inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#7C3AED] text-white text-sm font-semibold shadow-sm hover:bg-[#6D28D9] hover:-translate-y-0.5 hover:shadow-md transition-all duration-300"
                     >
                         <Users size={16} />

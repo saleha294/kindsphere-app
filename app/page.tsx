@@ -270,6 +270,14 @@ export default function LandingPage() {
             padding-top: 2rem !important;
             padding-bottom: 2rem !important;
           }
+
+          /* Hero gets its own mobile top padding — more than the generic 2rem
+             so the content has breathing room below the 64px fixed navbar.
+             The generic rule above would collapse this to 32px which is too tight. */
+          .homepage-section.hero-section {
+            padding-top: 5rem !important;   /* 80px — navbar(64) + 16px air */
+            padding-bottom: 3rem !important;
+          }
           
           /* DiscoverSection: no extra bottom — HowToUse provides its own top */
           .homepage-section.discover-section {
@@ -295,8 +303,8 @@ export default function LandingPage() {
           }
           
           .homepage-section:not(.how-it-works) .mt-16.flex.justify-center {
-  justify-content: flex-start !important;
-}
+            justify-content: flex-start !important;
+          }
         }
 
         /* Sweeping gradient border on Kindness cards */
@@ -407,13 +415,13 @@ export default function LandingPage() {
       <div className="w-full flex flex-col overflow-x-hidden bg-[#FAF9F6] font-sans">
 
         {/* ── HERO ─────────────────────────────────── */}
-        <section className="homepage-section relative w-full min-h-[calc(100vh-80px)] bg-slate-50 overflow-hidden pt-24 pb-20 md:pb-28">
+        <section className="homepage-section hero-section relative w-full min-h-[calc(100vh-80px)] bg-slate-50 overflow-hidden pt-24 pb-20 md:pb-28">
           <div className="absolute inset-0 opacity-[0.6]" style={{ background: 'radial-gradient(circle at 50% 50%, #e0e7ff66 0%, transparent 70%)' }} />
 
           <Reveal className="reveal-hero relative w-full max-w-7xl mx-auto px-6 md:px-10 lg:px-20">
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
 
-              <div className="lg:col-span-6 text-left z-10 space-y-8 md:space-y-10 mt-10">
+              <div className="lg:col-span-6 text-left z-10 space-y-8 md:space-y-10 mt-2 md:mt-10">
                 <div className="inline-flex items-center gap-2.5 text-violet-800 bg-violet-100/80 border border-violet-200 px-5 py-2 rounded-full shadow-sm hero-animate">
                   <span className="text-yellow-500 text-lg">★</span>
                   <span className="text-xs font-medium tracking-wide uppercase">
@@ -449,7 +457,7 @@ export default function LandingPage() {
               </div>
 
               {/*floating cards*/}
-              <div className="lg:col-span-6 relative h-[450px] md:h-[600px] w-full mt-10 lg:mt-0 flex items-center justify-center lg:justify-end">
+              <div className="lg:col-span-6 relative h-[320px] md:h-[600px] w-full mt-6 lg:mt-0 flex items-center justify-center lg:justify-end">
                 <div className="absolute -top-0 lg:top-28 -top-8 right-0 md:right-10 lg:-right-5 z-20 w-[300px] md:w-[350px] animate-float-slow hero-animate hero-animate-delay-4">
                   <div className="relative bg-white p-7 rounded-3xl shadow-xl border border-slate-100 space-y-8 hover-card-trigger">
                     <div className="flex items-center justify-between gap-4">
@@ -468,7 +476,7 @@ export default function LandingPage() {
                     <p className="text-base text-slate-700 leading-relaxed">
                       "You are exactly where you need to be. This moment is temporary, but your light is permanent."
                     </p>
-                    
+
                   </div>
                 </div>
 
@@ -481,7 +489,7 @@ export default function LandingPage() {
                     <p className="text-sm text-slate-800 leading-snug font-medium">
                       Respond to someone who wants to connect with you.
                     </p>
-                    
+
                   </div>
                 </div>
 
@@ -566,7 +574,7 @@ export default function LandingPage() {
           <Reveal className="reveal-testimonials w-full max-w-7xl mx-auto px-6">
             {/* Header */}
             <div className="text-left md:text-center mb-16 space-y-4">
-              <p className="text-[11px] font-bold uppercase tracking-widest text-violet-600">OUR VALUES</p>
+              <p className="text-[11px] font-serif bold uppercase tracking-widest text-violet-600">OUR VALUES</p>
               <h2 className="font-serif text-4xl md:text-6xl text-slate-950 leading-[1.1] tracking-tight">
                 One Small Action.<br />
                 <span className="text-violet-600 italic">A Lasting Ripple.</span>
@@ -605,7 +613,7 @@ export default function LandingPage() {
                   </div>
 
                   {/* Title */}
-                  <h3 className="text-2xl font-semibold text-slate-950 mb-4">
+                  <h3 className="text-2xl font-serif semibold text-slate-950 mb-4">
                     {item.title}
                   </h3>
 
@@ -629,7 +637,7 @@ export default function LandingPage() {
             <div className="mb-16 space-y-4 text-left md:text-center">
               <p className="text-[11px] font-bold uppercase tracking-widest text-violet-600">OUR GUIDELINES</p>
               <h2 className="font-serif text-4xl md:text-6xl text-slate-950 leading-[1.1] tracking-tight">
-                
+
                 A safe space, <span className="text-violet-600 italic">held gently by all of us.</span>
               </h2>
               <p className="text-lg md:text-xl text-slate-600 max-w-xl ml-0 mr-auto md:mx-auto leading-relaxed">
@@ -669,38 +677,40 @@ export default function LandingPage() {
           </Reveal>
         </section>
 
-<section className="relative overflow-hidden rounded-[2.5rem] border border-violet-100 bg-gradient-to-br from-[#fcfbff] via-[#f8f6ff] to-[#fffdfb] px-8 py-20 text-center">
+        <Reveal className="reveal-guidelines">
+        <section className="relative overflow-hidden rounded-[2.5rem] border border-violet-100 bg-gradient-to-br from-[#fcfbff] via-[#f8f6ff] to-[#fffdfb] px-8 py-20 text-center">
 
-  {/* Soft Glow */}
-  <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(139,92,246,0.12),transparent_55%)]" />
-  <div className="absolute -top-20 left-1/2 h-80 w-80 -translate-x-1/2 rounded-full bg-violet-300/20 blur-3xl" />
+          {/* Soft Glow */}
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(139,92,246,0.12),transparent_55%)]" />
+          <div className="absolute -top-20 left-1/2 h-80 w-80 -translate-x-1/2 rounded-full bg-violet-300/20 blur-3xl" />
 
-  <div className="relative z-10 mx-auto max-w-3xl">
+          <div className="relative z-10 mx-auto max-w-3xl">
 
-    <span className="inline-flex items-center rounded-full border border-orange-200 bg-orange-50 px-5 py-2 text-xs font-serif semibold uppercase tracking-[0.2em] text-orange-500">
-      ✨ Start Today — It's Free
-    </span>
+            <span className="inline-flex items-center rounded-full border border-orange-200 bg-orange-50 px-5 py-2 text-xs font-serif semibold uppercase tracking-[0.2em] text-orange-500">
+              ✨ Start Today — It's Free
+            </span>
 
-    <h2 className="mt-8 text-5xl font-serif bold leading-tight text-slate-900">
-      The world needs
-      <br />
-      <span className="bg-gradient-to-r from-violet-600 to-fuchsia-500 bg-clip-text italic text-transparent">
-        your kindness
-      </span>
-    </h2>
+            <h2 className="mt-8 text-5xl font-serif bold leading-tight text-slate-900">
+              The world needs
+              <br />
+              <span className="bg-gradient-to-r from-violet-600 to-fuchsia-500 bg-clip-text italic text-transparent">
+                your kindness
+              </span>
+            </h2>
 
-    <p className="mx-auto mt-6 max-w-xl text-lg text-slate-600">
-      Join thousands of people choosing kindness every day.
-      No pressure, no expectations, just one small act that could
-      brighten someone's world.
-    </p>
-
-    <button className="mt-10 rounded-2xl bg-gradient-to-r from-violet-600 to-purple-600 px-10 py-4 text-lg font-semibold text-white shadow-[0_20px_40px_rgba(124,58,237,0.25)] transition hover:-translate-y-0.5 hover:shadow-[0_25px_50px_rgba(124,58,237,0.35)]">
-      Start Spreading Kindness
-    </button>
-
-  </div>
-</section>
+            <p className="mx-auto mt-6 max-w-xl text-lg text-slate-600">
+              Join thousands of people choosing kindness every day.
+              No pressure, no expectations, just one small act that could
+              brighten someone's world.
+            </p>
+            <Link href="/dashboard">
+              <button className="mt-10 rounded-2xl bg-gradient-to-r from-violet-600 to-purple-600 px-10 py-4 text-lg font-semibold text-white shadow-[0_20px_40px_rgba(124,58,237,0.25)] transition hover:-translate-y-0.5 hover:shadow-[0_25px_50px_rgba(124,58,237,0.35)]">
+                Start Spreading Kindness
+              </button>
+            </Link>
+          </div>
+        </section>
+        </Reveal>
 
         {/* ── FOOTER ───────────────────── */}
         <section

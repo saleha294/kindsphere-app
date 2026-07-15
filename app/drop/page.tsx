@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Shield } from "lucide-react";
+import { Shield, Sparkles } from "lucide-react";
 import { createClient } from '@/lib/utils/supabase/client';
 const supabase = createClient();
 
@@ -29,7 +29,18 @@ export default function DropPage() {
   const [currentBottleId, setCurrentBottleId] = useState<string | null>(null);
   const [userHandle, setUserHandle] = useState<string | null>(null);
   const [greeting, setGreeting] = useState("");
+  const PROMPTS = [
+    "What is one small victory you had today?",
+    "Who is someone you are grateful for right now?",
+    "What is a piece of advice that changed your life?",
+    "Share a happy memory that makes you smile.",
+    "What is something you're proud of yourself for?"
+  ];
 
+  // Add this line with your other state variables
+  const [currentPrompt, setCurrentPrompt] = useState(PROMPTS[0]);
+
+  const getRandomPrompt = () => PROMPTS[Math.floor(Math.random() * PROMPTS.length)];
   useEffect(() => {
     setIsClient(true);
 
@@ -118,21 +129,11 @@ export default function DropPage() {
   return (
     <div className="w-full bg-stone-50 pt-28">
       <div className="max-w-7xl mx-auto px-6 md:px-10 lg:px-20 pb-24 md:pb-32">
-
         {/* Two-column on md+, single column on mobile */}
         <div className="grid grid-cols-1 md:grid-cols-2 md:gap-16 lg:gap-24 items-start">
 
-          {/* ── LEFT: greeting + form ─────────────────────────── */}
+          {/* ── LEFT: Greeting + Form ─────────────────────────── */}
           <div className="space-y-10">
-
-            {/* Greeting */}
-            <div className="enter">
-              <p className="text-sm font-medium text-stone-500">{greeting},</p>
-              <h2 className="font-serif text-4xl md:text-5xl text-[#1C2541] leading-tight">
-                Hey, <span className="text-[#7C3AED] italic">{userHandle}</span> 👋
-              </h2>
-            </div>
-
             {/* Page header */}
             <div className="space-y-2 enter enter-d1">
               <h1 className="font-serif text-4xl text-stone-900">
@@ -161,11 +162,10 @@ export default function DropPage() {
                         key={cat}
                         type="button"
                         onClick={() => setCategory(cat)}
-                        className={`px-6 py-2 rounded-full text-sm font-medium border transition-all ${
-                          category === cat
-                            ? "bg-[#7C3AED] text-white border-[#7C3AED]"
-                            : "bg-white border-stone-200 text-stone-600 hover:border-violet-300"
-                        }`}
+                        className={`px-6 py-2 rounded-full text-sm font-medium border transition-all ${category === cat
+                          ? "bg-[#7C3AED] text-white border-[#7C3AED]"
+                          : "bg-white border-stone-200 text-stone-600 hover:border-violet-300"
+                          }`}
                       >
                         {cat}
                       </button>
@@ -177,8 +177,8 @@ export default function DropPage() {
                   value={content}
                   onChange={(e) => setContent(e.target.value)}
                   required
-                  minLength={20}
-                  className="w-full min-h-[200px] rounded-[24px] border border-[#E9DDFD] bg-[#F8F5FF] p-6 text-stone-600 placeholder:text-stone-400 focus:ring-2 focus:ring-violet-500/20 outline-none transition-all"
+                  minLength={30}
+                  className="w-full min-h-[270px] rounded-[24px] border border-[#E9DDFD] bg-[#F8F5FF] p-6 text-stone-600 placeholder:text-stone-400 focus:ring-2 focus:ring-violet-500/20 outline-none transition-all"
                   placeholder="What do you want to send into the world today? A thought, a feeling, a small kindness..."
                 />
 
@@ -193,24 +193,21 @@ export default function DropPage() {
             </section>
           </div>
 
-          {/* ── RIGHT: what happens next ──────────────────────── */}
-          {/* On mobile this stacks below the form naturally.      */}
-          {/* On md+ it sits in the right column, top-aligned      */}
-          {/* with extra top padding to visually align with the    */}
-          {/* form section rather than the greeting.               */}
-          <div className="mt-12 md:mt-0 md:pt-40 enter enter-d3">
-            <section className="space-y-8">
+          {/* ── RIGHT: What happens next + Widget ────────────────── */}
+          <div className="flex flex-col mt-12 md:mt-0 enter enter-d3 gap-12">
+
+            {/* What happens next (Always visually first on Desktop, second on Mobile) */}
+            <section className="order-last md:order-first space-y-8">
               <h2 className="font-serif text-2xl text-stone-900 border-b border-stone-200 pb-2">
                 What happens next?
               </h2>
               <div className="space-y-8">
-
                 <div className="flex items-start gap-4">
                   <div className="text-[#7C3AED] mt-1 shrink-0"><Shield size={24} /></div>
                   <div>
                     <h4 className="font-medium text-stone-900 text-lg">Your identity stays hidden</h4>
                     <p className="text-stone-500 mt-1 leading-relaxed">
-                      We take anonymity seriously. Your name, email, and location are never attached
+                      We take anonymity seriously. Your name, age, and location are never attached
                       to your bottle. It's just you and your thoughts, floating freely in the sphere.
                     </p>
                   </div>
@@ -237,11 +234,28 @@ export default function DropPage() {
                     </p>
                   </div>
                 </div>
-
               </div>
             </section>
-          </div>
 
+            {/* Kindness Spark Widget (Gradient Background) */}
+            <div className="order-first md:order-last p-8 rounded-[24px] bg-gradient-to-br from-violet-50 to-white border border-[#E9DDFD]">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="text-[#7C3AED]">
+                  <Sparkles size={24} />
+                </div>
+                <h3 className="font-serif text-xl text-stone-900">Need some inspiration?</h3>
+              </div>
+              <p className="text-stone-600 leading-relaxed mb-6 italic">
+                "{currentPrompt}"
+              </p>
+              <button
+                onClick={() => setCurrentPrompt(getRandomPrompt())}
+                className="text-sm font-semibold text-[#7C3AED] hover:text-[#6D28D9] transition-colors"
+              >
+                Try a different prompt →
+              </button>
+            </div>
+          </div>
         </div>
       </div>
 

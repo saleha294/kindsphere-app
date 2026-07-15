@@ -101,10 +101,11 @@ function useLiveUsers(baseUsers: SphereUser[]): SphereUser[] {
         const tick = () => {
             setLiveUsers(
                 baseUsers.map((u) => ({
-                    ...u,
-                    coordinates: coordMapRef.current.get(u.id),
-                    // ~40% chance to be active at any given tick
-                    status: Math.random() < 0.4 ? "active" : "idle",
+                    id: u.id,
+                    anonymousHandle: u.anonymousHandle,
+                    // coordinates intentionally omitted — ActiveGlobe uses its
+                    // own deterministic land-coord mapping and ignores this field
+                    status: Math.random() < 0.4 ? "active" : "idle" as "active" | "idle",
                 }))
             );
         };

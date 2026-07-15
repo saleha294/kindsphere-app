@@ -24,7 +24,7 @@ export interface RealtimeUser {
     id: string | number;
     anonymousHandle: string;
     status: UserStatus;
-    coordinates?: [number, number];
+    coordinates?: [number, number]; // ignored — land coords are always used
 }
 
 interface ActiveGlobeProps {
@@ -44,11 +44,11 @@ const IDLE_DOT      = "#9E9892";
 const GLOBE_OUTLINE = "rgba(162,210,223,0.7)";
 const GRID_COLOR    = "rgba(255,255,255,0.18)";
 
-const SIZE      = 600;           // logical canvas resolution
+const SIZE      = 600;   // logical canvas resolution
 const SCALE     = SIZE * 0.44;
-// Globe is stationary — rotation is fixed at initial position
+const ROT_SPEED = 6;     // degrees per second — subtle, smooth
 
-// ─── Land-only fallback coordinates ──────────────────────────────────────────
+// ─── Land-only coordinates ────────────────────────────────────────────────────
 // 40 verified city centroids — none over water.
 const LAND_COORDS: [number, number][] = [
     [-74.006, 40.712],  [-0.128,  51.507],  [2.349,  48.864],  [13.405, 52.520],
@@ -63,17 +63,15 @@ const LAND_COORDS: [number, number][] = [
     [36.817,  -1.286],  [32.582,   0.347],  [47.498,   8.998], [-17.443,14.693],
 ];
 
-// Module-level cache — survives re-renders and hot reloads.
-const coordCache = new Map<string, [number, number]>();
-
-function getStableCoord(id: string | number, override?: [number, number]): [number, number] {
+/**
+ * Maps a user id deterministically to one of the LAND_COORDS entries.
+ * The result is computed once per id and frozen — it never changes for
+ * the lifetime of the page, regardless of what `user.coordinates` says.
+ */
+function landCoordForId(id: string | number): [number, number] {
     const key = String(id);
-    if (override) { coordCache.set(key, override); return override; }
-    if (coordCache.has(key)) return coordCache.get(key)!;
     const num = key.split("").reduce((a, c) => a + c.charCodeAt(0), 0);
-    const coord = LAND_COORDS[Math.abs(num) % LAND_COORDS.length];
-    coordCache.set(key, coord);
-    return coord;
+    return LAND_COORDS[Math.abs(num) % LAND_COORDS.length];
 }
 
 // ─── Component ────────────────────────────────────────────────────────────────
@@ -85,16 +83,31 @@ export default function ActiveGlobe({ className, users = [] }: ActiveGlobeProps)
     const rotRef     = useRef<[number, number, number]>([0, -20, 0]);
     const pausedRef  = useRef(false);
     const geoRef     = useRef<any[]>([]);          // TopoJSON features, loaded once
-    const usersRef   = useRef<RealtimeUser[]>([]);  // always current, no re-render needed
+    const geoReadyRef = useRef(false);             // true only after TopoJSON arrives
+    const usersRef   = useRef<RealtimeUser[]>([]);  // always current, no re-render
 
-    // Tooltip / legend — these are the only pieces that need React state
-    const [hovered, setHovered]     = useState<RealtimeUser | null>(null);
-    const [tipPos,  setTipPos]      = useState({ x: 0, y: 0 });
-    const [counts,  setCounts]      = useState({ active: 0, idle: 0 });
+    // Pre-compute every user's land coord once, keyed by id.
+    // This map is rebuilt whenever the users prop changes identity but the
+    // coords themselves are deterministic — same id always → same coord.
+    const coordMapRef = useRef<Map<string, [number, number]>>(new Map());
 
-    // Keep usersRef in sync with prop without triggering the rAF loop
+    // Tooltip / legend
+    const [hovered, setHovered] = useState<RealtimeUser | null>(null);
+    const [tipPos,  setTipPos]  = useState({ x: 0, y: 0 });
+    const [counts,  setCounts]  = useState({ active: 0, idle: 0 });
+
+    // Keep usersRef + coordMap in sync with prop
     useEffect(() => {
         usersRef.current = users;
+
+        // Assign land coords for any new ids; existing ids are never overwritten
+        users.forEach((u) => {
+            const key = String(u.id);
+            if (!coordMapRef.current.has(key)) {
+                coordMapRef.current.set(key, landCoordForId(u.id));
+            }
+        });
+
         setCounts({
             active: users.filter(u => u.status === "active").length,
             idle:   users.filter(u => u.status !== "active").length,
@@ -108,16 +121,16 @@ export default function ActiveGlobe({ className, users = [] }: ActiveGlobeProps)
             .then(topo => {
                 const col = feature(topo, topo.objects["countries"] as GeometryCollection);
                 geoRef.current = col.features as any[];
+                geoReadyRef.current = true;   // signal that land is ready to draw
             })
             .catch(err => console.error("[ActiveGlobe] geo load failed:", err));
     }, []);
 
-    // ── Single rAF loop — globe + markers drawn with ONE projection ───────
+    // ── Single rAF loop ───────────────────────────────────────────────────
     useEffect(() => {
         const canvas = canvasRef.current;
         if (!canvas) return;
 
-        // Scale canvas for device pixel ratio so it's sharp on retina / mobile
         const dpr = window.devicePixelRatio || 1;
         canvas.width  = SIZE * dpr;
         canvas.height = SIZE * dpr;
@@ -129,15 +142,28 @@ export default function ActiveGlobe({ className, users = [] }: ActiveGlobeProps)
 
         const tick = (ts: number) => {
             if (lastTRef.current === 0) lastTRef.current = ts;
+            // Clamp dt to one frame max — prevents huge angle jumps when the
+            // tab is backgrounded and then brought back to the foreground.
+            const dt = Math.min((ts - lastTRef.current) / 1000, 1 / 30);
             lastTRef.current = ts;
 
-            // Globe is stationary — rotRef.current never changes after mount
+            if (!pausedRef.current) {
+                rotRef.current[0] += ROT_SPEED * dt;
+            }
 
-            // ── Build projection for THIS frame ──────────────────────────
+            // ── Take a snapshot of rotation for this frame ────────────────
+            // Both land and dots MUST use the exact same [λ, φ, γ] triple.
+            // We snapshot before any drawing so that even if rotRef were
+            // mutated mid-frame (impossible in single-threaded JS, but safe),
+            // every draw call in this tick uses identical values.
+            const lambda = rotRef.current[0];
+            const phi    = rotRef.current[1];
+            const gamma  = rotRef.current[2];
+
             const proj = geoOrthographic()
                 .translate([SIZE / 2, SIZE / 2])
                 .scale(SCALE)
-                .rotate(rotRef.current)
+                .rotate([lambda, phi, gamma])
                 .clipAngle(90);
 
             const path = geoPath(proj, ctx);
@@ -151,17 +177,25 @@ export default function ActiveGlobe({ className, users = [] }: ActiveGlobeProps)
             ctx.fillStyle = OCEAN_COLOR;
             ctx.fill();
 
-            // ── Graticule (lat/lng grid) ──────────────────────────────────
+            // ── Don't draw anything else until land is ready ──────────────
+            // This prevents the "dots floating on ocean" window that exists
+            // while the TopoJSON fetch is in-flight.
+            if (!geoReadyRef.current) {
+                rafRef.current = requestAnimationFrame(tick);
+                return;
+            }
+
+            // ── Graticule ─────────────────────────────────────────────────
             ctx.strokeStyle = GRID_COLOR;
             ctx.lineWidth   = 0.5;
-            const latLines = [-60, -30, 0, 30, 60];
-            const lngLines = [-120, -60, 0, 60, 120];
-            latLines.forEach(lat => {
+            // Full-circle latitude rings: longitude -180 → +180
+            [-60, -30, 0, 30, 60].forEach(lat => {
                 ctx.beginPath();
-                path({ type: "LineString", coordinates: Array.from({ length: 181 }, (_, i) => [i - 90, lat]) } as any);
+                path({ type: "LineString", coordinates: Array.from({ length: 361 }, (_, i) => [i - 180, lat]) } as any);
                 ctx.stroke();
             });
-            lngLines.forEach(lng => {
+            // Full-circle longitude meridians: latitude -90 → +90
+            [-120, -60, 0, 60, 120].forEach(lng => {
                 ctx.beginPath();
                 path({ type: "LineString", coordinates: Array.from({ length: 181 }, (_, i) => [lng, i - 90]) } as any);
                 ctx.stroke();
@@ -185,31 +219,34 @@ export default function ActiveGlobe({ className, users = [] }: ActiveGlobeProps)
             ctx.lineWidth   = 1.5;
             ctx.stroke();
 
-            // ── User markers — same projection, same frame ────────────────
+            // ── User markers ──────────────────────────────────────────────
+            // Every dot uses coordMapRef (pre-computed land coords) projected
+            // through the SAME proj instance used above for land.
+            // They are physically incapable of being in a different position
+            // relative to land features on the same frame.
             usersRef.current.forEach(user => {
-                const coord = getStableCoord(user.id, user.coordinates);
+                const key   = String(user.id);
+                const coord = coordMapRef.current.get(key) ?? landCoordForId(user.id);
                 const pt    = proj(coord);
-                if (!pt) return; // behind the horizon
+                if (!pt) return; // behind the horizon — correctly hidden
 
                 const [cx, cy] = pt;
                 const isActive = user.status === "active";
 
                 if (isActive) {
-                    // Outer pulse ring (static — pulse handled by CSS on the overlay)
                     ctx.beginPath();
                     ctx.arc(cx, cy, 8, 0, Math.PI * 2);
                     ctx.strokeStyle = "rgba(124,58,237,0.35)";
                     ctx.lineWidth   = 1;
                     ctx.stroke();
 
-                    // Core dot
                     ctx.beginPath();
                     ctx.arc(cx, cy, 4.5, 0, Math.PI * 2);
-                    ctx.fillStyle = ACTIVE_DOT;
+                    ctx.fillStyle   = ACTIVE_DOT;
                     ctx.shadowColor = "rgba(124,58,237,0.5)";
                     ctx.shadowBlur  = 6;
                     ctx.fill();
-                    ctx.shadowBlur = 0;
+                    ctx.shadowBlur  = 0;
                 } else {
                     ctx.beginPath();
                     ctx.arc(cx, cy, 3.5, 0, Math.PI * 2);
@@ -225,31 +262,30 @@ export default function ActiveGlobe({ className, users = [] }: ActiveGlobeProps)
 
         rafRef.current = requestAnimationFrame(tick);
         return () => cancelAnimationFrame(rafRef.current);
-    }, []); // runs once — usersRef / geoRef are refs, not state
+    }, []); // runs once — all data access goes through refs
 
-    // ── Hit-test on click/tap for tooltip ────────────────────────────────
+    // ── Hit-test ─────────────────────────────────────────────────────────
     const handlePointer = useCallback((e: React.MouseEvent<HTMLCanvasElement> | React.TouchEvent<HTMLCanvasElement>) => {
         const canvas = canvasRef.current;
         if (!canvas) return;
 
-        const rect = canvas.getBoundingClientRect();
+        const rect    = canvas.getBoundingClientRect();
         const clientX = "touches" in e ? e.touches[0].clientX : (e as React.MouseEvent).clientX;
         const clientY = "touches" in e ? e.touches[0].clientY : (e as React.MouseEvent).clientY;
-
-        // Map client coords → logical SIZE coords
         const mx = ((clientX - rect.left) / rect.width)  * SIZE;
         const my = ((clientY - rect.top)  / rect.height) * SIZE;
 
         const proj = geoOrthographic()
             .translate([SIZE / 2, SIZE / 2])
             .scale(SCALE)
-            .rotate(rotRef.current)
+            .rotate([rotRef.current[0], rotRef.current[1], rotRef.current[2]])
             .clipAngle(90);
 
         let hit: RealtimeUser | null = null;
         usersRef.current.forEach(user => {
-            const coord = getStableCoord(user.id, user.coordinates);
-            const pt = proj(coord);
+            const key   = String(user.id);
+            const coord = coordMapRef.current.get(key) ?? landCoordForId(user.id);
+            const pt    = proj(coord);
             if (!pt) return;
             const dx = pt[0] - mx;
             const dy = pt[1] - my;
@@ -278,7 +314,6 @@ export default function ActiveGlobe({ className, users = [] }: ActiveGlobeProps)
         >
             <div className="relative w-full max-w-[560px] aspect-square">
 
-                {/* ── Canvas — the entire globe is drawn here ──────────────── */}
                 <canvas
                     ref={canvasRef}
                     style={{ display: "block", width: "100%", height: "100%", cursor: "default" }}
@@ -288,7 +323,6 @@ export default function ActiveGlobe({ className, users = [] }: ActiveGlobeProps)
                     onTouchStart={handlePointer}
                 />
 
-                {/* ── Tooltip ──────────────────────────────────────────────── */}
                 {hovered && (
                     <div
                         className="pointer-events-none absolute z-20 whitespace-nowrap"
@@ -323,7 +357,7 @@ export default function ActiveGlobe({ className, users = [] }: ActiveGlobeProps)
                 )}
             </div>
 
-            {/* ── Status legend ────────────────────────────────────────────── */}
+            {/* Status legend */}
             <div
                 className="absolute bottom-4 left-1/2 -translate-x-1/2 flex items-center gap-5"
                 style={{

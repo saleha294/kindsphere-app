@@ -227,8 +227,7 @@ export default function DashboardPage() {
         </div>
       </div>
       {showNotification && (
-        <div className="fixed bottom-8 right-8 bg-[#1C2541] text-white px-6 py-4 rounded-2xl shadow-xl z-50 animate-fade-in flex items-center gap-3">
-          <span>✨</span>
+        <div className="fixed bottom-4 left-4 right-4 sm:left-auto sm:right-6 sm:bottom-6 sm:w-auto bg-[#1C2541] text-white px-6 py-4 rounded-2xl shadow-xl z-50 animate-fade-in flex items-center gap-3">
           <p className="text-sm font-medium">{notificationMsg}</p>
         </div>
       )}

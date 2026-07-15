@@ -49,7 +49,7 @@ function Reveal({
 const HowToUseSectionData = [
   {
     icon: "/assets/imagery/createyourhandle.png",
-    emoji: "👤",
+    emoji: "👋🏻",
     alt: "Create Your Handle",
     number: "1",
     title: "Create Your Handle",
@@ -57,7 +57,7 @@ const HowToUseSectionData = [
   },
   {
     icon: "/assets/imagery/dropyourbottle.png",
-    emoji: "🍾",
+    emoji: "🌊",
     alt: "Drop Your Bottle",
     number: "2",
     title: "Drop Your Bottle",

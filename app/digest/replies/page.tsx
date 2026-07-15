@@ -31,14 +31,28 @@ export default function RepliesPage() {
 
             <Link
                 href="/digest"
-                className="inline-flex items-center gap-1.5 text-sm text-[#7C3AED] hover:text-[#6D28D9] transition-colors w-max"
+                className="inline-flex items-center gap-1.5 text-sm text-[#7C3AED] hover:text-[#6D28D9] transition-colors w-max enter"
             >
                 <ArrowLeft size={16} />
                 Back to Drift
             </Link>
 
+            <div className="relative w-full rounded-[2rem] p-8 md:p-12 overflow-hidden bg-gradient-to-br from-violet-50 to-white border border-violet-100 shadow-sm enter enter-d1">
+                <div className="relative z-10 flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+                    <div className="space-y-3 max-w-2xl">
+                        <h1 className="font-serif text-4xl font-medium text-stone-900">
+                            Replies to Your Bottle
+                        </h1>
+                        <p className="text-stone-600 text-lg leading-relaxed">
+                            Read the thoughtful responses your bottle has received from the KindSphere community.
+                        </p>
+                    </div>
+
+                </div>
+            </div>
+
             {displayReplies.length === 0 ? (
-                <div className="bg-gradient-to-br from-violet-50 to-white rounded-[2rem] p-12 border border-violet-100 shadow-sm text-center space-y-4">
+                <div className="bg-gradient-to-br from-violet-50 to-white rounded-[2rem] p-12 border border-violet-100 shadow-sm text-center space-y-4 enter enter-d2">
                     <div className="flex justify-center">
                         <div className="w-20 h-20 rounded-full bg-white border border-violet-100 shadow-sm flex items-center justify-center">
                             <RepliesIcon className="w-10 h-10" />
@@ -60,30 +74,30 @@ export default function RepliesPage() {
             ) : (
                 <>
                     {/* List Section */}
-                    <div className="space-y-5">
+                    <div className="space-y-5 enter enter-d2">
                         {displayReplies.map((reply) => (
-                                <div
-                                    key={reply.id}
-                                    className="bg-white rounded-[2rem] p-8 border border-stone-100 shadow-[0_2px_12px_rgba(0,0,0,0.02)] space-y-5 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl cursor-default"
-                                >
-                                    {/* Updated Bottle Quote background */}
-                                    <div className="bg-violet-50/50 p-4 rounded-2xl border border-violet-100 text-sm text-stone-600 italic">
-                                        &ldquo;{reply.bottle.content}&rdquo;
-                                    </div>
-                                    <div className="space-y-3 pt-2">
-                                        <div className="flex items-center gap-2 text-[#A78BFA] font-semibold text-sm">
-                                            <MessageCircle size={16} />
-                                            <span>@{reply.sender?.anonymous_handle || 'Anonymous'}</span>
-                                        </div>
-                                        <p className="text-[#1C2541] text-[15px] leading-relaxed">
-                                            {reply.content}
-                                        </p>
-                                    </div>
+                            <div
+                                key={reply.id}
+                                className="bg-white rounded-[2rem] p-8 border border-stone-100 shadow-[0_2px_12px_rgba(0,0,0,0.02)] space-y-5 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl cursor-default"
+                            >
+                                {/* Updated Bottle Quote background */}
+                                <div className="bg-violet-50/50 p-4 rounded-2xl border border-violet-100 text-sm text-stone-600 italic">
+                                    &ldquo;{reply.bottle.content}&rdquo;
                                 </div>
-                            ))}
-                        </div>
-                    </>
-                )}
+                                <div className="space-y-3 pt-2">
+                                    <div className="flex items-center gap-2 text-[#A78BFA] font-semibold text-sm">
+                                        <MessageCircle size={16} />
+                                        <span>@{reply.sender?.anonymous_handle || 'Anonymous'}</span>
+                                    </div>
+                                    <p className="text-[#1C2541] text-[15px] leading-relaxed">
+                                        {reply.content}
+                                    </p>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </>
+            )}
         </div>
     );
 }
