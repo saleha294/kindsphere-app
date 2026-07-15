@@ -148,7 +148,7 @@ export default function RegisterUser({ isOpen, onClose, onAccountCreated }: any)
                         />
 
                         <p className="mt-1 text-[11px] text-stone-500">
-                            Don't use your real name or email.
+                            Don't use your real name or email. Join under 10 seconds.
                         </p>
                     </div>
 
@@ -220,7 +220,7 @@ export default function RegisterUser({ isOpen, onClose, onAccountCreated }: any)
                     >
                         {mode === "register"
                             ? "Already have an identity? Sign in"
-                            : "New here? Create an anonymous identity"}
+                            : "New here? Create an anonymous identity. Then login"}
                     </button>
                 </div>
             </div>
