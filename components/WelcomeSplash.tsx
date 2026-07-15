@@ -366,7 +366,7 @@ const KindSphereSplash: React.FC<KindSphereSplashProps> = ({ onEnter }) => {
               {/* Heading */}
               <motion.h1
                 variants={headingVariants} initial="hidden" animate="visible"
-                className="mt-4 text-[2.4rem] font-semibold tracking-tight leading-tight"
+                className="mt-4 text-[2.4rem] font-serif semibold tracking-tight leading-tight"
                 style={{ color: "#1E1B2E" }}
               >
                 KindSphere
