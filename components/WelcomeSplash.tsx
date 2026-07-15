@@ -47,37 +47,37 @@ const FEATURE_PILLS: readonly string[] = ["Anonymous", "Meaningful", "Safe"];
 const pageVariants: Variants = {
   hidden: { opacity: 0 },
   visible: { opacity: 1, transition: { duration: 0.7, ease: "easeOut" } },
-  exit:   { opacity: 0, transition: { duration: 0.55, ease: "easeInOut" } },
+  exit: { opacity: 0, transition: { duration: 0.55, ease: "easeInOut" } },
 };
 
 const headingVariants: Variants = {
-  hidden:   { opacity: 0, y: 18 },
-  visible:  { opacity: 1, y: 0, transition: { duration: 0.65, ease: [0.22, 1, 0.36, 1], delay: 0.15 } },
+  hidden: { opacity: 0, y: 18 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.65, ease: [0.22, 1, 0.36, 1], delay: 0.15 } },
 };
 
 const taglineVariants: Variants = {
-  hidden:   { opacity: 0, y: 10 },
-  visible:  { opacity: 1, y: 0, transition: { duration: 0.65, ease: "easeOut", delay: 0.3 } },
+  hidden: { opacity: 0, y: 10 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.65, ease: "easeOut", delay: 0.3 } },
 };
 
 const pillsContainerVariants: Variants = {
-  hidden:   {},
-  visible:  { transition: { staggerChildren: 0.1, delayChildren: 0.45 } },
+  hidden: {},
+  visible: { transition: { staggerChildren: 0.1, delayChildren: 0.45 } },
 };
 
 const pillItemVariants: Variants = {
-  hidden:   { opacity: 0, y: 8, scale: 0.95 },
-  visible:  { opacity: 1, y: 0, scale: 1, transition: { duration: 0.4, ease: "easeOut" } },
+  hidden: { opacity: 0, y: 8, scale: 0.95 },
+  visible: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.4, ease: "easeOut" } },
 };
 
 const buttonVariants: Variants = {
-  hidden:   { opacity: 0, y: 14 },
-  visible:  { opacity: 1, y: 0, transition: { duration: 0.55, ease: [0.22, 1, 0.36, 1], delay: 0.7 } },
+  hidden: { opacity: 0, y: 14 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.55, ease: [0.22, 1, 0.36, 1], delay: 0.7 } },
 };
 
 const captionVariants: Variants = {
-  hidden:   { opacity: 0 },
-  visible:  { opacity: 1, transition: { duration: 0.5, ease: "easeOut", delay: 0.88 } },
+  hidden: { opacity: 0 },
+  visible: { opacity: 1, transition: { duration: 0.5, ease: "easeOut", delay: 0.88 } },
 };
 
 /* -------------------------------------------------------------------------- */
@@ -110,8 +110,8 @@ const AmbientBackground: React.FC = () => (
       style={{ background: `radial-gradient(ellipse at center, ${SOFT_GLOW} 0%, rgba(249,246,241,0) 60%)` }}
     />
     <BlurredBlob className="-top-24 -left-24 h-72 w-72 sm:h-96 sm:w-96" delaySeconds={0} />
-    <BlurredBlob className="bottom-0 right-0 h-80 w-80 sm:h-[26rem] sm:w-[26rem]"          delaySeconds={3} />
-    <BlurredBlob className="top-1/3 right-1/4 h-48 w-48 sm:h-64 sm:w-64"                   delaySeconds={5.5} />
+    <BlurredBlob className="bottom-0 right-0 h-80 w-80 sm:h-[26rem] sm:w-[26rem]" delaySeconds={3} />
+    <BlurredBlob className="top-1/3 right-1/4 h-48 w-48 sm:h-64 sm:w-64" delaySeconds={5.5} />
   </div>
 );
 
@@ -124,12 +124,12 @@ const GlowingSphere: React.FC<{ compact?: boolean }> = ({ compact = false }) => 
 
   const particles = useMemo<ParticleConfig[]>(() => {
     return Array.from({ length: PARTICLE_COUNT }, (_, i) => ({
-      id:       i,
-      radius:   (compact ? 70 : 130) + (i % 3) * (compact ? 12 : 22),
-      angle:    (360 / PARTICLE_COUNT) * i,
-      size:     compact ? 3 + (i % 3) : 4 + (i % 3) * 2,
+      id: i,
+      radius: (compact ? 70 : 130) + (i % 3) * (compact ? 12 : 22),
+      angle: (360 / PARTICLE_COUNT) * i,
+      size: compact ? 3 + (i % 3) : 4 + (i % 3) * 2,
       duration: 18 + i * 2.5,
-      delay:    i * 0.3,
+      delay: i * 0.3,
     }));
   }, [compact]);
 
@@ -221,7 +221,7 @@ const PillBadge: React.FC<PillBadgeProps> = ({ label }) => (
 const EXIT_ANIMATION_DURATION_MS = 550;
 
 const KindSphereSplash: React.FC<KindSphereSplashProps> = ({ onEnter }) => {
-  const [active,    setActive]    = useState(false);
+  const [active, setActive] = useState(false);
   const [isExiting, setIsExiting] = useState(false);
   const reduced = useReducedMotion();
 
@@ -240,7 +240,7 @@ const KindSphereSplash: React.FC<KindSphereSplashProps> = ({ onEnter }) => {
     // Snap to top before the page fades in so user always lands on the hero
     window.scrollTo({ top: 0 });
 
-    try { sessionStorage.setItem("ks-splash-seen", "1"); } catch (_) {}
+    try { sessionStorage.setItem("ks-splash-seen", "1"); } catch (_) { }
 
     window.setTimeout(() => {
       setActive(false);
@@ -298,7 +298,7 @@ const KindSphereSplash: React.FC<KindSphereSplashProps> = ({ onEnter }) => {
                   className="text-6xl xl:text-7xl font-serif semibold tracking-tight leading-[1.05]"
                   style={{ color: "#1E1B2E" }}
                 >
-                Kind<span className="font-serif italic text-violet-600">Sphere</span>
+                  Kind<span className="font-serif italic text-violet-600">Sphere</span>
                 </motion.h1>
 
                 <motion.p
@@ -358,7 +358,7 @@ const KindSphereSplash: React.FC<KindSphereSplashProps> = ({ onEnter }) => {
                 transition={{ duration: 0.45, ease: "easeOut" }}
               >
                 <Sparkle className="h-4 w-4" style={{ color: PRIMARY_PURPLE }} strokeWidth={1.75} aria-hidden="true" />
-                <span className="text-[11px] font-semibold uppercase tracking-[0.22em]" style={{ color: "#6B6477" }}>
+                <span className="text-[11px] font-serif semibold uppercase tracking-[0.22em]" style={{ color: "#6B6477" }}>
                   KindSphere
                 </span>
               </motion.div>
