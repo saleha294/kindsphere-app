@@ -645,7 +645,7 @@ export default function LandingPage() {
               <p className="text-[11px] font-bold uppercase tracking-widest text-violet-600">OUR GUIDELINES</p>
               <h2 className="font-serif text-4xl md:text-6xl text-slate-950 leading-[1.1] tracking-tight">
 
-             Please<span className="text-violet-600 italic"> avoid the following.</span>
+             Please<span className="text-violet-600 italic"> avoid the following</span>
               </h2>
               <p className="text-lg md:text-xl text-slate-600 max-w-xl ml-0 mr-auto md:mx-auto leading-relaxed">
                 To keep KindSphere a place worth returning to, we ask everyone to avoid:

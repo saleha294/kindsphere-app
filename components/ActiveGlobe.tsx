@@ -12,7 +12,7 @@
  */
 
 import { useEffect, useRef, useState, useCallback } from "react";
-import { geoOrthographic, geoPath } from "d3-geo";
+import { geoOrthographic, geoPath, geoDistance } from "d3-geo";
 import { feature } from "topojson-client";
 import type { Topology, GeometryCollection } from "topojson-specification";
 
@@ -72,6 +72,23 @@ function landCoordForId(id: string | number): [number, number] {
     const key = String(id);
     const num = key.split("").reduce((a, c) => a + c.charCodeAt(0), 0);
     return LAND_COORDS[Math.abs(num) % LAND_COORDS.length];
+}
+
+/**
+ * True if `coord` is on the visible (near) hemisphere for a globe whose
+ * current lon/lat rotation is `rotate` ([lambda, phi, gamma], degrees).
+ *
+ * IMPORTANT: `clipAngle()` on a d3 projection only affects the stream
+ * pipeline used by `geoPath` (land, graticule, sphere outline). It does
+ * NOT affect calling the projection directly as a function — `proj(coord)`
+ * always returns a valid [x, y], even for points on the far side of the
+ * globe. Markers therefore need this explicit visibility test; without it
+ * they keep being drawn as they rotate past the horizon, tracing a mirrored
+ * path back across the visible disc instead of disappearing.
+ */
+function isFrontFacing(coord: [number, number], rotate: [number, number, number]): boolean {
+    const viewCenter: [number, number] = [-rotate[0], -rotate[1]];
+    return geoDistance(coord, viewCenter) <= Math.PI / 2;
 }
 
 // ─── Component ────────────────────────────────────────────────────────────────
@@ -227,8 +244,17 @@ export default function ActiveGlobe({ className, users = [] }: ActiveGlobeProps)
             usersRef.current.forEach(user => {
                 const key   = String(user.id);
                 const coord = coordMapRef.current.get(key) ?? landCoordForId(user.id);
-                const pt    = proj(coord);
-                if (!pt) return; // behind the horizon — correctly hidden
+
+                // Explicit front/back visibility test. `proj(coord)` alone
+                // does NOT hide back-side points — clipAngle only applies to
+                // the geoPath stream pipeline used above for land/graticule,
+                // not to direct calls on the projection. Without this check,
+                // back-side markers stay drawn and appear to jump/reflect as
+                // they cross the horizon.
+                if (!isFrontFacing(coord, [lambda, phi, gamma])) return;
+
+                const pt = proj(coord);
+                if (!pt) return; // safety net (e.g. numerical edge cases)
 
                 const [cx, cy] = pt;
                 const isActive = user.status === "active";
@@ -275,17 +301,26 @@ export default function ActiveGlobe({ className, users = [] }: ActiveGlobeProps)
         const mx = ((clientX - rect.left) / rect.width)  * SIZE;
         const my = ((clientY - rect.top)  / rect.height) * SIZE;
 
+        const rotSnapshot: [number, number, number] = [
+            rotRef.current[0], rotRef.current[1], rotRef.current[2],
+        ];
+
         const proj = geoOrthographic()
             .translate([SIZE / 2, SIZE / 2])
             .scale(SCALE)
-            .rotate([rotRef.current[0], rotRef.current[1], rotRef.current[2]])
+            .rotate(rotSnapshot)
             .clipAngle(90);
 
         let hit: RealtimeUser | null = null;
         usersRef.current.forEach(user => {
             const key   = String(user.id);
             const coord = coordMapRef.current.get(key) ?? landCoordForId(user.id);
-            const pt    = proj(coord);
+
+            // Same visibility rule as the draw loop — don't let hidden
+            // (back-side) markers be hoverable/clickable.
+            if (!isFrontFacing(coord, rotSnapshot)) return;
+
+            const pt = proj(coord);
             if (!pt) return;
             const dx = pt[0] - mx;
             const dy = pt[1] - my;
