@@ -151,7 +151,17 @@ function Eyebrow({ children }: { children: ReactNode }) {
 ───────────────────────────────────────────── */
 export default function LandingPage() {
   const [showRegister, setShowRegister] = useState(false);
+  const [userHandle, setUserHandle] = useState<string | null>(null);
   const router = useRouter();
+
+  // Reuse the same auth mechanism as Navbar, dashboard, digest, drop, etc.:
+  // read "kindsphere_handle" from localStorage and listen for "auth-changed".
+  useEffect(() => {
+    const sync = () => setUserHandle(localStorage.getItem("kindsphere_handle"));
+    sync();
+    window.addEventListener("auth-changed", sync);
+    return () => window.removeEventListener("auth-changed", sync);
+  }, []);
 
   return (
     <>
@@ -441,17 +451,14 @@ export default function LandingPage() {
 
                 <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 pt-2 hero-animate hero-animate-delay-3">
                   <button
-                    onClick={() => window.dispatchEvent(new Event("open-register-modal"))}
+                    onClick={() =>
+                      userHandle
+                        ? router.push("/dashboard")
+                        : window.dispatchEvent(new Event("open-register-modal"))
+                    }
                     className="group inline-flex items-center justify-center gap-2.5 text-base font-semibold text-white px-6 py-4 rounded-full bg-violet-600 hover:bg-violet-700 transition-all duration-300 shadow-lg shadow-violet-200 active:scale-[0.98]"
                   >
                     Start Spreading Kindness
-                  </button>
-                  <button
-                    onClick={() => router.push('/dashboard')}
-                    className="inline-flex items-center justify-center gap-2 rounded-full border border-violet-200 bg-white px-8 py-4 text-base font-semibold text-violet-900 shadow-sm transition-all duration-300 hover:border-violet-400 hover:bg-violet-50 hover:shadow-md"
-                  >
-                    Explore KindSphere
-                    <span className="transition-transform group-hover:translate-x-1">→</span>
                   </button>
                 </div>
               </div>
@@ -465,10 +472,10 @@ export default function LandingPage() {
                         <div className="w-10 h-10 rounded-full bg-slate-200 border-2 border-violet-100" />
                         <div>
                           <p className="text-sm font-semibold text-slate-950">Anonymous Soul</p>
-                          <p className="text-xs text-slate-400">just now</p>
+                          
                         </div>
                       </div>
-                      <div className="flex items-center gap-2 text-slate-500 bg-violet-50/50 px-3 py-1 rounded-full">
+                      <div className="flex items-center gap-1 text-slate-500 bg-violet-50/50 px-2 py-1 rounded-full">
                         <span className="text-sm text-violet-400">♡</span>
                         <span className="text-xs font-medium text-violet-800">24+</span>
                       </div>
@@ -480,7 +487,7 @@ export default function LandingPage() {
                   </div>
                 </div>
 
-                <div className="absolute bottom-20 md:bottom-32 left-0 md:left-10 z-30 w-[260px] md:w-[290px] animate-float-delayed hero-animate hero-animate-delay-5">
+                <div className="hidden md:block absolute bottom-20 md:bottom-32 left-0 md:left-10 z-30 w-[260px] md:w-[290px] animate-float-delayed hero-animate hero-animate-delay-5">
                   <div className="relative bg-white p-6 rounded-2xl shadow-lg border border-slate-100 space-y-3 hover-card-trigger">
                     <div className="flex items-center gap-2.5 text-amber-600">
                       <span className="text-sm">★</span>
@@ -638,7 +645,7 @@ export default function LandingPage() {
               <p className="text-[11px] font-bold uppercase tracking-widest text-violet-600">OUR GUIDELINES</p>
               <h2 className="font-serif text-4xl md:text-6xl text-slate-950 leading-[1.1] tracking-tight">
 
-                A safe space, <span className="text-violet-600 italic">held gently by all of us.</span>
+             Please<span className="text-violet-600 italic"> avoid the following.</span>
               </h2>
               <p className="text-lg md:text-xl text-slate-600 max-w-xl ml-0 mr-auto md:mx-auto leading-relaxed">
                 To keep KindSphere a place worth returning to, we ask everyone to avoid:
@@ -694,16 +701,12 @@ export default function LandingPage() {
                 The world needs
                 <br />
                 <span className="bg-gradient-to-r from-violet-600 to-fuchsia-500 bg-clip-text italic text-transparent">
-                  your kindness
+                  you & your kindness
                 </span>
               </h2>
 
               <p className="mx-auto mt-6 max-w-xl text-lg text-slate-600">
-                There are moments when you need to say something but can't tell anyone
-                or some thoughts are too difficult to say out loud.
-                KindSphere lets you share those thoughts completely anonymously—no names,
-                no identities, just a safe space where your voice can exist without fear
-                of being judged.
+             Not every thought is easy to share. KindSphere lets you express yourself anonymously—no names, no identities, just a safe space to be heard.
               </p>
               <Link href="/dashboard">
                 <button className="mt-10 rounded-2xl bg-gradient-to-r from-violet-600 to-purple-600 px-10 py-4 text-lg font-semibold text-white shadow-[0_20px_40px_rgba(124,58,237,0.25)] transition hover:-translate-y-0.5 hover:shadow-[0_25px_50px_rgba(124,58,237,0.35)]">

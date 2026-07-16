@@ -233,7 +233,7 @@ export default function GlobePage() {
                     {/* Stat cards stacked vertically */}
                     <div className="w-full md:flex-1 flex flex-col gap-4">
                         {[
-                            { label: "Souls exploring",  value: stats.totalSouls,      color: "#E8A33D", desc: "Active wanderers currently in the sphere." },
+                            { label: "Souls exploring",  value: stats.totalSouls,      color: "#E8A33D", desc: "Current wanderers in the sphere." },
                             { label: "Bottles drifting", value: stats.driftingBottles, color: "#7C3AED", desc: "Unopened messages awaiting a kind heart." },
                             { label: "Replies sent",     value: stats.repliesToday,    color: "#10B981", desc: "Acts of kindness shared in the last 24h." },
                         ].map((stat) => (

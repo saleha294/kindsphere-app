@@ -287,10 +287,8 @@ const KindSphereSplash: React.FC<KindSphereSplashProps> = ({ onEnter }) => {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5, ease: "easeOut" }}
                 >
-                  <Sparkle className="h-5 w-5" style={{ color: PRIMARY_PURPLE }} strokeWidth={1.75} aria-hidden="true" />
-                  <span className="text-xs font-serif semibold uppercase tracking-[0.22em]" style={{ color: "#6B6477" }}>
-                    KindSphere
-                  </span>
+                  
+                  
                 </motion.div>
 
                 <motion.h1
@@ -350,17 +348,14 @@ const KindSphereSplash: React.FC<KindSphereSplashProps> = ({ onEnter }) => {
               {/* Compact sphere */}
               <GlowingSphere compact />
 
-              {/* Logo mark */}
+            
               <motion.div
                 className="mt-5 flex items-center gap-2"
                 initial={{ opacity: 0, y: 6 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.45, ease: "easeOut" }}
               >
-                <Sparkle className="h-4 w-4" style={{ color: PRIMARY_PURPLE }} strokeWidth={1.75} aria-hidden="true" />
-                <span className="text-[11px] font-serif semibold uppercase tracking-[0.22em]" style={{ color: "#6B6477" }}>
-                  KindSphere
-                </span>
+                
               </motion.div>
 
               {/* Heading */}
@@ -369,7 +364,7 @@ const KindSphereSplash: React.FC<KindSphereSplashProps> = ({ onEnter }) => {
                 className="mt-4 text-[2.4rem] font-serif semibold tracking-tight leading-tight"
                 style={{ color: "#1E1B2E" }}
               >
-                KindSphere
+                Kind<span className="font-serif italic text-violet-600">Sphere</span>
               </motion.h1>
 
               {/* Tagline */}
