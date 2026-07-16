@@ -87,6 +87,23 @@ export const authUser = async (
 
         if (profileError) throw profileError;
 
+        // signUp does not guarantee a session (e.g. when email confirmation
+        // is disabled Supabase may or may not auto-sign-in depending on
+        // project settings).  Explicitly sign in so a live session is always
+        // established after registration — this is what getCurrentUserId()
+        // relies on, and without it the dashboard shows "Login to interact"
+        // even though the Navbar correctly shows the handle via localStorage.
+        const { error: signInError } = await supabase.auth.signInWithPassword({
+            email,
+            password: phrase,
+        });
+
+        // Non-fatal: profile was created; the user can still use the app.
+        // The session will be missing but localStorage fallback handles UI.
+        if (signInError) {
+            console.warn("[authUser] post-registration sign-in failed:", signInError.message);
+        }
+
         return profile;
     }
 

@@ -78,9 +78,10 @@ export default function DashboardPage() {
   useEffect(() => {
     const syncAuth = async () => {
       const savedHandle = localStorage.getItem("kindsphere_handle");
-      const savedUid = await getCurrentUserId();
       if (savedHandle) setUserHandle(savedHandle);
       else setUserHandle(null);
+
+      const savedUid = await getCurrentUserId();
       setCurrentUserId(savedUid);
     };
 
