@@ -4,7 +4,7 @@
 
 ### *Where Kindness Finds Its Way Home.*
 
-An AI-powered platform that transforms everyday acts of kindness into meaningful human connections through anonymous messages, shared experiences, and emotionally intelligent interactions.
+An platform that transforms everyday acts of kindness into meaningful human connections through anonymous messages, shared experiences, and emotionally intelligent interactions.
 
 [![Next.js](https://img.shields.io/badge/Next.js-15-black?style=for-the-badge&logo=next.js)]()
 [![React](https://img.shields.io/badge/React-19-61DAFB?style=for-the-badge&logo=react)]()
@@ -22,7 +22,7 @@ An AI-powered platform that transforms everyday acts of kindness into meaningful
 
 KindSphere is a modern social platform designed to promote genuine human connection in a calm, distraction-free digital environment.
 
-Unlike traditional social media, KindSphere focuses on empathy rather than engagement metrics. Users can anonymously share messages, discover meaningful stories, interact with AI-powered companions, and build authentic connections through kindness.
+Unlike traditional social media, KindSphere focuses on empathy rather than engagement metrics. Users can anonymously share messages, discover meaningful stories and build authentic connections through kindness.
 
 ---
 
@@ -56,7 +56,6 @@ Unlike traditional social media, KindSphere focuses on empathy rather than engag
 
 ### 🎨 Minimal Modern UI
 - Responsive design
-- Dark aesthetic
 - Smooth animations
 - Accessibility-focused components
 
@@ -114,7 +113,7 @@ Most social platforms optimize for attention.
 
 KindSphere is designed to optimize for **connection**.
 
-The project explores how thoughtful design, AI, and anonymous acts of kindness can create a healthier digital experience centered around empathy rather than endless scrolling.
+The project explores how thoughtful design and anonymous acts of kindness can create a healthier digital experience centered around empathy rather than endless scrolling.
 
 ---
 
