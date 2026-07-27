@@ -4,7 +4,7 @@
 
 ### *Where Kindness Finds Its Way Home.*
 
-An platform that transforms everyday acts of kindness into meaningful human connections through anonymous messages, shared experiences, and emotionally intelligent interactions.
+A platform that transforms everyday acts of kindness into meaningful human connections through anonymous messages, shared experiences, and emotionally intelligent interactions.
 
 [![Next.js](https://img.shields.io/badge/Next.js-15-black?style=for-the-badge&logo=next.js)]()
 [![React](https://img.shields.io/badge/React-19-61DAFB?style=for-the-badge&logo=react)]()
